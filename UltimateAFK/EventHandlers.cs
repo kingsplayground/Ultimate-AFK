@@ -16,47 +16,37 @@ namespace UltimateAFK
 			// Add a component to the player to check AFK status.
 			ev.Player.gameObject.AddComponent<AFKComponent>();
 		}
-		public static Vector3 GetPlayerPosition(ReferenceHub hub)
+		
+		/*
+		 * The following events are only here as additional AFK checks for some very basic player interactions
+		 * I can add more interactions, but this seems good for now.
+		 */
+		public void OnDoorInteract(ref DoorInteractionEvent ev)
 		{
-			return hub.plyMovementSync.GetRealPosition();
+			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
 		}
 
-		// Credit: https://github.com/Cyanox62/DCReplace
-		public static void TryReplacePlayer(ReferenceHub toreplace)
+		public void OnPlayerShoot(ref ShootEvent ev)
 		{
-			if (toreplace.GetTeam() != Team.RIP)
-			{
-				Inventory.SyncListItemInfo items = toreplace.inventory.items;
-				RoleType role = toreplace.GetRole();
-				Vector3 pos = toreplace.transform.position;
-				int health = (int)toreplace.playerStats.health;
-				string ammo = toreplace.ammoBox.amount;
+			ev.Shooter.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+		}
 
-				ReferenceHub player = Player.GetHubs().FirstOrDefault(x => x.GetRole() == RoleType.Spectator && x.characterClassManager.UserId != string.Empty && !x.GetOverwatch() && x != toreplace);
-				if (player != null)
-				{
-					player.SetRole(role);
-					Timing.CallDelayed(0.3f, () =>
-					{
-						player.SetPosition(pos);
-						player.inventory.items.ToList().Clear();
-						foreach (var item in items) player.inventory.AddNewItem(item.id);
-						player.playerStats.health = health;
-						player.ammoBox.Networkamount = ammo;
+		public void On914Activate(ref Scp914ActivationEvent ev)
+		{
+			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+		}
+		public void On914Change(ref Scp914KnobChangeEvent ev)
+		{
+			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+		}
 
-						player.Broadcast(10, $"{Config.msg_prefix} {Config.replace_message}", false);
-						// Clear their items because we are giving said items to the player already.
-						toreplace.inventory.Clear();
-						toreplace.characterClassManager.SetClassID(RoleType.Spectator);
-						toreplace.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
-					});
-				}
-				else
-				{
-					toreplace.characterClassManager.SetClassID(RoleType.Spectator);
-					toreplace.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
-				}
-			}
+		public void OnLockerInteract(LockerInteractionEvent ev)
+		{
+			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+		}
+		public void OnDropItem(ref DropItemEvent ev)
+		{
+			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
 		}
 	}
 }

@@ -11,6 +11,7 @@
 * | SCP:SL Ultimate AFK Checker                                                      |
 * | by Thomasjosif                                                                   |
 * |                                                                                  |
+* | Special thanks to iopietro for his awesome suggestions :)                        |
 * | https://kingsplayground.fun                                                      |
 * +==================================================================================+
 * | MIT License                                                                      |
@@ -60,6 +61,13 @@ namespace UltimateAFK
                 EventHandlers = new EventHandlers(this);
 
                 Events.PlayerJoinEvent += EventHandlers.OnPlayerJoin;
+                Events.ShootEvent += EventHandlers.OnPlayerShoot;
+                Events.DoorInteractEvent += EventHandlers.OnDoorInteract;
+                Events.Scp914ActivationEvent += EventHandlers.On914Activate;
+                Events.Scp914KnobChangeEvent += EventHandlers.On914Change;
+                Events.LockerInteractEvent += EventHandlers.OnLockerInteract;
+                Events.DropItemEvent += EventHandlers.OnDropItem;
+
                 Log.Info($"UltimateAFK plugin loaded.\nWritten by Thomasjosif for King's Playground");
             }
             catch (Exception e)
@@ -72,6 +80,13 @@ namespace UltimateAFK
         public override void OnDisable()
         {
             Events.PlayerJoinEvent -= EventHandlers.OnPlayerJoin;
+            Events.ShootEvent -= EventHandlers.OnPlayerShoot;
+            Events.DoorInteractEvent -= EventHandlers.OnDoorInteract;
+            Events.Scp914ActivationEvent -= EventHandlers.On914Activate;
+            Events.Scp914KnobChangeEvent -= EventHandlers.On914Change;
+            Events.LockerInteractEvent -= EventHandlers.OnLockerInteract;
+            Events.DropItemEvent -= EventHandlers.OnDropItem;
+
             EventHandlers = null;
         }
 

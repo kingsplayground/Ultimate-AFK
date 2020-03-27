@@ -1,19 +1,26 @@
 ﻿using UnityEngine;
 using EXILED.Extensions;
 using Log = EXILED.Log;
+using System.Linq;
+using MEC;
 
 namespace UltimateAFK
 {
     public class AFKComponent : MonoBehaviour
     {
+        ReferenceHub rh;
+
         public Vector3 AFKLastPosition;
+        public Vector3 AFKLastAngle;
+
         public int AFKTime = 0;
         private float timer = 0.0f;
         // Do not change this delay. It will screw up the detection
         public float delay = 1.0f;
 
-        void Start()
+        void Awake()
         {
+            rh = this.gameObject.GetComponent<ReferenceHub>();
         }
 
         void Update()
@@ -32,16 +39,16 @@ namespace UltimateAFK
         {
             if (this.gameObject != null)
             {
-                ReferenceHub rh = this.gameObject.GetComponent<ReferenceHub>();
-                if (rh != null)
+                if (this.rh != null)
                 {
                     // AFK Manager is a little fucky for computer, so let's not allow that. 
                     // Also, let's not check dead people, because that's not nice. 
-                    if (rh.GetTeam() != Team.RIP && rh.characterClassManager.CurClass != RoleType.Scp079)
+                    if (this.rh.GetTeam() != Team.RIP && this.rh.characterClassManager.CurClass != RoleType.Scp079)
                     {
-                        Vector3 CurrentPos = this.gameObject.transform.position;
+                        Vector3 CurrentPos = this.rh.GetPosition();
+                        Vector3 CurrentAngle = this.rh.GetRotationVector();
 
-                        if (CurrentPos == this.AFKLastPosition)
+                        if (CurrentPos == this.AFKLastPosition && CurrentAngle == this.AFKLastAngle)
                         {
                             this.AFKTime++;
                             if (this.AFKTime > Config.afk_time)
@@ -56,21 +63,21 @@ namespace UltimateAFK
                                         warning = warning.Replace("%action%", "moved to spec");
                                     warning = warning.Replace("%timeleft%", secondsuntilspec.ToString());
 
-                                    rh.ClearBroadcasts();
-                                    rh.Broadcast(1, $"{Config.msg_prefix} {warning}", false);
+                                    this.rh.ClearBroadcasts();
+                                    this.rh.Broadcast(1, $"{Config.msg_prefix} {warning}", false);
                                 }
                                 else
                                 {
-                                    Log.Info($"{rh.nicknameSync.MyNick} ({rh.GetUserId()}) was detected as AFK!");
+                                    Log.Info($"{this.rh.nicknameSync.MyNick} ({this.rh.GetUserId()}) was detected as AFK!");
                                     this.AFKTime = 0;
                                     if (Config.kick)
                                         ServerConsole.Disconnect(this.gameObject, Config.kick_message);
                                     else if (Config.replace)
-                                        EventHandlers.TryReplacePlayer(rh);
+                                        TryReplacePlayer(this.rh);
                                     else
                                     {
-                                        rh.SetRole(RoleType.Spectator);
-                                        rh.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
+                                        this.rh.SetRole(RoleType.Spectator);
+                                        this.rh.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
                                     }
                                 }
                             }
@@ -78,9 +85,48 @@ namespace UltimateAFK
                         else
                         {
                             this.AFKLastPosition = CurrentPos;
+                            this.AFKLastAngle = CurrentAngle;
                             this.AFKTime = 0;
                         }
                     }
+                }
+            }
+        }
+        
+        // Credit: https://github.com/Cyanox62/DCReplace
+        public static void TryReplacePlayer(ReferenceHub toreplace)
+        {
+            if (toreplace.GetTeam() != Team.RIP)
+            {
+                Inventory.SyncListItemInfo items = toreplace.inventory.items;
+                RoleType role = toreplace.GetRole();
+                Vector3 pos = toreplace.transform.position;
+                int health = (int)toreplace.playerStats.health;
+                string ammo = toreplace.ammoBox.amount;
+
+                ReferenceHub player = Player.GetHubs().FirstOrDefault(x => x.GetRole() == RoleType.Spectator && x.characterClassManager.UserId != string.Empty && !x.GetOverwatch() && x != toreplace);
+                if (player != null)
+                {
+                    player.SetRole(role);
+                    Timing.CallDelayed(0.3f, () =>
+                    {
+                        player.SetPosition(pos);
+                        player.inventory.items.ToList().Clear();
+                        foreach (var item in items) player.inventory.AddNewItem(item.id);
+                        player.playerStats.health = health;
+                        player.ammoBox.Networkamount = ammo;
+
+                        player.Broadcast(10, $"{Config.msg_prefix} {Config.replace_message}", false);
+                        // Clear their items because we are giving said items to the player already.
+                        toreplace.inventory.Clear();
+                        toreplace.characterClassManager.SetClassID(RoleType.Spectator);
+                        toreplace.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
+                    });
+                }
+                else
+                {
+                    toreplace.characterClassManager.SetClassID(RoleType.Spectator);
+                    toreplace.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
                 }
             }
         }
