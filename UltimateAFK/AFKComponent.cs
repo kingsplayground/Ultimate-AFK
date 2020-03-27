@@ -76,7 +76,10 @@ namespace UltimateAFK
                             }
                         }
                         else
+                        {
                             this.AFKLastPosition = CurrentPos;
+                            this.AFKTime = 0;
+                        }
                     }
                 }
             }
