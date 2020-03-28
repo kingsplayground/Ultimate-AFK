@@ -14,7 +14,6 @@ namespace UltimateAFK
 
         public Vector3 AFKLastPosition;
         public Vector3 AFKLastAngle;
-        public int AFK079LastEnergy;
 
         public int AFKTime = 0;
         public int AFKCount = 0;
@@ -54,15 +53,12 @@ namespace UltimateAFK
 
                 Vector3 CurrentPos = this.rh.GetPosition();
                 Vector3 CurrentAngle;
-                float CurrentEnergy = 0f;
 
                 // For some reason, GetRotationVector does not return the proper angle, so we use the camera angle from 079
                 if (isScp079)
                 {
                     Camera079 cam = Scp079.GetCamera(this.rh);
                     CurrentAngle = cam.targetPosition.position;
-
-                    CurrentEnergy = Scp079.GetEnergy(rh);
                 }
                 else
                     CurrentAngle = this.rh.GetRotationVector();
