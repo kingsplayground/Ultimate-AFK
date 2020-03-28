@@ -8,12 +8,16 @@ namespace UltimateAFK
 {
     public class AFKComponent : MonoBehaviour
     {
+        bool disabled = false;
+
         ReferenceHub rh;
 
         public Vector3 AFKLastPosition;
         public Vector3 AFKLastAngle;
+        public int AFK079LastEnergy;
 
         public int AFKTime = 0;
+        public int AFKCount = 0;
         private float timer = 0.0f;
         // Do not change this delay. It will screw up the detection
         public float delay = 1.0f;
@@ -21,6 +25,8 @@ namespace UltimateAFK
         void Awake()
         {
             rh = this.gameObject.GetComponent<ReferenceHub>();
+            if (rh.CheckPermission("uafk.ignore"))
+                this.disabled = true;
         }
 
         void Update()
@@ -29,104 +35,120 @@ namespace UltimateAFK
             if (timer > delay)
             {
                 timer = 0f;
-                AFKChecker();
+                if (!this.disabled)
+                    AFKChecker();
             }
         }
 
         // Called every 1 second according to the player's Update function. This is way more efficient than the old way of doing a forloop for every player.
-        // Also, since the gameObject for the player is deleted when they disconnect, we don't need to worry about cleaning any bariables :) 
+        // Also, since the gameObject for the player is deleted when they disconnect, we don't need to worry about cleaning any variables :) 
         private void AFKChecker()
         {
-            if (this.gameObject != null)
+            // AFK Manager is a little fucky for computer, so let's not allow that. 
+            // Also, let's not check dead people, because that's not nice. 
+            if (this.rh.GetTeam() != Team.RIP)
             {
-                if (this.rh != null)
+                bool isScp079 = false;
+                if (this.rh.GetRole() == RoleType.Scp079)
+                    isScp079 = true;
+
+                Vector3 CurrentPos = this.rh.GetPosition();
+                Vector3 CurrentAngle;
+                float CurrentEnergy = 0f;
+
+                // For some reason, GetRotationVector does not return the proper angle, so we use the camera angle from 079
+                if (isScp079)
                 {
-                    // AFK Manager is a little fucky for computer, so let's not allow that. 
-                    // Also, let's not check dead people, because that's not nice. 
-                    if (this.rh.GetTeam() != Team.RIP && this.rh.characterClassManager.CurClass != RoleType.Scp079)
+                    Camera079 cam = Scp079.GetCamera(this.rh);
+                    CurrentAngle = cam.targetPosition.position;
+
+                    CurrentEnergy = Scp079.GetEnergy(rh);
+                }
+                else
+                    CurrentAngle = this.rh.GetRotationVector();
+
+                if (CurrentPos == this.AFKLastPosition && CurrentAngle == this.AFKLastAngle)
+                {
+                    this.AFKTime++;
+                    if (this.AFKTime > Config.afk_time)
                     {
-                        Vector3 CurrentPos = this.rh.GetPosition();
-                        Vector3 CurrentAngle = this.rh.GetRotationVector();
-
-                        if (CurrentPos == this.AFKLastPosition && CurrentAngle == this.AFKLastAngle)
+                        int secondsuntilspec = (Config.afk_time + Config.grace_time) - this.AFKTime;
+                        if (secondsuntilspec > 0)
                         {
-                            this.AFKTime++;
-                            if (this.AFKTime > Config.afk_time)
-                            {
-                                int secondsuntilspec = (Config.afk_time + Config.grace_time) - this.AFKTime;
-                                if (secondsuntilspec > 0)
-                                {
-                                    string warning = Config.grace_message;
-                                    if (Config.kick)
-                                        warning = warning.Replace("%action%", "kicked");
-                                    else
-                                        warning = warning.Replace("%action%", "moved to spec");
-                                    warning = warning.Replace("%timeleft%", secondsuntilspec.ToString());
+                            string warning = Config.grace_message;
+                            warning = warning.Replace("%timeleft%", secondsuntilspec.ToString());
 
-                                    this.rh.ClearBroadcasts();
-                                    this.rh.Broadcast(1, $"{Config.msg_prefix} {warning}", false);
-                                }
-                                else
-                                {
-                                    Log.Info($"{this.rh.nicknameSync.MyNick} ({this.rh.GetUserId()}) was detected as AFK!");
-                                    this.AFKTime = 0;
-                                    if (Config.kick)
-                                        ServerConsole.Disconnect(this.gameObject, Config.kick_message);
-                                    else if (Config.replace)
-                                        TryReplacePlayer(this.rh);
-                                    else
-                                    {
-                                        this.rh.SetRole(RoleType.Spectator);
-                                        this.rh.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
-                                    }
-                                }
-                            }
+                            this.rh.ClearBroadcasts();
+                            this.rh.Broadcast(1, $"{Config.msg_prefix} {warning}", false);
                         }
                         else
                         {
-                            this.AFKLastPosition = CurrentPos;
-                            this.AFKLastAngle = CurrentAngle;
+                            Log.Info($"{this.rh.nicknameSync.MyNick} ({this.rh.GetUserId()}) was detected as AFK!");
                             this.AFKTime = 0;
+
+                            if (this.rh.GetTeam() != Team.RIP)
+                            {
+                                if (Config.replace)
+                                {
+                                    // Credit: DCReplace :)
+                                    Inventory.SyncListItemInfo items = this.rh.inventory.items;
+                                    RoleType role = this.rh.GetRole();
+                                    Vector3 pos = this.rh.transform.position;
+                                    int health = (int)this.rh.playerStats.health;
+                                    string ammo = this.rh.ammoBox.amount;
+
+                                    ReferenceHub player = Player.GetHubs().FirstOrDefault(x => x.GetRole() == RoleType.Spectator && x.characterClassManager.UserId != string.Empty && !x.GetOverwatch() && x != this.rh);
+                                    if (player != null)
+                                    {
+                                        player.SetRole(role);
+                                        Timing.CallDelayed(0.3f, () =>
+                                        {
+                                            player.SetPosition(pos);
+                                            player.inventory.items.ToList().Clear();
+                                            foreach (var item in items) player.inventory.AddNewItem(item.id);
+                                            player.playerStats.health = health;
+                                            player.ammoBox.Networkamount = ammo;
+
+                                            player.Broadcast(10, $"{Config.msg_prefix} {Config.replace_message}", false);
+                                            // Clear their items because we are giving said items to the player already.
+                                            this.rh.inventory.Clear();
+                                            this.rh.characterClassManager.SetClassID(RoleType.Spectator);
+                                            this.rh.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
+                                        });
+                                    }
+                                    else
+                                    {
+                                        // Couldn't find a valid player to spawn, just fspec anyways.
+                                        this.rh.characterClassManager.SetClassID(RoleType.Spectator);
+                                        this.rh.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
+                                    }
+                                }
+                                else
+                                {
+                                    // Replacing is disabled, just fspec
+                                    this.rh.characterClassManager.SetClassID(RoleType.Spectator);
+                                    this.rh.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
+                                }
+                            }
+                            // If it's -1 we won't be kicking at all.
+                            if (Config.num_before_kick != -1)
+                            {
+                                // Increment AFK Count
+                                this.AFKCount++;
+                                if (this.AFKCount >= Config.num_before_kick)
+                                {
+                                    // Since AFKCount is greater than the config we're going to kick that player for being AFK too many times in one match.
+                                    ServerConsole.Disconnect(this.gameObject, Config.kick_message);
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }
-        
-        // Credit: https://github.com/Cyanox62/DCReplace
-        public static void TryReplacePlayer(ReferenceHub toreplace)
-        {
-            if (toreplace.GetTeam() != Team.RIP)
-            {
-                Inventory.SyncListItemInfo items = toreplace.inventory.items;
-                RoleType role = toreplace.GetRole();
-                Vector3 pos = toreplace.transform.position;
-                int health = (int)toreplace.playerStats.health;
-                string ammo = toreplace.ammoBox.amount;
-
-                ReferenceHub player = Player.GetHubs().FirstOrDefault(x => x.GetRole() == RoleType.Spectator && x.characterClassManager.UserId != string.Empty && !x.GetOverwatch() && x != toreplace);
-                if (player != null)
-                {
-                    player.SetRole(role);
-                    Timing.CallDelayed(0.3f, () =>
-                    {
-                        player.SetPosition(pos);
-                        player.inventory.items.ToList().Clear();
-                        foreach (var item in items) player.inventory.AddNewItem(item.id);
-                        player.playerStats.health = health;
-                        player.ammoBox.Networkamount = ammo;
-
-                        player.Broadcast(10, $"{Config.msg_prefix} {Config.replace_message}", false);
-                        // Clear their items because we are giving said items to the player already.
-                        toreplace.inventory.Clear();
-                        toreplace.characterClassManager.SetClassID(RoleType.Spectator);
-                        toreplace.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
-                    });
-                }
                 else
                 {
-                    toreplace.characterClassManager.SetClassID(RoleType.Spectator);
-                    toreplace.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
+                    this.AFKLastPosition = CurrentPos;
+                    this.AFKLastAngle = CurrentAngle;
+                    this.AFKTime = 0;
                 }
             }
         }

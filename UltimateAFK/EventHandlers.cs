@@ -48,5 +48,10 @@ namespace UltimateAFK
 		{
 			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
 		}
+
+		public void OnSCP079Exp(Scp079ExpGainEvent ev)
+		{
+			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+		}
 	}
 }

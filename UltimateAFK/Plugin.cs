@@ -67,6 +67,7 @@ namespace UltimateAFK
                 Events.Scp914KnobChangeEvent += EventHandlers.On914Change;
                 Events.LockerInteractEvent += EventHandlers.OnLockerInteract;
                 Events.DropItemEvent += EventHandlers.OnDropItem;
+                Events.Scp079ExpGainEvent += EventHandlers.OnSCP079Exp;
 
                 Log.Info($"UltimateAFK plugin loaded.\nWritten by Thomasjosif for King's Playground");
             }
@@ -86,6 +87,7 @@ namespace UltimateAFK
             Events.Scp914KnobChangeEvent -= EventHandlers.On914Change;
             Events.LockerInteractEvent -= EventHandlers.OnLockerInteract;
             Events.DropItemEvent -= EventHandlers.OnDropItem;
+            Events.Scp079ExpGainEvent -= EventHandlers.OnSCP079Exp;
 
             EventHandlers = null;
         }
