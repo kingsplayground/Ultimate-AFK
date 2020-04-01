@@ -23,35 +23,42 @@ namespace UltimateAFK
 		 */
 		public void OnDoorInteract(ref DoorInteractionEvent ev)
 		{
-			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+			if (ev.Player.gameObject != null)
+				ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
 		}
 
 		public void OnPlayerShoot(ref ShootEvent ev)
 		{
-			ev.Shooter.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+			if (ev.Shooter.gameObject != null)
+				ev.Shooter.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
 		}
 
 		public void On914Activate(ref Scp914ActivationEvent ev)
 		{
-			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+			if (ev.Player.gameObject != null)
+				ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
 		}
 		public void On914Change(ref Scp914KnobChangeEvent ev)
 		{
-			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+			if (ev.Player.gameObject != null)
+				ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
 		}
 
 		public void OnLockerInteract(LockerInteractionEvent ev)
 		{
-			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+			if(ev.Player.gameObject != null)
+				ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
 		}
 		public void OnDropItem(ref DropItemEvent ev)
 		{
-			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+			if (ev.Player.gameObject != null)
+				ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
 		}
 
 		public void OnSCP079Exp(Scp079ExpGainEvent ev)
 		{
-			ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
+			if (ev.Player.gameObject != null)
+				ev.Player.gameObject.GetComponent<AFKComponent>().AFKTime = 0;
 		}
 	}
 }

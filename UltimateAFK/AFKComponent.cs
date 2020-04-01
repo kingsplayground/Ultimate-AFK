@@ -87,11 +87,23 @@ namespace UltimateAFK
                                 if (Config.replace)
                                 {
                                     // Credit: DCReplace :)
+
+
                                     Inventory.SyncListItemInfo items = this.rh.inventory.items;
                                     RoleType role = this.rh.GetRole();
                                     Vector3 pos = this.rh.transform.position;
                                     int health = (int)this.rh.playerStats.health;
                                     string ammo = this.rh.ammoBox.amount;
+                                    
+                                    // Stuff for 079
+                                    int Level079 = 0;
+                                    float Exp079 = 0f, AP079 = 0f;
+                                    if (isScp079)
+                                    {
+                                        Level079 = Scp079.GetLevel(this.rh);
+                                        Exp079 = Scp079.GetExperience(this.rh);
+                                        AP079 = Scp079.GetEnergy(this.rh);
+                                    }
 
                                     ReferenceHub player = Player.GetHubs().FirstOrDefault(x => x.GetRole() == RoleType.Spectator && x.characterClassManager.UserId != string.Empty && !x.GetOverwatch() && x != this.rh);
                                     if (player != null)
@@ -100,11 +112,17 @@ namespace UltimateAFK
                                         Timing.CallDelayed(0.3f, () =>
                                         {
                                             player.SetPosition(pos);
-                                            player.inventory.items.ToList().Clear();
+                                            player.inventory.Clear();
                                             foreach (var item in items) player.inventory.AddNewItem(item.id);
                                             player.playerStats.health = health;
                                             player.ammoBox.Networkamount = ammo;
 
+                                            if (isScp079)
+                                            {
+                                                Scp079.SetLevel(player, Level079, false);
+                                                Scp079.SetExperience(player, Exp079);
+                                                Scp079.SetEnergy(player, AP079);
+                                            }
                                             player.Broadcast(10, $"{Config.msg_prefix} {Config.replace_message}", false);
                                             // Clear their items because we are giving said items to the player already.
                                             this.rh.inventory.Clear();
