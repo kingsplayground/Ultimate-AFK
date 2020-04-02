@@ -61,6 +61,7 @@ namespace UltimateAFK
                 EventHandlers = new EventHandlers(this);
 
                 Events.PlayerJoinEvent += EventHandlers.OnPlayerJoin;
+                Events.SetClassEvent += EventHandlers.OnSetClass;
                 Events.ShootEvent += EventHandlers.OnPlayerShoot;
                 Events.DoorInteractEvent += EventHandlers.OnDoorInteract;
                 Events.Scp914ActivationEvent += EventHandlers.On914Activate;
@@ -81,6 +82,7 @@ namespace UltimateAFK
         public override void OnDisable()
         {
             Events.PlayerJoinEvent -= EventHandlers.OnPlayerJoin;
+            Events.SetClassEvent -= EventHandlers.OnSetClass;
             Events.ShootEvent -= EventHandlers.OnPlayerShoot;
             Events.DoorInteractEvent -= EventHandlers.OnDoorInteract;
             Events.Scp914ActivationEvent -= EventHandlers.On914Activate;

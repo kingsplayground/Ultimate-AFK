@@ -8,7 +8,7 @@ namespace UltimateAFK
 {
     public class AFKComponent : MonoBehaviour
     {
-        bool disabled = false;
+        public bool disabled = false;
 
         ReferenceHub rh;
 
@@ -24,8 +24,6 @@ namespace UltimateAFK
         void Awake()
         {
             rh = this.gameObject.GetComponent<ReferenceHub>();
-            if (rh.CheckPermission("uafk.ignore"))
-                this.disabled = true;
         }
 
         void Update()
