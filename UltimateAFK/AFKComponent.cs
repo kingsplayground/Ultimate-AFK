@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
+using EXILED;
 using EXILED.Extensions;
 using Log = EXILED.Log;
 using System.Linq;
 using MEC;
+using System;
+using System.Collections.Generic;
 
 namespace UltimateAFK
 {
@@ -43,7 +46,7 @@ namespace UltimateAFK
         {
             // AFK Manager is a little fucky for computer, so let's not allow that. 
             // Also, let's not check dead people, because that's not nice. 
-            if (this.rh.GetTeam() != Team.RIP)
+            if (this.isValidPlayerAfk(this.rh))
             {
                 bool isScp079 = false;
                 if (this.rh.GetRole() == RoleType.Scp079)
@@ -59,7 +62,8 @@ namespace UltimateAFK
                     CurrentAngle = cam.targetPosition.position;
                 }
                 else
-                    CurrentAngle = this.rh.GetRotationVector();
+                    CurrentAngle = this.rh.GetRotations(); // This is a hack because GetRotationVector is fucked.
+
 
                 if (CurrentPos == this.AFKLastPosition && CurrentAngle == this.AFKLastAngle)
                 {
@@ -82,16 +86,21 @@ namespace UltimateAFK
 
                             if (this.rh.GetTeam() != Team.RIP)
                             {
-                                if (Config.replace)
+                                if (Config.replace && !this.past_replace_time())
                                 {
                                     // Credit: DCReplace :)
-
 
                                     Inventory.SyncListItemInfo items = this.rh.inventory.items;
                                     RoleType role = this.rh.GetRole();
                                     Vector3 pos = this.rh.transform.position;
-                                    int health = (int)this.rh.playerStats.health;
-                                    string ammo = this.rh.ammoBox.amount;
+                                    float health = this.rh.GetHealth();
+                                    
+                                    // New strange ammo system because the old one was fucked.
+                                    Dictionary<EXILED.ApiObjects.AmmoType, uint> ammo = new Dictionary<EXILED.ApiObjects.AmmoType, uint>();
+                                    foreach (EXILED.ApiObjects.AmmoType atype in (EXILED.ApiObjects.AmmoType[])Enum.GetValues(typeof(EXILED.ApiObjects.AmmoType)))
+                                    {
+                                        ammo.Add(atype, this.rh.GetAmmo(atype));
+                                    }
                                     
                                     // Stuff for 079
                                     int Level079 = 0;
@@ -112,8 +121,18 @@ namespace UltimateAFK
                                             player.SetPosition(pos);
                                             player.inventory.Clear();
                                             foreach (var item in items) player.inventory.AddNewItem(item.id);
-                                            player.playerStats.health = health;
-                                            player.ammoBox.Networkamount = ammo;
+                                            player.SetHealth(health);
+
+                                            foreach (EXILED.ApiObjects.AmmoType atype in (EXILED.ApiObjects.AmmoType[])Enum.GetValues(typeof(EXILED.ApiObjects.AmmoType)))
+                                            {
+                                                uint amount;
+                                                if (ammo.TryGetValue(atype, out amount))
+                                                {
+                                                    this.rh.SetAmmo(atype, amount);
+                                                }
+                                                else
+                                                    Log.Error($"[uAFK] ERROR: Tried to get a value from dict that did not exist! (Ammo)");
+                                            }
 
                                             if (isScp079)
                                             {
@@ -131,15 +150,13 @@ namespace UltimateAFK
                                     else
                                     {
                                         // Couldn't find a valid player to spawn, just fspec anyways.
-                                        this.rh.characterClassManager.SetClassID(RoleType.Spectator);
-                                        this.rh.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
+                                        this.fspec(this.rh);
                                     }
                                 }
                                 else
                                 {
                                     // Replacing is disabled, just fspec
-                                    this.rh.characterClassManager.SetClassID(RoleType.Spectator);
-                                    this.rh.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
+                                    this.fspec(this.rh);
                                 }
                             }
                             // If it's -1 we won't be kicking at all.
@@ -163,6 +180,32 @@ namespace UltimateAFK
                     this.AFKTime = 0;
                 }
             }
+        }
+
+        private void fspec(ReferenceHub hub)
+        {
+            hub.characterClassManager.SetClassID(RoleType.Spectator);
+            hub.Broadcast(30, $"{Config.msg_prefix} {Config.fspec_message}", false);
+        }
+
+        private bool past_replace_time()
+        {
+            if (Config.max_time_for_replace != -1)
+                if (EventPlugin.GetRoundDuration() > Config.max_time_for_replace)
+                {
+                    Log.Info("Past allowed replace time, will not look for replacement player.");
+                    return true;
+                }
+            return false;
+        }
+
+        // Try to prevent errors from null users.
+        private bool isValidPlayerAfk(ReferenceHub hub)
+        {
+            if (hub != null && hub.GetUserId() != null)
+                if (hub.GetTeam() != Team.RIP)
+                    return true;
+            return false;
         }
     }
 }

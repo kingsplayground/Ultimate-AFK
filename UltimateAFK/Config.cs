@@ -13,6 +13,7 @@ namespace UltimateAFK
         internal static int afk_time = Plugin.Config.GetInt("uafk_time", 30);
         internal static int grace_time = Plugin.Config.GetInt("uafk_grace_period", 15);
         internal static int num_before_kick = Plugin.Config.GetInt("uafk_kick_count", 2);
+        internal static int max_time_for_replace = Plugin.Config.GetInt("uafk_max_replace_time", -1);
         internal static string msg_prefix = Plugin.Config.GetString("uafk_prefix", "<color=white>[</color><color=green>uAFK</color><color=white>]</color>");
         internal static string grace_message = Plugin.Config.GetString("uafk_grace_period_message", "<color=red>You will be moved to spectator in</color> <color=white>%timeleft% seconds</color><color=red> if you do not move!</color>");
         internal static string fspec_message = Plugin.Config.GetString("uafk_fspec_message", "You were detected as AFK and automatically moved to spectator!");

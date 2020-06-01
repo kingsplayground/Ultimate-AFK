@@ -70,7 +70,7 @@ namespace UltimateAFK
                 Events.DropItemEvent += EventHandlers.OnDropItem;
                 Events.Scp079ExpGainEvent += EventHandlers.OnSCP079Exp;
 
-                Log.Info($"UltimateAFK plugin loaded.\nWritten by Thomasjosif for King's Playground");
+                Log.Info($"UltimateAFK plugin loaded.\n Written by Thomasjosif for King's Playground");
             }
             catch (Exception e)
             {

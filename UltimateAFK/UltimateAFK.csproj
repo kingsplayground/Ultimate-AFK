@@ -55,16 +55,16 @@
     <Reference Include="BouncyCastle.Crypto">
       <HintPath>..\..\References\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
-    <Reference Include="EXILED">
+    <Reference Include="EXILED, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\References\Exiled\EXILED.dll</HintPath>
     </Reference>
-    <Reference Include="EXILED_Events">
+    <Reference Include="EXILED_Events, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\References\Exiled\EXILED_Events.dll</HintPath>
     </Reference>
-    <Reference Include="EXILED_Idler">
-      <HintPath>..\..\References\Exiled\EXILED_Idler.dll</HintPath>
-    </Reference>
-    <Reference Include="EXILED_Permissions">
+    <Reference Include="EXILED_Permissions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\References\Exiled\EXILED_Permissions.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
