@@ -39,36 +39,47 @@
 * +==================================================================================+
 */
 
-using EXILED;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Exiled.API.Interfaces;
+using Exiled.Events;
+using Handlers = Exiled.Events.Handlers;
 
 namespace UltimateAFK
 {
-    public class Plugin : EXILED.Plugin
-    {
-        public EventHandlers EventHandlers;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
 
-        public override void OnEnable()
+    public class MainClass : Plugin<Config>
+    {
+        public override string Author { get; } = "Thomasjosif";
+        public override string Name { get; } = "Ultimate AFK";
+        public override string Prefix { get; } = "uAFK";
+        public override Version Version { get; } = new Version(3, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 0, 0);
+        public PlayerEvents PlayerEvents;
+
+        public override PluginPriority Priority { get; } = PluginPriority.Medium;
+
+        public override void OnEnabled()
         {
-            this.enabled = Plugin.Config.GetBool("uafk_enabled", true);
-            if (!this.enabled)
-            {
-                Log.Info("Ultimate AFK is disabled via EXILED CONFIG, stopping plugin load now.");
-                return;
-            }
+            base.OnEnabled();
             try
             {
-                EventHandlers = new EventHandlers(this);
+                PlayerEvents = new PlayerEvents(this);
 
-                Events.PlayerJoinEvent += EventHandlers.OnPlayerJoin;
-                Events.SetClassEvent += EventHandlers.OnSetClass;
-                Events.ShootEvent += EventHandlers.OnPlayerShoot;
-                Events.DoorInteractEvent += EventHandlers.OnDoorInteract;
-                Events.Scp914ActivationEvent += EventHandlers.On914Activate;
-                Events.Scp914KnobChangeEvent += EventHandlers.On914Change;
-                Events.LockerInteractEvent += EventHandlers.OnLockerInteract;
-                Events.DropItemEvent += EventHandlers.OnDropItem;
-                Events.Scp079ExpGainEvent += EventHandlers.OnSCP079Exp;
+                Handlers.Player.Joined += PlayerEvents.OnPlayerJoin;
+                Handlers.Player.ChangingRole += PlayerEvents.OnSetClass;
+                Handlers.Player.Shooting += PlayerEvents.OnPlayerShoot;
+                Handlers.Player.InteractingDoor += PlayerEvents.OnDoorInteract;
+                Handlers.Scp914.Activating += PlayerEvents.On914Activate;
+                Handlers.Scp914.ChangingKnobSetting += PlayerEvents.On914Change;
+                Handlers.Player.InteractingLocker += PlayerEvents.OnLockerInteract;
+                Handlers.Player.ItemDropped += PlayerEvents.OnDropItem;
+                Handlers.Scp079.GainingExperience += PlayerEvents.OnSCP079Exp;
 
                 Log.Info($"UltimateAFK plugin loaded.\n Written by Thomasjosif for King's Playground");
             }
@@ -78,28 +89,20 @@ namespace UltimateAFK
             }
 
         }
-
-        public override void OnDisable()
+        public override void OnDisabled()
         {
-            Events.PlayerJoinEvent -= EventHandlers.OnPlayerJoin;
-            Events.SetClassEvent -= EventHandlers.OnSetClass;
-            Events.ShootEvent -= EventHandlers.OnPlayerShoot;
-            Events.DoorInteractEvent -= EventHandlers.OnDoorInteract;
-            Events.Scp914ActivationEvent -= EventHandlers.On914Activate;
-            Events.Scp914KnobChangeEvent -= EventHandlers.On914Change;
-            Events.LockerInteractEvent -= EventHandlers.OnLockerInteract;
-            Events.DropItemEvent -= EventHandlers.OnDropItem;
-            Events.Scp079ExpGainEvent -= EventHandlers.OnSCP079Exp;
+            base.OnDisabled();
+            Handlers.Player.Joined -= PlayerEvents.OnPlayerJoin;
+            Handlers.Player.ChangingRole -= PlayerEvents.OnSetClass;
+            Handlers.Player.Shooting -= PlayerEvents.OnPlayerShoot;
+            Handlers.Player.InteractingDoor -= PlayerEvents.OnDoorInteract;
+            Handlers.Scp914.Activating -= PlayerEvents.On914Activate;
+            Handlers.Scp914.ChangingKnobSetting -= PlayerEvents.On914Change;
+            Handlers.Player.InteractingLocker -= PlayerEvents.OnLockerInteract;
+            Handlers.Player.ItemDropped -= PlayerEvents.OnDropItem;
+            Handlers.Scp079.GainingExperience -= PlayerEvents.OnSCP079Exp;
 
-            EventHandlers = null;
+            PlayerEvents = null;
         }
-
-        public override void OnReload()
-        {
-            // Not used
-        }
-
-        public override string getName { get; } = "UltimateAFK";
-        public bool enabled;
     }
 }
