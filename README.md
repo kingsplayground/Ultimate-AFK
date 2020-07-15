@@ -23,6 +23,8 @@ uafk_try_replace: true
 uafk_replace_message: You have replaced a player who was AFK
 # Fspec count before player is kicked. (Set to -1 to disable kicking)
 uafk_kick_count: 2
+# Maximum replace time, if the round time is past this value it will not replace the player (Set to -1 to disable)
+uafk_max_replace_time: -1
 ```
 # Installation
 
