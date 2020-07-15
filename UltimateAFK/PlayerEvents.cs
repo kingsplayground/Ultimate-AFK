@@ -12,13 +12,18 @@ namespace UltimateAFK
 {
     public class PlayerEvents
     {
-        public MainClass plugin;
-        public PlayerEvents(MainClass plugin) => this.plugin = plugin;
+		public MainClass plugin;
+
+		public PlayerEvents(MainClass plugin)
+		{
+			this.plugin = plugin;
+		}
 
 		public void OnPlayerJoin(JoinedEventArgs ev)
 		{
 			// Add a component to the player to check AFK status.
-			ev.Player.GameObject.gameObject.AddComponent<AFKComponent>();
+			AFKComponent afkComponent = ev.Player.GameObject.gameObject.AddComponent<AFKComponent>();
+			afkComponent.plugin = this.plugin;
 		}
 
 		// This check was moved here, because player's rank's are set AFTER OnPlayerJoin()
@@ -30,10 +35,9 @@ namespace UltimateAFK
 				{
 					AFKComponent afkComponent = ev.Player.GameObject.gameObject.GetComponent<AFKComponent>();
 					
-					Exiled.API.Features.Log.Info($"Setting AFK Component for {ev.Player.Nickname}");
-					//if (afkComponent != null)
-					//	if (ev.Player.CheckPermission("uafk.ignore"))
-					//		afkComponent.disabled = true;
+					if (afkComponent != null)
+						if (ev.Player.CheckPermission("uafk.ignore"))
+							afkComponent.disabled = true;
 				}
 			}
 			catch (Exception e)

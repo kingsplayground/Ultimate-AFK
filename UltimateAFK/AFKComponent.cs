@@ -12,14 +12,10 @@ namespace UltimateAFK
     public class AFKComponent : MonoBehaviour
     {
         public MainClass plugin;
-        public AFKComponent(MainClass plugin)
-        {
-            this.plugin = plugin;
-        }
 
         public bool disabled = false;
 
-        Exiled.API.Features.Player rh;
+        Exiled.API.Features.Player ply;
 
         public Vector3 AFKLastPosition;
         public Vector3 AFKLastAngle;
@@ -32,8 +28,7 @@ namespace UltimateAFK
 
         void Awake()
         {
-            rh = this.gameObject.GetComponent<Exiled.API.Features.Player>();
-            Exiled.API.Features.Log.Info($"AWAKE AFK Component for {rh.Nickname}");
+            ply = Player.Get(gameObject);
         }
 
         void Update()
@@ -51,23 +46,23 @@ namespace UltimateAFK
         // Also, since the gameObject for the player is deleted when they disconnect, we don't need to worry about cleaning any variables :) 
         private void AFKChecker()
         {
-            Exiled.API.Features.Log.Info($"AFKChecker() for  {rh.Nickname}");
             // AFK Manager is a little fucky for computer, so let's not allow that. 
             // Also, let's not check dead people, because that's not nice. 
-            if (this.isValidPlayerAfk(this.rh))
+
+            if (this.ply.Team != Team.RIP)
             {
                 bool isScp079 = false;
-                if (this.rh.Role == RoleType.Scp079)
+                if (this.ply.Role == RoleType.Scp079)
                     isScp079 = true;
 
-                Vector3 CurrentPos = this.rh.Position;
+                Vector3 CurrentPos = this.ply.Position;
                 Vector3 CurrentAngle;
 
                 // For some reason, GetRotationVector does not return the proper angle, so we use the camera angle from 079
                 if (isScp079)
-                    CurrentAngle = this.rh.Camera.targetPosition.position;
+                    CurrentAngle = this.ply.Camera.targetPosition.position;
                 else
-                    CurrentAngle = this.rh.Rotation;
+                    CurrentAngle = this.ply.Rotations;
 
                 if (CurrentPos == this.AFKLastPosition && CurrentAngle == this.AFKLastAngle)
                 {
@@ -80,30 +75,30 @@ namespace UltimateAFK
                             string warning = plugin.Config.MsgGrace;
                             warning = warning.Replace("%timeleft%", secondsuntilspec.ToString());
 
-                            this.rh.ClearBroadcasts();
-                            this.rh.Broadcast(1, $"{plugin.Config.MsgPrefix} {warning}");
+                            this.ply.ClearBroadcasts();
+                            this.ply.Broadcast(1, $"{plugin.Config.MsgPrefix} {warning}");
                         }
                         else
                         {
-                            Log.Info($"{this.rh.Nickname} ({this.rh.UserId}) was detected as AFK!");
+                            Log.Info($"{this.ply.Nickname} ({this.ply.UserId}) was detected as AFK!");
                             this.AFKTime = 0;
 
-                            if (this.rh.Team != Team.RIP)
+                            if (this.ply.Team != Team.RIP)
                             {
                                 if (plugin.Config.TryReplace && !this.past_replace_time())
                                 {
                                     // Credit: DCReplace :)
 
-                                    Inventory.SyncListItemInfo items = this.rh.Inventory.items;
-                                    RoleType role = this.rh.Role;
-                                    Vector3 pos = this.rh.Position;
-                                    float health = this.rh.Health;
+                                    Inventory.SyncListItemInfo items = this.ply.Inventory.items;
+                                    RoleType role = this.ply.Role;
+                                    Vector3 pos = this.ply.Position;
+                                    float health = this.ply.Health;
                                     
                                     // New strange ammo system because the old one was fucked.
                                     Dictionary<Exiled.API.Enums.AmmoType, uint> ammo = new Dictionary<Exiled.API.Enums.AmmoType, uint>();
                                     foreach (Exiled.API.Enums.AmmoType atype in (Exiled.API.Enums.AmmoType[])Enum.GetValues(typeof(Exiled.API.Enums.AmmoType)))
                                     {
-                                        ammo.Add(atype, this.rh.GetAmmo(atype));
+                                        ammo.Add(atype, this.ply.GetAmmo(atype));
                                     }
                                     
                                     // Stuff for 079
@@ -111,11 +106,11 @@ namespace UltimateAFK
                                     float Exp079 = 0f, AP079 = 0f;
                                     if (isScp079)
                                     {
-                                        Level079 = this.rh.Level;
-                                        Exp079 = this.rh.Experience;
-                                        AP079 = this.rh.Energy;
+                                        Level079 = this.ply.Level;
+                                        Exp079 = this.ply.Experience;
+                                        AP079 = this.ply.Energy;
                                     }
-                                    Exiled.API.Features.Player player = Player.List.FirstOrDefault(x => x.Role == RoleType.Spectator && x.UserId != string.Empty && !x.IsOverwatchEnabled && x != this.rh);
+                                    Exiled.API.Features.Player player = Player.List.FirstOrDefault(x => x.Role == RoleType.Spectator && x.UserId != string.Empty && !x.IsOverwatchEnabled && x != this.ply);
                                     if (player != null)
                                     {
                                         player.SetRole(role);
@@ -131,7 +126,7 @@ namespace UltimateAFK
                                                 uint amount;
                                                 if (ammo.TryGetValue(atype, out amount))
                                                 {
-                                                    this.rh.SetAmmo(atype, amount);
+                                                    this.ply.SetAmmo(atype, amount);
                                                 }
                                                 else
                                                     Log.Error($"[uAFK] ERROR: Tried to get a value from dict that did not exist! (Ammo)");
@@ -145,21 +140,21 @@ namespace UltimateAFK
                                             }
                                             player.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");
                                             // Clear their items because we are giving said items to the player already.
-                                            this.rh.Inventory.Clear();
-                                            this.rh.SetRole(RoleType.Spectator);
-                                            this.rh.Broadcast(30, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgFspec}");
+                                            this.ply.Inventory.Clear();
+                                            this.ply.SetRole(RoleType.Spectator);
+                                            this.ply.Broadcast(30, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgFspec}");
                                         });
                                     }
                                     else
                                     {
                                         // Couldn't find a valid player to spawn, just fspec anyways.
-                                        this.fspec(this.rh);
+                                        this.fspec(this.ply);
                                     }
                                 }
                                 else
                                 {
                                     // Replacing is disabled, just fspec
-                                    this.fspec(this.rh);
+                                    this.fspec(this.ply);
                                 }
                             }
                             // If it's -1 we won't be kicking at all.
@@ -205,6 +200,7 @@ namespace UltimateAFK
         // Try to prevent errors from null users.
         private bool isValidPlayerAfk(Exiled.API.Features.Player hub)
         {
+            Exiled.API.Features.Log.Info($"isValidPlayerAfk for {hub.Nickname}");
             if (hub != null && hub.UserId != null)
                 if (hub.Team != Team.RIP)
                     return true;
