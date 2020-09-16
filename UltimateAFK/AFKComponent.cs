@@ -88,8 +88,9 @@ namespace UltimateAFK
                                 if (plugin.Config.TryReplace && !this.past_replace_time())
                                 {
                                     // Credit: DCReplace :)
-
+                                    // I mean at this point 90% of this has been rewritten lol...
                                     Inventory.SyncListItemInfo items = this.ply.Inventory.items;
+
                                     RoleType role = this.ply.Role;
                                     Vector3 pos = this.ply.Position;
                                     float health = this.ply.Health;
@@ -99,6 +100,7 @@ namespace UltimateAFK
                                     foreach (Exiled.API.Enums.AmmoType atype in (Exiled.API.Enums.AmmoType[])Enum.GetValues(typeof(Exiled.API.Enums.AmmoType)))
                                     {
                                         ammo.Add(atype, this.ply.GetAmmo(atype));
+                                        this.ply.SetAmmo(atype, 0); // We remove the ammo so the player doesn't drop it (duplicate ammo)
                                     }
                                     
                                     // Stuff for 079
@@ -110,6 +112,7 @@ namespace UltimateAFK
                                         Exp079 = this.ply.Experience;
                                         AP079 = this.ply.Energy;
                                     }
+
                                     Exiled.API.Features.Player player = Player.List.FirstOrDefault(x => x.Role == RoleType.Spectator && x.UserId != string.Empty && !x.IsOverwatchEnabled && x != this.ply);
                                     if (player != null)
                                     {
@@ -118,7 +121,12 @@ namespace UltimateAFK
                                         {
                                             player.Position = pos;
                                             player.Inventory.Clear();
-                                            foreach (var item in items) player.Inventory.AddNewItem(item.id);
+
+                                            foreach (Inventory.SyncItemInfo item in items)
+                                            {
+                                                player.Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+                                            }
+
                                             player.Health = health;
 
                                             foreach (Exiled.API.Enums.AmmoType atype in (Exiled.API.Enums.AmmoType[])Enum.GetValues(typeof(Exiled.API.Enums.AmmoType)))
@@ -126,7 +134,7 @@ namespace UltimateAFK
                                                 uint amount;
                                                 if (ammo.TryGetValue(atype, out amount))
                                                 {
-                                                    this.ply.SetAmmo(atype, amount);
+                                                    player.SetAmmo(atype, amount);
                                                 }
                                                 else
                                                     Log.Error($"[uAFK] ERROR: Tried to get a value from dict that did not exist! (Ammo)");
@@ -138,9 +146,10 @@ namespace UltimateAFK
                                                 player.Experience = Exp079;
                                                 player.Energy = AP079;
                                             }
+
                                             player.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");
-                                            // Clear their items because we are giving said items to the player already.
-                                            this.ply.Inventory.Clear();
+                                            
+                                            this.ply.Inventory.Clear(); // Clear their items to prevent dupes.
                                             this.ply.SetRole(RoleType.Spectator);
                                             this.ply.Broadcast(30, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgFspec}");
                                         });
