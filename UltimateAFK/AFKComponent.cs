@@ -6,6 +6,7 @@ using System.Linq;
 using MEC;
 using System;
 using System.Collections.Generic;
+using scp035.API;
 
 namespace UltimateAFK
 {
@@ -25,6 +26,9 @@ namespace UltimateAFK
         private float timer = 0.0f;
         // Do not change this delay. It will screw up the detection
         public float delay = 1.0f;
+
+        private Player TryGet035() => Scp035Data.GetScp035();
+        private void TrySpawn035(Player player) => Scp035Data.Spawn035(player);
 
         void Awake()
         {
@@ -52,6 +56,7 @@ namespace UltimateAFK
             if (this.ply.Team != Team.RIP)
             {
                 bool isScp079 = false;
+
                 if (this.ply.Role == RoleType.Scp079)
                     isScp079 = true;
 
@@ -87,6 +92,17 @@ namespace UltimateAFK
                             {
                                 if (plugin.Config.TryReplace && !this.past_replace_time())
                                 {
+                                    // SCP035 Support (Credit DCReplace)
+                                    bool is035 = false;
+                                    try
+                                    {
+                                        is035 = this.ply.Id == TryGet035()?.Id;
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Log.Debug($"SCP-035 is not installed, skipping method call: {e}");
+                                    }
+
                                     // Credit: DCReplace :)
                                     // I mean at this point 90% of this has been rewritten lol...
                                     Inventory.SyncListItemInfo items = this.ply.Inventory.items;
@@ -119,6 +135,17 @@ namespace UltimateAFK
                                         player.SetRole(role);
                                         Timing.CallDelayed(0.3f, () =>
                                         {
+                                            if (is035)
+                                            {
+                                                try
+                                                {
+                                                    TrySpawn035(player);
+                                                }
+                                                catch (Exception e)
+                                                {
+                                                    Log.Debug($"SCP-035 is not installed, skipping method call: {e}");
+                                                }
+                                            }
                                             player.Position = pos;
                                             player.Inventory.Clear();
 
