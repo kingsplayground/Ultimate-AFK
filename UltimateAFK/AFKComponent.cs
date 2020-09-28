@@ -92,6 +92,7 @@ namespace UltimateAFK
                             {
                                 if (plugin.Config.TryReplace && !this.past_replace_time())
                                 {
+                                    var role = Exiled.Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly.GetType("EasyEvents.Util")?.GetMethod("GetRole")?.Invoke(null, new object[] {this.ply});
                                     // SCP035 Support (Credit DCReplace)
                                     bool is035 = false;
                                     try
@@ -175,6 +176,7 @@ namespace UltimateAFK
                                             }
 
                                             player.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");
+                                            if(role != null) Exiled.Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly.GetType("EasyEvents.CustomRoles")?.GetMethod("ChangeRole")?.Invoke(null, new object[] {player, role});
                                             
                                             this.ply.Inventory.Clear(); // Clear their items to prevent dupes.
                                             this.ply.SetRole(RoleType.Spectator);
