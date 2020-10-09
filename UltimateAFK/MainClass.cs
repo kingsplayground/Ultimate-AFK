@@ -40,25 +40,18 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using Exiled.API.Extensions;
-using Exiled.API.Features;
-using Exiled.API.Interfaces;
-using Exiled.Events;
 using Handlers = Exiled.Events.Handlers;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 
 namespace UltimateAFK
 {
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-
     public class MainClass : Plugin<Config>
     {
         public override string Author { get; } = "Thomasjosif";
         public override string Name { get; } = "Ultimate AFK";
         public override string Prefix { get; } = "uAFK";
-        public override Version Version { get; } = new Version(3, 0, 2);
+        public override Version Version { get; } = new Version(3, 0, 3);
         public override Version RequiredExiledVersion { get; } = new Version(2, 0, 0);
         public PlayerEvents PlayerEvents;
 

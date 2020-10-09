@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using Exiled.Permissions.Extensions;
@@ -31,14 +26,13 @@ namespace UltimateAFK
 		{
 			try
 			{
-				if (ev.Player != null)
-				{
-					AFKComponent afkComponent = ev.Player.GameObject.gameObject.GetComponent<AFKComponent>();
-					
-					if (afkComponent != null)
-						if (ev.Player.CheckPermission("uafk.ignore"))
-							afkComponent.disabled = true;
-				}
+				if (ev.Player == null) return;
+				AFKComponent afkComponent = ev.Player.GameObject.gameObject.GetComponent<AFKComponent>();
+				
+				if (afkComponent != null)
+					if (ev.Player.CheckPermission("uafk.ignore"))
+						afkComponent.disabled = true;
+				
 			}
 			catch (Exception e)
 			{
@@ -132,17 +126,17 @@ namespace UltimateAFK
 		}
 
 		// Thanks iopietro!
-		public void ResetAFKTime(Exiled.API.Features.Player player)
+		public void ResetAFKTime(Player player)
 		{
 			try
 			{
-				if (player != null)
-				{
-					AFKComponent afkComponent = player.GameObject.gameObject.GetComponent<AFKComponent>();
+				if (player == null) return;
 
-					if (afkComponent != null)
-						afkComponent.AFKTime = 0;
-				}
+				AFKComponent afkComponent = player.GameObject.gameObject.GetComponent<AFKComponent>();
+
+				if (afkComponent != null)
+					afkComponent.AFKTime = 0;
+				
 			}
 			catch (Exception e)
 			{
