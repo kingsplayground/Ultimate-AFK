@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using MEC;
 using Exiled.API.Features;
+using Exiled.Loader;
 using PlayableScps;
 using scp035.API;
 
@@ -60,7 +61,7 @@ namespace UltimateAFK
             // therefore, we don't want to AFK check 096 while he's in this state.
             if (this.ply.Role == RoleType.Scp096)
             {
-                Scp096 scp096 = this.ply.ReferenceHub.scpsController.CurrentScp as Scp096;
+                PlayableScps.Scp096 scp096 = this.ply.ReferenceHub.scpsController.CurrentScp as PlayableScps.Scp096;
                 scp096TryNotToCry = (scp096.PlayerState == Scp096PlayerState.TryNotToCry) ? true : false;
             }
 
@@ -74,7 +75,7 @@ namespace UltimateAFK
                 this.AFKTime = 0;
                 return;
             }
-            
+
             // The player hasn't moved past this point.
             this.AFKTime++;
 
@@ -92,16 +93,18 @@ namespace UltimateAFK
                 this.ply.Broadcast(1, $"{plugin.Config.MsgPrefix} {warning}");
                 return;
             }
-            
+
             // The player is AFK and action will be taken.
             Log.Info($"{this.ply.Nickname} ({this.ply.UserId}) was detected as AFK!");
             this.AFKTime = 0;
 
             // Let's make sure they are still alive before doing any replacement.
-            if (this.ply.Team == Team.RIP) return; 
+            if (this.ply.Team == Team.RIP) return;
 
             if (plugin.Config.TryReplace && !this.IsPastReplaceTime())
             {
+                var roleEasyEvents = Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly.GetType("EasyEvents.Util")?.GetMethod("GetRole")?.Invoke(null, new object[] { this.ply });
+
                 // SCP035 Support (Credit DCReplace)
                 bool is035 = false;
                 try
@@ -120,15 +123,15 @@ namespace UltimateAFK
                 RoleType role = this.ply.Role;
                 Vector3 pos = this.ply.Position;
                 float health = this.ply.Health;
-                
+
                 // New strange ammo system because the old one was fucked.
                 Dictionary<Exiled.API.Enums.AmmoType, uint> ammo = new Dictionary<Exiled.API.Enums.AmmoType, uint>();
                 foreach (Exiled.API.Enums.AmmoType atype in (Exiled.API.Enums.AmmoType[])Enum.GetValues(typeof(Exiled.API.Enums.AmmoType)))
                 {
-                    ammo.Add(atype, this.ply.GetAmmo(atype));
-                    this.ply.SetAmmo(atype, 0); // We remove the ammo so the player doesn't drop it (duplicate ammo)
+                    ammo.Add(atype, this.ply.Ammo[(int)atype]);
+                    this.ply.Ammo[(int)atype] = 0; // We remove the ammo so the player doesn't drop it (duplicate ammo)
                 }
-                
+
                 // Stuff for 079
                 byte Level079 = 0;
                 float Exp079 = 0f, AP079 = 0f;
@@ -171,7 +174,7 @@ namespace UltimateAFK
                             uint amount;
                             if (ammo.TryGetValue(atype, out amount))
                             {
-                                player.SetAmmo(atype, amount);
+                                this.ply.Ammo[(int)atype] = amount;
                             }
                             else
                                 Log.Error($"[uAFK] ERROR: Tried to get a value from dict that did not exist! (Ammo)");
@@ -185,7 +188,8 @@ namespace UltimateAFK
                         }
 
                         player.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");
-                        
+                        if (roleEasyEvents != null) Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly.GetType("EasyEvents.CustomRoles")?.GetMethod("ChangeRole")?.Invoke(null, new object[] { player, roleEasyEvents });
+
                         this.ply.Inventory.Clear(); // Clear their items to prevent dupes.
                         this.ply.SetRole(RoleType.Spectator);
                         this.ply.Broadcast(30, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgFspec}");
