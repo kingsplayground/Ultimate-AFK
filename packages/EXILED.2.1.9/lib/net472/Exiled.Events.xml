@@ -691,6 +691,28 @@
             Gets or sets a value indicating whether the event can be executed or not.
             </summary>
         </member>
+        <member name="T:Exiled.Events.EventArgs.DamagingWindowEventArgs">
+            <summary>
+            Contains the damage done to the window.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.DamagingWindowEventArgs.#ctor(BreakableWindow,System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.DamagingWindowEventArgs"/> class.
+            </summary>
+            <param name="window"><inheritdoc cref="P:Exiled.Events.EventArgs.DamagingWindowEventArgs.Window"/></param>
+            <param name="damage"><inheritdoc cref="P:Exiled.Events.EventArgs.DamagingWindowEventArgs.Damage"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.DamagingWindowEventArgs.Window">
+            <summary>
+            Gets the <see cref="T:BreakableWindow"/> object.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.DamagingWindowEventArgs.Damage">
+            <summary>
+            Gets or sets the damage the window will receive.
+            </summary>
+        </member>
         <member name="T:Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs">
             <summary>
             Contains all informations before a player activates the workstation.
@@ -1671,6 +1693,45 @@
             Gets or sets a value indicating whether the event can be executed or not.
             </summary>
         </member>
+        <member name="T:Exiled.Events.EventArgs.PickingUpScp330EventArgs">
+            <summary>
+            Contains all informations before a player picks up an item.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.PickingUpScp330EventArgs.#ctor(Exiled.API.Features.Player,System.Int32,ItemType,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.PickingUpScp330EventArgs"/> class.
+            </summary>
+            <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.Player"/></param>
+            <param name="usage"><inheritdoc cref="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.Usage"/></param>
+            <param name="item"><inheritdoc cref="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.ItemId"/></param>
+            <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.IsAllowed"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.Player">
+            <summary>
+            Gets the player who picking up the scp330.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.IsAllowed">
+            <summary>
+            Gets or sets a value indicating whether the event can be executed or not.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.Usage">
+            <summary>
+            Gets or sets player's pickup counter.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.IsSevere">
+            <summary>
+            Gets or sets a value indicating whether pickup should be severe.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.ItemId">
+            <summary>
+            Gets or sets a value indicating what item will be picked up.
+            </summary>
+        </member>
         <member name="T:Exiled.Events.EventArgs.PlacingBloodEventArgs">
             <summary>
             Contains all informations before a player places blood.
@@ -2598,13 +2659,13 @@
             Contains all informations before a player throws a greande.
             </summary>
         </member>
-        <member name="M:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.#ctor(Exiled.API.Features.Player,Grenades.GrenadeManager,System.Int32,System.Boolean,System.Double,System.Boolean)">
+        <member name="M:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.#ctor(Exiled.API.Features.Player,Grenades.GrenadeManager,Exiled.API.Enums.GrenadeType,System.Boolean,System.Double,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs"/> class.
             </summary>
             <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.Player"/></param>
             <param name="grenadeManager"><inheritdoc cref="P:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.GrenadeManager"/></param>
-            <param name="id"><inheritdoc cref="P:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.Id"/></param>
+            <param name="type"><inheritdoc cref="P:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.Type"/></param>
             <param name="isSlow"><inheritdoc cref="P:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.IsSlow"/></param>
             <param name="fuseTime"><inheritdoc cref="P:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.FuseTime"/></param>
             <param name="isAllowed">Indicates whether the event can be executed or not.</param>
@@ -2622,6 +2683,11 @@
         <member name="P:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.Id">
             <summary>
             Gets the grenade id.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.Type">
+            <summary>
+            Gets or sets the grenade type.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.IsSlow">
@@ -2908,6 +2974,11 @@
             Invoked before decontaminating the light containment zone.
             </summary>
         </member>
+        <member name="E:Exiled.Events.Handlers.Map.DamagingWindow">
+            <summary>
+            Invoked before damaging a window.
+            </summary>
+        </member>
         <member name="E:Exiled.Events.Handlers.Map.ExplodingGrenade">
             <summary>
             Invoked before a grenade explodes.
@@ -2954,6 +3025,12 @@
             Called before decontaminating the light containment zone.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.DecontaminatingEventArgs"/> instance.</param>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Map.OnDamagingWindow(Exiled.Events.EventArgs.DamagingWindowEventArgs)">
+            <summary>
+            Called before damaging a window.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.DamagingWindowEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Map.OnExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs)">
             <summary>
@@ -3069,6 +3146,11 @@
         <member name="E:Exiled.Events.Handlers.Player.PickingUpItem">
             <summary>
             Invoked before picking up an item
+            </summary>
+        </member>
+        <member name="E:Exiled.Events.Handlers.Player.PickingUpScp330">
+            <summary>
+            Invoked before picking up an scp330
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Handcuffing">
@@ -3331,6 +3413,12 @@
             Invoked before picking up an item.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.PickingUpItemEventArgs"/> instance.</param>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Player.OnPickingUpScp330(Exiled.Events.EventArgs.PickingUpScp330EventArgs)">
+            <summary>
+            Invoked before picking up an item.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.PickingUpScp330EventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnHandcuffing(Exiled.Events.EventArgs.HandcuffingEventArgs)">
             <summary>
@@ -3953,6 +4041,12 @@
             Adds the <see cref="E:Exiled.Events.Handlers.Map.AnnouncingScpTermination"/> event.
             </summary>
         </member>
+        <member name="T:Exiled.Events.Patches.Events.Map.DamagingWindow">
+            <summary>
+            Patches <see cref="M:BreakableWindow.ServerDamageWindow(System.Single)"/>.
+            Adds the <see cref="E:Exiled.Events.Handlers.Map.DamagingWindow"/> event.
+            </summary>
+        </member>
         <member name="T:Exiled.Events.Patches.Events.Map.Decontaminating">
             <summary>
             Patches <see cref="M:LightContainmentZoneDecontamination.DecontaminationController.FinishDecontamination"/>.
@@ -4137,6 +4231,12 @@
             <summary>
             Patches <see cref="M:Searching.ItemSearchCompletor.Complete"/>.
             Adds the <see cref="E:Exiled.Events.Handlers.Player.PickingUpItem"/> event.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.Patches.Events.Player.PickingUpScp330">
+            <summary>
+            Patches <see cref="M:SCPSL.Halloween.Scp330.ServerInteract(ReferenceHub,System.Byte)"/>.
+            Adds the <see cref="E:Exiled.Events.Handlers.Player.PickingUpScp330"/> event.
             </summary>
         </member>
         <member name="T:Exiled.Events.Patches.Events.Player.PreAuthenticating">

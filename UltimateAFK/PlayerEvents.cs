@@ -16,12 +16,9 @@ namespace UltimateAFK
 
 		public void OnPlayerJoin(JoinedEventArgs ev)
 		{
-			if(ev.Player.IPAddress != "127.0.0.1") // Do not assign AFK component to localized pet objects
-			{
-				// Add a component to the player to check AFK status.
-				AFKComponent afkComponent = ev.Player.GameObject.gameObject.AddComponent<AFKComponent>();
-				afkComponent.plugin = this.plugin;
-			}
+			// Add a component to the player to check AFK status.
+			AFKComponent afkComponent = ev.Player.GameObject.gameObject.AddComponent<AFKComponent>();
+			afkComponent.plugin = this.plugin;
 		}
 
 		// This check was moved here, because player's rank's are set AFTER OnPlayerJoin()
@@ -33,7 +30,7 @@ namespace UltimateAFK
 				AFKComponent afkComponent = ev.Player.GameObject.gameObject.GetComponent<AFKComponent>();
 				
 				if (afkComponent != null)
-					if (ev.Player.CheckPermission("uafk.ignore"))
+					if (ev.Player.CheckPermission("uafk.ignore") || ev.Player.IPAddress == "127.0.0.1") //127.0.0.1 is sometimes used for "Pets" which causes issues
 						afkComponent.disabled = true;
 				
 			}
