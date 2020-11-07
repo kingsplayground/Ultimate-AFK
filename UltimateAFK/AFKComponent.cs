@@ -65,8 +65,8 @@ namespace UltimateAFK
         // Also, since the gameObject for the player is deleted when they disconnect, we don't need to worry about cleaning any variables :) 
         private void AFKChecker()
         {
-			//Log.Info($"AFK Time: {AFKTime} AFK Count: {AFKCount}");
-			if (ply.Team == Team.RIP) return;
+            //Log.Info($"AFK Time: {AFKTime} AFK Count: {AFKCount}");
+            if (ply.Team == Team.RIP) return;
 
             bool isScp079 = (ply.Role == RoleType.Scp079) ? true : false;
             bool scp096TryNotToCry = false;
