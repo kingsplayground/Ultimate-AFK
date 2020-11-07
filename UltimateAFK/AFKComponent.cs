@@ -122,8 +122,8 @@ namespace UltimateAFK
 
                 var roleEasyEvents = easyEvents?.GetType("EasyEvents.Util")?.GetMethod("GetRole")?.Invoke(null, new object[] { ply });
 
-				// SCP035 Support (Credit DCReplace)
-				bool is035 = false;
+                // SCP035 Support (Credit DCReplace)
+                bool is035 = false;
                 try
                 {
                     is035 = ply.Id == TryGet035()?.Id;
