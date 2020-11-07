@@ -7,6 +7,7 @@ using Exiled.API.Features;
 using Exiled.Loader;
 using PlayableScps;
 using scp035.API;
+using System.Reflection;
 
 namespace UltimateAFK
 {
@@ -31,6 +32,10 @@ namespace UltimateAFK
         private Player TryGet035() => Scp035Data.GetScp035();
         private void TrySpawn035(Player player) => Scp035Data.Spawn035(player);
 
+        // Expose replacing player for plugin support
+        public Player PlayerToReplace;
+
+
         void Awake()
         {
             ply = Player.Get(gameObject);
@@ -42,8 +47,17 @@ namespace UltimateAFK
             if (timer > delay)
             {
                 timer = 0f;
-                if (!this.disabled)
-                    AFKChecker();
+                if (!disabled)
+                {
+                    try
+                    {
+                        AFKChecker();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e);
+                    }
+                }
             }
         }
 
@@ -51,65 +65,68 @@ namespace UltimateAFK
         // Also, since the gameObject for the player is deleted when they disconnect, we don't need to worry about cleaning any variables :) 
         private void AFKChecker()
         {
-            //Log.Info($"AFK Time: {this.AFKTime} AFK Count: {this.AFKCount}");
-            if (this.ply.Team == Team.RIP) return;
+			//Log.Info($"AFK Time: {AFKTime} AFK Count: {AFKCount}");
+			if (ply.Team == Team.RIP) return;
 
-            bool isScp079 = (this.ply.Role == RoleType.Scp079) ? true : false;
+            bool isScp079 = (ply.Role == RoleType.Scp079) ? true : false;
             bool scp096TryNotToCry = false;
 
             // When SCP096 is in the state "TryNotToCry" he cannot move or it will cancel,
             // therefore, we don't want to AFK check 096 while he's in this state.
-            if (this.ply.Role == RoleType.Scp096)
+            if (ply.Role == RoleType.Scp096)
             {
-                PlayableScps.Scp096 scp096 = this.ply.ReferenceHub.scpsController.CurrentScp as PlayableScps.Scp096;
+                PlayableScps.Scp096 scp096 = ply.ReferenceHub.scpsController.CurrentScp as PlayableScps.Scp096;
                 scp096TryNotToCry = (scp096.PlayerState == Scp096PlayerState.TryNotToCry) ? true : false;
             }
 
-            Vector3 CurrentPos = this.ply.Position;
-            Vector3 CurrentAngle = (isScp079) ? this.ply.Camera.targetPosition.position : this.ply.Rotation;
+            Vector3 CurrentPos = ply.Position;
+            Vector3 CurrentAngle = (isScp079) ? ply.Camera.targetPosition.position : ply.Rotation;
 
-            if (CurrentPos != this.AFKLastPosition || CurrentAngle != this.AFKLastAngle || scp096TryNotToCry)
+            if (CurrentPos != AFKLastPosition || CurrentAngle != AFKLastAngle || scp096TryNotToCry)
             {
-                this.AFKLastPosition = CurrentPos;
-                this.AFKLastAngle = CurrentAngle;
-                this.AFKTime = 0;
+                AFKLastPosition = CurrentPos;
+                AFKLastAngle = CurrentAngle;
+                AFKTime = 0;
+                PlayerToReplace = null;
                 return;
             }
 
             // The player hasn't moved past this point.
-            this.AFKTime++;
+            AFKTime++;
 
             // If the player hasn't reached the time yet don't continue.
-            if (this.AFKTime < plugin.Config.AfkTime) return;
+            if (AFKTime < plugin.Config.AfkTime) return;
 
             // Check if we're still in the "grace" period
-            int secondsuntilspec = (plugin.Config.AfkTime + plugin.Config.GraceTime) - this.AFKTime;
+            int secondsuntilspec = (plugin.Config.AfkTime + plugin.Config.GraceTime) - AFKTime;
             if (secondsuntilspec > 0)
             {
                 string warning = plugin.Config.MsgGrace;
                 warning = warning.Replace("%timeleft%", secondsuntilspec.ToString());
 
-                this.ply.ClearBroadcasts();
-                this.ply.Broadcast(1, $"{plugin.Config.MsgPrefix} {warning}");
+                ply.ClearBroadcasts();
+                ply.Broadcast(1, $"{plugin.Config.MsgPrefix} {warning}");
                 return;
             }
 
             // The player is AFK and action will be taken.
-            Log.Info($"{this.ply.Nickname} ({this.ply.UserId}) was detected as AFK!");
-            this.AFKTime = 0;
+            Log.Info($"{ply.Nickname} ({ply.UserId}) was detected as AFK!");
+            AFKTime = 0;
 
             // Let's make sure they are still alive before doing any replacement.
-            if (this.ply.Team == Team.RIP) return;
+            if (ply.Team == Team.RIP) return;
 
-            if (plugin.Config.TryReplace && !this.IsPastReplaceTime())
+            if (plugin.Config.TryReplace && !IsPastReplaceTime())
             {
-                var roleEasyEvents = Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly.GetType("EasyEvents.Util")?.GetMethod("GetRole")?.Invoke(null, new object[] { this.ply });
+                Assembly easyEvents = Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly;
 
-                // SCP035 Support (Credit DCReplace)
-                bool is035 = false;
+                var roleEasyEvents = easyEvents?.GetType("EasyEvents.Util")?.GetMethod("GetRole")?.Invoke(null, new object[] { ply });
+
+				// SCP035 Support (Credit DCReplace)
+				bool is035 = false;
                 try
                 {
-                    is035 = this.ply.Id == TryGet035()?.Id;
+                    is035 = ply.Id == TryGet035()?.Id;
                 }
                 catch (Exception e)
                 {
@@ -118,18 +135,18 @@ namespace UltimateAFK
 
                 // Credit: DCReplace :)
                 // I mean at this point 90% of this has been rewritten lol...
-                Inventory.SyncListItemInfo items = this.ply.Inventory.items;
+                Inventory.SyncListItemInfo items = ply.Inventory.items;
 
-                RoleType role = this.ply.Role;
-                Vector3 pos = this.ply.Position;
-                float health = this.ply.Health;
+                RoleType role = ply.Role;
+                Vector3 pos = ply.Position;
+                float health = ply.Health;
 
                 // New strange ammo system because the old one was fucked.
                 Dictionary<Exiled.API.Enums.AmmoType, uint> ammo = new Dictionary<Exiled.API.Enums.AmmoType, uint>();
                 foreach (Exiled.API.Enums.AmmoType atype in (Exiled.API.Enums.AmmoType[])Enum.GetValues(typeof(Exiled.API.Enums.AmmoType)))
                 {
-                    ammo.Add(atype, this.ply.Ammo[(int)atype]);
-                    this.ply.Ammo[(int)atype] = 0; // We remove the ammo so the player doesn't drop it (duplicate ammo)
+                    ammo.Add(atype, ply.Ammo[(int)atype]);
+                    ply.Ammo[(int)atype] = 0; // We remove the ammo so the player doesn't drop it (duplicate ammo)
                 }
 
                 // Stuff for 079
@@ -137,44 +154,50 @@ namespace UltimateAFK
                 float Exp079 = 0f, AP079 = 0f;
                 if (isScp079)
                 {
-                    Level079 = this.ply.Level;
-                    Exp079 = this.ply.Experience;
-                    AP079 = this.ply.Energy;
+                    Level079 = ply.Level;
+                    Exp079 = ply.Experience;
+                    AP079 = ply.Energy;
                 }
 
-                Player player = Player.List.FirstOrDefault(x => x.Role == RoleType.Spectator && x.UserId != string.Empty && !x.IsOverwatchEnabled && x != this.ply);
-                if (player != null)
+                PlayerToReplace = Player.List.FirstOrDefault(x => x.Role == RoleType.Spectator && x.UserId != string.Empty && !x.IsOverwatchEnabled && x != ply);
+                if (PlayerToReplace != null)
                 {
-                    player.SetRole(role);
+                    // Make the player a spectator first so other plugins can do things on player changing role with uAFK.
+                    ply.Inventory.Clear(); // Clear their items to prevent dupes.
+                    ply.SetRole(RoleType.Spectator);
+                    ply.Broadcast(30, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgFspec}");
+
+                    PlayerToReplace.SetRole(role);
+
                     Timing.CallDelayed(0.3f, () =>
                     {
                         if (is035)
                         {
                             try
                             {
-                                TrySpawn035(player);
+                                TrySpawn035(PlayerToReplace);
                             }
                             catch (Exception e)
                             {
                                 Log.Debug($"SCP-035 is not installed, skipping method call: {e}");
                             }
                         }
-                        player.Position = pos;
-                        player.Inventory.Clear();
+                        PlayerToReplace.Position = pos;
+                        PlayerToReplace.Inventory.Clear();
 
                         foreach (Inventory.SyncItemInfo item in items)
                         {
-                            player.Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+                            PlayerToReplace.Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
                         }
 
-                        player.Health = health;
+                        PlayerToReplace.Health = health;
 
                         foreach (Exiled.API.Enums.AmmoType atype in (Exiled.API.Enums.AmmoType[])Enum.GetValues(typeof(Exiled.API.Enums.AmmoType)))
                         {
                             uint amount;
                             if (ammo.TryGetValue(atype, out amount))
                             {
-                                this.ply.Ammo[(int)atype] = amount;
+                                PlayerToReplace.Ammo[(int)atype] = amount;
                             }
                             else
                                 Log.Error($"[uAFK] ERROR: Tried to get a value from dict that did not exist! (Ammo)");
@@ -182,39 +205,36 @@ namespace UltimateAFK
 
                         if (isScp079)
                         {
-                            player.Level = Level079;
-                            player.Experience = Exp079;
-                            player.Energy = AP079;
+                            PlayerToReplace.Level = Level079;
+                            PlayerToReplace.Experience = Exp079;
+                            PlayerToReplace.Energy = AP079;
                         }
 
-                        player.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");
-                        if (roleEasyEvents != null) Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly.GetType("EasyEvents.CustomRoles")?.GetMethod("ChangeRole")?.Invoke(null, new object[] { player, roleEasyEvents });
-
-                        this.ply.Inventory.Clear(); // Clear their items to prevent dupes.
-                        this.ply.SetRole(RoleType.Spectator);
-                        this.ply.Broadcast(30, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgFspec}");
+                        PlayerToReplace.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");
+						if (roleEasyEvents != null) easyEvents?.GetType("EasyEvents.CustomRoles")?.GetMethod("ChangeRole")?.Invoke(null, new object[] { PlayerToReplace, roleEasyEvents });
+                        PlayerToReplace = null;
                     });
                 }
                 else
                 {
                     // Couldn't find a valid player to spawn, just ForceToSpec anyways.
-                    this.ForceToSpec(this.ply);
+                    ForceToSpec(ply);
                 }
             }
             else
             {
                 // Replacing is disabled, just ForceToSpec
-                this.ForceToSpec(this.ply);
+                ForceToSpec(ply);
             }
             // If it's -1 we won't be kicking at all.
             if (plugin.Config.NumBeforeKick != -1)
             {
                 // Increment AFK Count
-                this.AFKCount++;
-                if (this.AFKCount >= plugin.Config.NumBeforeKick)
+                AFKCount++;
+                if (AFKCount >= plugin.Config.NumBeforeKick)
                 {
                     // Since AFKCount is greater than the config we're going to kick that player for being AFK too many times in one match.
-                    ServerConsole.Disconnect(this.gameObject, plugin.Config.MsgKick);
+                    ServerConsole.Disconnect(gameObject, plugin.Config.MsgKick);
                 }
             }
         }

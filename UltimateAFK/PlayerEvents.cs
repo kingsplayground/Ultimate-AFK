@@ -28,11 +28,11 @@ namespace UltimateAFK
 			{
 				if (ev.Player == null) return;
 				AFKComponent afkComponent = ev.Player.GameObject.gameObject.GetComponent<AFKComponent>();
-				
+
 				if (afkComponent != null)
 					if (ev.Player.CheckPermission("uafk.ignore") || ev.Player.IPAddress == "127.0.0.1") //127.0.0.1 is sometimes used for "Pets" which causes issues
 						afkComponent.disabled = true;
-				
+
 			}
 			catch (Exception e)
 			{
