@@ -195,6 +195,19 @@
             This class implements all possible MultiAdmin features.
             </summary>
         </member>
+        <member name="T:Exiled.Loader.Features.PluginPriorityComparer">
+            <summary>
+            Comparator implementation according to plugin priorities.
+            </summary>
+        </member>
+        <member name="F:Exiled.Loader.Features.PluginPriorityComparer.Instance">
+            <summary>
+            Public instance.
+            </summary>
+        </member>
+        <member name="M:Exiled.Loader.Features.PluginPriorityComparer.Compare(Exiled.API.Interfaces.IPlugin{Exiled.API.Interfaces.IConfig},Exiled.API.Interfaces.IPlugin{Exiled.API.Interfaces.IConfig})">
+            <inheritdoc/>
+        </member>
         <member name="T:Exiled.Loader.Loader">
             <summary>
             Used to handle plugins.
@@ -269,20 +282,6 @@
             <summary>
             Disables all plugins.
             </summary>
-        </member>
-        <member name="M:Exiled.Loader.Loader.IsDependencyLoaded(System.String)">
-            <summary>
-            Check if a dependency is loaded.
-            </summary>
-            <param name="path">The path to check from.</param>
-            <returns>Returns whether the dependency is loaded or not.</returns>
-        </member>
-        <member name="M:Exiled.Loader.Loader.IsAssemblyLoaded(System.String)">
-            <summary>
-            Check if an assembly is loaded.
-            </summary>
-            <param name="path">The path to check from.</param>
-            <returns>Returns whether the assembly is loaded or not.</returns>
         </member>
         <member name="M:Exiled.Loader.Loader.LoadDependencies">
             <summary>

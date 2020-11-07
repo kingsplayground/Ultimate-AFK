@@ -21,9 +21,36 @@
         <member name="M:Exiled.Events.Commands.ReconnectRestart.Execute(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
             <inheritdoc/>
         </member>
+        <member name="T:Exiled.Events.Commands.Reload.All">
+            <summary>
+            The reload configs command.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.Commands.Reload.All.Instance">
+            <summary>
+            Gets static instance of the <see cref="T:Exiled.Events.Commands.Reload.All"/> command.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.Commands.Reload.All.Command">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Events.Commands.Reload.All.Aliases">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Events.Commands.Reload.All.Description">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Events.Commands.Reload.All.Execute(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
+            <inheritdoc/>
+        </member>
         <member name="T:Exiled.Events.Commands.Reload.Configs">
             <summary>
             The reload configs command.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.Commands.Reload.Configs.Instance">
+            <summary>
+            Gets static instance of the <see cref="T:Exiled.Events.Commands.Reload.Configs"/> command.
             </summary>
         </member>
         <member name="P:Exiled.Events.Commands.Reload.Configs.Command">
@@ -43,6 +70,11 @@
             The reload gameplay command.
             </summary>
         </member>
+        <member name="P:Exiled.Events.Commands.Reload.GamePlay.Instance">
+            <summary>
+            Gets static instance of the <see cref="T:Exiled.Events.Commands.Reload.GamePlay"/> command.
+            </summary>
+        </member>
         <member name="P:Exiled.Events.Commands.Reload.GamePlay.Command">
             <inheritdoc/>
         </member>
@@ -58,6 +90,11 @@
         <member name="T:Exiled.Events.Commands.Reload.Plugins">
             <summary>
             The reload plugins command.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.Commands.Reload.Plugins.Instance">
+            <summary>
+            Gets static instance of the <see cref="T:Exiled.Events.Commands.Reload.Plugins"/> command.
             </summary>
         </member>
         <member name="P:Exiled.Events.Commands.Reload.Plugins.Command">
@@ -100,6 +137,11 @@
         <member name="T:Exiled.Events.Commands.Reload.RemoteAdmin">
             <summary>
             The reload remoteadmin command.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.Commands.Reload.RemoteAdmin.Instance">
+            <summary>
+            Gets static instance of the <see cref="T:Exiled.Events.Commands.Reload.RemoteAdmin"/> command.
             </summary>
         </member>
         <member name="P:Exiled.Events.Commands.Reload.RemoteAdmin.Command">
@@ -510,6 +552,34 @@
             Gets or sets a value indicating whether the event can be executed or not.
             </summary>
         </member>
+        <member name="T:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs">
+            <summary>
+            Contains all informations before a player's intercom mute status is changed.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs"/> class.
+            </summary>
+            <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.Player"/></param>
+            <param name="isMuted"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.IsMuted"/></param>
+            <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.IsAllowed"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.Player">
+            <summary>
+            Gets the player who's being intercom muted/unmuted.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.IsAllowed">
+            <summary>
+            Gets or sets a value indicating whether the event can be executed or not.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.IsMuted">
+            <summary>
+            Gets a value indicating whether the player is being intercom muted or unmuted.
+            </summary>
+        </member>
         <member name="T:Exiled.Events.EventArgs.ChangingItemEventArgs">
             <summary>
             Contains all informations before a player changes the item in his hand.
@@ -586,6 +656,34 @@
         <member name="P:Exiled.Events.EventArgs.ChangingLeverStatusEventArgs.IsAllowed">
             <summary>
             Gets or sets a value indicating whether the event can be executed or not.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs">
+            <summary>
+            Contains all informations before a player's mute status is changed.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs"/> class.
+            </summary>
+            <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.Player"/></param>
+            <param name="isMuted"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.IsMuted"/></param>
+            <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.IsAllowed"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.Player">
+            <summary>
+            Gets the player who's being muted/unmuted.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.IsAllowed">
+            <summary>
+            Gets or sets a value indicating whether the event can be executed or not.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.IsMuted">
+            <summary>
+            Gets a value indicating whether the player is being muted or unmuted.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ChangingRoleEventArgs">
@@ -678,7 +776,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.CreatingPortalEventArgs.Player">
             <summary>
-            Gets the player who's controlling SCP-096.
+            Gets the player who's controlling SCP-106.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.CreatingPortalEventArgs.Position">
@@ -2271,7 +2369,7 @@
             Contains all informations after a player has shot.
             </summary>
         </member>
-        <member name="M:Exiled.Events.EventArgs.ShotEventArgs.#ctor(Exiled.API.Features.Player,UnityEngine.GameObject,System.String,System.Single,System.Single,System.Boolean)">
+        <member name="M:Exiled.Events.EventArgs.ShotEventArgs.#ctor(Exiled.API.Features.Player,UnityEngine.GameObject,HitBoxType,System.Single,System.Single,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.ShotEventArgs"/> class.
             </summary>
@@ -2297,6 +2395,11 @@
             Gets the hitbox type of the shot.
             </summary>
         </member>
+        <member name="P:Exiled.Events.EventArgs.ShotEventArgs.HitboxTypeEnum">
+            <summary>
+            Gets the hitbox type of the shot.
+            </summary>
+        </member>
         <member name="P:Exiled.Events.EventArgs.ShotEventArgs.Distance">
             <summary>
             Gets the shot distance.
@@ -2310,6 +2413,22 @@
         <member name="P:Exiled.Events.EventArgs.ShotEventArgs.CanHurt">
             <summary>
             Gets or sets a value indicating whether the shot can hurt the target or notc.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.EventArgs.SpawnedItemEventArgs">
+            <summary>
+            Contains all informations after the server spawns an item.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.SpawnedItemEventArgs.#ctor(Pickup)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.SpawnedItemEventArgs"/> class.
+            </summary>
+            <param name="pickup"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawnedItemEventArgs.Pickup"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.SpawnedItemEventArgs.Pickup">
+            <summary>
+            Gets or sets the item pickup.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.SpawningEventArgs">
@@ -2344,6 +2463,46 @@
         <member name="P:Exiled.Events.EventArgs.SpawningEventArgs.RotationY">
             <summary>
             Gets or sets the rotation y axis of the player.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.EventArgs.SpawningItemEventArgs">
+            <summary>
+            Contains all informations before the server spawns an item.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.SpawningItemEventArgs.#ctor(ItemType,UnityEngine.Vector3,UnityEngine.Quaternion,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.SpawningItemEventArgs"/> class.
+            </summary>
+            <param name="id"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Id"/></param>
+            <param name="pos"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Position"/></param>
+            <param name="rot"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Rotation"/></param>
+            <param name="locked"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Locked"/></param>
+            <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningItemEventArgs.IsAllowed"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Id">
+            <summary>
+            Gets or sets the item to be dropped.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Position">
+            <summary>
+            Gets or sets the position to spawn the item.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Rotation">
+            <summary>
+            Gets or sets the rotation to spawn the item.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Locked">
+            <summary>
+            Gets or sets a value indicating whether or not the Pickup will be locked.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.SpawningItemEventArgs.IsAllowed">
+            <summary>
+            Gets or sets a value indicating whether the event can be executed or not.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.SpawningRagdollEventArgs">
@@ -2984,6 +3143,16 @@
             Invoked before a grenade explodes.
             </summary>
         </member>
+        <member name="E:Exiled.Events.Handlers.Map.SpawningItem">
+            <summary>
+            Invoked before an item is spawned.
+            </summary>
+        </member>
+        <member name="E:Exiled.Events.Handlers.Map.SpawnedItem">
+            <summary>
+            Invoked after an item is spawned.
+            </summary>
+        </member>
         <member name="M:Exiled.Events.Handlers.Map.OnPlacingDecal(Exiled.Events.EventArgs.PlacingDecalEventArgs)">
             <summary>
             Called before placing a decal.
@@ -3037,6 +3206,18 @@
             Called before a grenade explodes.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs"/> instance.</param>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Map.OnSpawningItem(Exiled.Events.EventArgs.SpawningItemEventArgs)">
+            <summary>
+            Called before an item is spawned.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.SpawningItemEventArgs"/> instance.</param>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Map.OnSpawnedItem(Exiled.Events.EventArgs.SpawnedItemEventArgs)">
+            <summary>
+            Called after an item is spawned.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.SpawnedItemEventArgs"/> instance.</param>
         </member>
         <member name="T:Exiled.Events.Handlers.Player">
             <summary>
@@ -3286,6 +3467,16 @@
         <member name="E:Exiled.Events.Handlers.Player.DeactivatingWorkstation">
             <summary>
             Invoked before deactivating workstation.
+            </summary>
+        </member>
+        <member name="E:Exiled.Events.Handlers.Player.ChangingMuteStatus">
+            <summary>
+            Invoked before changing user mute status.
+            </summary>
+        </member>
+        <member name="E:Exiled.Events.Handlers.Player.ChangingIntercomMuteStatus">
+            <summary>
+            Invoked before changing user intercom mute status.
             </summary>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnPreAuthenticating(Exiled.Events.EventArgs.PreAuthenticatingEventArgs)">
@@ -3581,6 +3772,18 @@
             Called before deactivating workstation.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs"/> instance.</param>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Player.OnChangingMuteStatus(Exiled.Events.EventArgs.ChangingMuteStatusEventArgs)">
+            <summary>
+            Called before changing user mute status.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs"/> instance.</param>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Player.OnChangingIntercomMuteStatus(Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs)">
+            <summary>
+            Called before changing user intercom mute status.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs"/> instance.</param>
         </member>
         <member name="T:Exiled.Events.Handlers.Scp049">
             <summary>
@@ -4083,6 +4286,12 @@
             Adds the <see cref="E:Exiled.Events.Handlers.Map.PlacingDecal"/> event.
             </summary>
         </member>
+        <member name="T:Exiled.Events.Patches.Events.Map.SpawningItem">
+            <summary>
+            Patches <see cref="M:RandomItemSpawner.SpawnerItemToSpawn.DoorTrigger"/>.
+            Adds the <see cref="E:Exiled.Events.Handlers.Map.SpawningItem"/> and <see cref="E:Exiled.Events.Handlers.Map.SpawnedItem"/> events.
+            </summary>
+        </member>
         <member name="T:Exiled.Events.Patches.Events.Player.ActivatingWarheadPanel">
             <summary>
             Patch the <see cref="M:PlayerInteract.CallCmdSwitchAWButton"/>.
@@ -4113,10 +4322,22 @@
             Adds the <see cref="E:Exiled.Events.Handlers.Player.ChangingGroup"/> event.
             </summary>
         </member>
+        <member name="T:Exiled.Events.Patches.Events.Player.ChangingIntercomMuteStatus">
+            <summary>
+            Patch the <see cref="P:CharacterClassManager.NetworkIntercomMuted"/>.
+            Adds the <see cref="E:Exiled.Events.Handlers.Player.ChangingIntercomMuteStatus"/> event.
+            </summary>
+        </member>
         <member name="T:Exiled.Events.Patches.Events.Player.ChangingItem">
             <summary>
             Patches <see cref="M:Inventory.CallCmdSetUnic(System.Int32)"/>.
             Adds the <see cref="E:Exiled.Events.Handlers.Player.ChangingItem"/> event.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.Patches.Events.Player.ChangingMuteStatus">
+            <summary>
+            Patch the <see cref="P:CharacterClassManager.NetworkMuted"/>.
+            Adds the <see cref="E:Exiled.Events.Handlers.Player.ChangingMuteStatus"/> event.
             </summary>
         </member>
         <member name="T:Exiled.Events.Patches.Events.Player.ChangingRole">
@@ -4233,12 +4454,6 @@
             Adds the <see cref="E:Exiled.Events.Handlers.Player.PickingUpItem"/> event.
             </summary>
         </member>
-        <member name="T:Exiled.Events.Patches.Events.Player.PickingUpScp330">
-            <summary>
-            Patches <see cref="M:SCPSL.Halloween.Scp330.ServerInteract(ReferenceHub,System.Byte)"/>.
-            Adds the <see cref="E:Exiled.Events.Handlers.Player.PickingUpScp330"/> event.
-            </summary>
-        </member>
         <member name="T:Exiled.Events.Patches.Events.Player.PreAuthenticating">
             <summary>
             Patches <see cref="M:CustomLiteNetLib4MirrorTransport.ProcessConnectionRequest(LiteNetLib.ConnectionRequest)"/>.
@@ -4277,7 +4492,7 @@
         </member>
         <member name="T:Exiled.Events.Patches.Events.Player.Shoot">
             <summary>
-            Patches <see cref="M:WeaponManager.CallCmdShoot(UnityEngine.GameObject,System.String,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3)"/>.
+            Patches <see cref="M:WeaponManager.CallCmdShoot(UnityEngine.GameObject,HitBoxType,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3)"/>.
             Adds the <see cref="E:Exiled.Events.Handlers.Player.Shooting"/> and <see cref="E:Exiled.Events.Handlers.Player.Shot"/> events.
             </summary>
         </member>
