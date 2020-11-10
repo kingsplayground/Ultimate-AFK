@@ -744,16 +744,22 @@
             Contains all informations before containing SCP-106.
             </summary>
         </member>
-        <member name="M:Exiled.Events.EventArgs.ContainingEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean)">
+        <member name="M:Exiled.Events.EventArgs.ContainingEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.ContainingEventArgs"/> class.
             </summary>
             <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.ContainingEventArgs.Player"/></param>
+            <param name="buttonPresser"><inheritdoc cref="P:Exiled.Events.EventArgs.ContainingEventArgs.Player"/></param>
             <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.ContainingEventArgs.IsAllowed"/></param>
         </member>
         <member name="P:Exiled.Events.EventArgs.ContainingEventArgs.Player">
             <summary>
             Gets the player who's controlling SCP-106.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ContainingEventArgs.ButtonPresser">
+            <summary>
+            Gets the player who pressed the button.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.ContainingEventArgs.IsAllowed">

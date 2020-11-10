@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SamplePlugin")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("UltimateAFK")]
+[assembly: AssemblyDescription("Ultimate AFK Checker")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SamplePlugin")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCompany("KingsPlayground")]
+[assembly: AssemblyProduct("UltimateAFK")]
+[assembly: AssemblyCopyright("Copyright © 2020 Thomas Dick")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

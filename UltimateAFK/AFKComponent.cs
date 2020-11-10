@@ -8,6 +8,7 @@ using Exiled.Loader;
 using PlayableScps;
 using scp035.API;
 using System.Reflection;
+using Exiled.API.Enums;
 
 namespace UltimateAFK
 {
@@ -135,19 +136,16 @@ namespace UltimateAFK
 
                 // Credit: DCReplace :)
                 // I mean at this point 90% of this has been rewritten lol...
-                Inventory.SyncListItemInfo items = this.ply.Inventory.items;
+                var inventory = this.ply.Inventory.items.Select(x => x.id).ToList();
 
                 RoleType role = this.ply.Role;
                 Vector3 pos = this.ply.Position;
                 float health = this.ply.Health;
 
                 // New strange ammo system because the old one was fucked.
-                Dictionary<Exiled.API.Enums.AmmoType, uint> ammo = new Dictionary<Exiled.API.Enums.AmmoType, uint>();
-                foreach (Exiled.API.Enums.AmmoType atype in (Exiled.API.Enums.AmmoType[])Enum.GetValues(typeof(Exiled.API.Enums.AmmoType)))
-                {
-                    ammo.Add(atype, this.ply.Ammo[(int)atype]);
-                    this.ply.Ammo[(int)atype] = 0; // We remove the ammo so the player doesn't drop it (duplicate ammo)
-                }
+                uint ammo1 = this.ply.Ammo[(int)AmmoType.Nato556];
+                uint ammo2 = this.ply.Ammo[(int)AmmoType.Nato762];
+                uint ammo3 = this.ply.Ammo[(int)AmmoType.Nato9];
 
                 // Stuff for 079
                 byte Level079 = 0;
@@ -183,25 +181,15 @@ namespace UltimateAFK
                             }
                         }
                         PlayerToReplace.Position = pos;
-                        PlayerToReplace.Inventory.Clear();
 
-                        foreach (Inventory.SyncItemInfo item in items)
-                        {
-                            PlayerToReplace.Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
-                        }
+                        PlayerToReplace.ClearInventory();
+                        PlayerToReplace.ResetInventory(inventory);
 
                         PlayerToReplace.Health = health;
 
-                        foreach (Exiled.API.Enums.AmmoType atype in (Exiled.API.Enums.AmmoType[])Enum.GetValues(typeof(Exiled.API.Enums.AmmoType)))
-                        {
-                            uint amount;
-                            if (ammo.TryGetValue(atype, out amount))
-                            {
-                                PlayerToReplace.Ammo[(int)atype] = amount;
-                            }
-                            else
-                                Log.Error($"[uAFK] ERROR: Tried to get a value from dict that did not exist! (Ammo)");
-                        }
+                        PlayerToReplace.Ammo[(int)AmmoType.Nato556] = ammo1;
+                        PlayerToReplace.Ammo[(int)AmmoType.Nato762] = ammo2;
+                        PlayerToReplace.Ammo[(int)AmmoType.Nato9] = ammo3;
 
                         if (isScp079)
                         {
