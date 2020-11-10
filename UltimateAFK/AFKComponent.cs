@@ -7,6 +7,7 @@ using Exiled.API.Features;
 using Exiled.Loader;
 using PlayableScps;
 using scp035.API;
+using System.Reflection;
 
 namespace UltimateAFK
 {
@@ -31,6 +32,10 @@ namespace UltimateAFK
         private Player TryGet035() => Scp035Data.GetScp035();
         private void TrySpawn035(Player player) => Scp035Data.Spawn035(player);
 
+        // Expose replacing player for plugin support
+        public Player PlayerToReplace;
+
+
         void Awake()
         {
             ply = Player.Get(gameObject);
@@ -43,7 +48,16 @@ namespace UltimateAFK
             {
                 timer = 0f;
                 if (!this.disabled)
-                    AFKChecker();
+                {
+                    try
+                    {
+                        AFKChecker();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e);
+                    }
+                }
             }
         }
 
@@ -73,6 +87,7 @@ namespace UltimateAFK
                 this.AFKLastPosition = CurrentPos;
                 this.AFKLastAngle = CurrentAngle;
                 this.AFKTime = 0;
+                PlayerToReplace = null;
                 return;
             }
 
@@ -101,9 +116,11 @@ namespace UltimateAFK
             // Let's make sure they are still alive before doing any replacement.
             if (this.ply.Team == Team.RIP) return;
 
-            if (plugin.Config.TryReplace && !this.IsPastReplaceTime())
+            if (plugin.Config.TryReplace && !IsPastReplaceTime())
             {
-                var roleEasyEvents = Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly.GetType("EasyEvents.Util")?.GetMethod("GetRole")?.Invoke(null, new object[] { this.ply });
+                Assembly easyEvents = Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly;
+
+                var roleEasyEvents = easyEvents?.GetType("EasyEvents.Util")?.GetMethod("GetRole")?.Invoke(null, new object[] { this.ply });
 
                 // SCP035 Support (Credit DCReplace)
                 bool is035 = false;
@@ -142,39 +159,45 @@ namespace UltimateAFK
                     AP079 = this.ply.Energy;
                 }
 
-                Player player = Player.List.FirstOrDefault(x => x.Role == RoleType.Spectator && x.UserId != string.Empty && !x.IsOverwatchEnabled && x != this.ply);
-                if (player != null)
+                PlayerToReplace = Player.List.FirstOrDefault(x => x.Role == RoleType.Spectator && x.UserId != string.Empty && !x.IsOverwatchEnabled && x != this.ply);
+                if (PlayerToReplace != null)
                 {
-                    player.SetRole(role);
+                    // Make the player a spectator first so other plugins can do things on player changing role with uAFK.
+                    this.ply.Inventory.Clear(); // Clear their items to prevent dupes.
+                    this.ply.SetRole(RoleType.Spectator);
+                    this.ply.Broadcast(30, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgFspec}");
+
+                    PlayerToReplace.SetRole(role);
+
                     Timing.CallDelayed(0.3f, () =>
                     {
                         if (is035)
                         {
                             try
                             {
-                                TrySpawn035(player);
+                                TrySpawn035(PlayerToReplace);
                             }
                             catch (Exception e)
                             {
                                 Log.Debug($"SCP-035 is not installed, skipping method call: {e}");
                             }
                         }
-                        player.Position = pos;
-                        player.Inventory.Clear();
+                        PlayerToReplace.Position = pos;
+                        PlayerToReplace.Inventory.Clear();
 
                         foreach (Inventory.SyncItemInfo item in items)
                         {
-                            player.Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+                            PlayerToReplace.Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
                         }
 
-                        player.Health = health;
+                        PlayerToReplace.Health = health;
 
                         foreach (Exiled.API.Enums.AmmoType atype in (Exiled.API.Enums.AmmoType[])Enum.GetValues(typeof(Exiled.API.Enums.AmmoType)))
                         {
                             uint amount;
                             if (ammo.TryGetValue(atype, out amount))
                             {
-                                this.ply.Ammo[(int)atype] = amount;
+                                PlayerToReplace.Ammo[(int)atype] = amount;
                             }
                             else
                                 Log.Error($"[uAFK] ERROR: Tried to get a value from dict that did not exist! (Ammo)");
@@ -182,29 +205,26 @@ namespace UltimateAFK
 
                         if (isScp079)
                         {
-                            player.Level = Level079;
-                            player.Experience = Exp079;
-                            player.Energy = AP079;
+                            PlayerToReplace.Level = Level079;
+                            PlayerToReplace.Experience = Exp079;
+                            PlayerToReplace.Energy = AP079;
                         }
 
-                        player.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");
-                        if (roleEasyEvents != null) Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly.GetType("EasyEvents.CustomRoles")?.GetMethod("ChangeRole")?.Invoke(null, new object[] { player, roleEasyEvents });
-
-                        this.ply.Inventory.Clear(); // Clear their items to prevent dupes.
-                        this.ply.SetRole(RoleType.Spectator);
-                        this.ply.Broadcast(30, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgFspec}");
+                        PlayerToReplace.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");
+						if (roleEasyEvents != null) easyEvents?.GetType("EasyEvents.CustomRoles")?.GetMethod("ChangeRole")?.Invoke(null, new object[] { PlayerToReplace, roleEasyEvents });
+                        PlayerToReplace = null;
                     });
                 }
                 else
                 {
                     // Couldn't find a valid player to spawn, just ForceToSpec anyways.
-                    this.ForceToSpec(this.ply);
+                    ForceToSpec(this.ply);
                 }
             }
             else
             {
                 // Replacing is disabled, just ForceToSpec
-                this.ForceToSpec(this.ply);
+                ForceToSpec(this.ply);
             }
             // If it's -1 we won't be kicking at all.
             if (plugin.Config.NumBeforeKick != -1)
@@ -213,7 +233,7 @@ namespace UltimateAFK
                 this.AFKCount++;
                 if (this.AFKCount >= plugin.Config.NumBeforeKick)
                 {
-                    // Since AFKCount is greater than the config we're going to kick that player for being AFK too many times in one match.
+                    // Since this.AFKCount is greater than the config we're going to kick that player for being AFK too many times in one match.
                     ServerConsole.Disconnect(this.gameObject, plugin.Config.MsgKick);
                 }
             }
