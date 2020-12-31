@@ -67,7 +67,7 @@ namespace UltimateAFK
         private void AFKChecker()
         {
             //Log.Info($"AFK Time: {this.AFKTime} AFK Count: {this.AFKCount}");
-            if (this.ply.Team == Team.RIP) return;
+            if (this.ply.Team == Team.RIP || Player.List.Count() < plugin.Config.MinPlayers) return;
 
             bool isScp079 = (this.ply.Role == RoleType.Scp079) ? true : false;
             bool scp096TryNotToCry = false;

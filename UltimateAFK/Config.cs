@@ -12,6 +12,7 @@ namespace UltimateAFK
     public sealed class Config : IConfig
     {
         public bool IsEnabled { get; set; } = true;
+        public int MinPlayers { get; set; } = 2;
         public bool TryReplace { get; private set; } = true;
         public int AfkTime { get; private set; } = 30;
         public int GraceTime { get; private set; } = 15;
