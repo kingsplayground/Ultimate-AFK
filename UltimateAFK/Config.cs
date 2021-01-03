@@ -13,6 +13,8 @@ namespace UltimateAFK
     {
         public bool IsEnabled { get; set; } = true;
         public bool TryReplace { get; private set; } = true;
+        [Description("Should Tutorials be ignored?")]
+        public bool IgnoreTut { get; private set; } = true;
         public int AfkTime { get; private set; } = 30;
         public int GraceTime { get; private set; } = 15;
         public int NumBeforeKick { get; private set; } = 2;
