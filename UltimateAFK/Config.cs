@@ -12,6 +12,7 @@ namespace UltimateAFK
     public sealed class Config : IConfig
     {
         public bool IsEnabled { get; set; } = true;
+        public int MinPlayers { get; set; } = 2;
         [Description("Do AFK players get replaced by spectators?")]
         public bool TryReplace { get; private set; } = true;
         [Description("Should Tutorials be ignored?")]
