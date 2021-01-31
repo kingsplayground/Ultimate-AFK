@@ -51,8 +51,8 @@ namespace UltimateAFK
         public override string Author { get; } = "Thomasjosif";
         public override string Name { get; } = "Ultimate AFK";
         public override string Prefix { get; } = "uAFK";
-        public override Version Version { get; } = new Version(3, 1, 1);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 0, 0);
+        public override Version Version { get; } = new Version(3, 1, 4);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 1, 29, 0);
         public PlayerEvents PlayerEvents;
 
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
@@ -64,7 +64,7 @@ namespace UltimateAFK
             {
                 PlayerEvents = new PlayerEvents(this);
 
-                Handlers.Player.Joined += PlayerEvents.OnPlayerJoin;
+                Handlers.Player.Joined += PlayerEvents.OnPlayerJoined;
                 Handlers.Player.ChangingRole += PlayerEvents.OnSetClass;
                 Handlers.Player.Shooting += PlayerEvents.OnPlayerShoot;
                 Handlers.Player.InteractingDoor += PlayerEvents.OnDoorInteract;
@@ -85,7 +85,7 @@ namespace UltimateAFK
         public override void OnDisabled()
         {
             base.OnDisabled();
-            Handlers.Player.Joined -= PlayerEvents.OnPlayerJoin;
+            Handlers.Player.Joined -= PlayerEvents.OnPlayerJoined;
             Handlers.Player.ChangingRole -= PlayerEvents.OnSetClass;
             Handlers.Player.Shooting -= PlayerEvents.OnPlayerShoot;
             Handlers.Player.InteractingDoor -= PlayerEvents.OnDoorInteract;

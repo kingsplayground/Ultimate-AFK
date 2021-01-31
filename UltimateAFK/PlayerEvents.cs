@@ -14,11 +14,11 @@ namespace UltimateAFK
 			this.plugin = plugin;
 		}
 
-		public void OnPlayerJoin(JoinedEventArgs ev)
+		public void OnPlayerJoined(JoinedEventArgs ev)
 		{
 			// Add a component to the player to check AFK status.
 			AFKComponent afkComponent = ev.Player.GameObject.gameObject.AddComponent<AFKComponent>();
-			afkComponent.plugin = this.plugin;
+			afkComponent.plugin = plugin;
 		}
 
 		// This check was moved here, because player's rank's are set AFTER OnPlayerJoin()
@@ -29,7 +29,7 @@ namespace UltimateAFK
 				if (ev.Player == null) return;
 				AFKComponent afkComponent = ev.Player.GameObject.gameObject.GetComponent<AFKComponent>();
 
-				if (afkComponent != null)
+				if (afkComponent != null && !plugin.Config.IgnorePermissionsAndIP)
 					if (ev.Player.CheckPermission("uafk.ignore") || ev.Player.IPAddress == "127.0.0.1") //127.0.0.1 is sometimes used for "Pets" which causes issues
 						afkComponent.disabled = true;
 
