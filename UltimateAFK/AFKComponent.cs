@@ -69,6 +69,9 @@ namespace UltimateAFK
             //Log.Info($"AFK Time: {this.AFKTime} AFK Count: {this.AFKCount}");
             if (this.ply.Team == Team.RIP || Player.List.Count() < plugin.Config.MinPlayers) return;
 
+	          // Check if Ignoring Tutorials is enabled & player is tutorial
+            if (plugin.Config.IgnoreTut == true && this.ply.Team == Team.TUT) return;
+
             bool isScp079 = (this.ply.Role == RoleType.Scp079) ? true : false;
             bool scp096TryNotToCry = false;
 
