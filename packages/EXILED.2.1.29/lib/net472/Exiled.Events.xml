@@ -4,23 +4,6 @@
         <name>Exiled.Events</name>
     </assembly>
     <members>
-        <member name="T:Exiled.Events.Commands.ReconnectRestart">
-            <summary>
-            The ReconnectRestart command.
-            </summary>
-        </member>
-        <member name="P:Exiled.Events.Commands.ReconnectRestart.Command">
-            <inheritdoc/>
-        </member>
-        <member name="P:Exiled.Events.Commands.ReconnectRestart.Aliases">
-            <inheritdoc/>
-        </member>
-        <member name="P:Exiled.Events.Commands.ReconnectRestart.Description">
-            <inheritdoc/>
-        </member>
-        <member name="M:Exiled.Events.Commands.ReconnectRestart.Execute(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
-            <inheritdoc/>
-        </member>
         <member name="T:Exiled.Events.Commands.Reload.All">
             <summary>
             The reload configs command.
@@ -156,46 +139,46 @@
         <member name="M:Exiled.Events.Commands.Reload.RemoteAdmin.Execute(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
             <inheritdoc/>
         </member>
-        <member name="T:Exiled.Events.Commands.Plugins">
+        <member name="T:Exiled.Events.Commands.Show.Plugins">
             <summary>
             The command to show all plugins.
             </summary>
         </member>
-        <member name="P:Exiled.Events.Commands.Plugins.Command">
+        <member name="P:Exiled.Events.Commands.Show.Plugins.Command">
             <inheritdoc/>
         </member>
-        <member name="P:Exiled.Events.Commands.Plugins.Aliases">
+        <member name="P:Exiled.Events.Commands.Show.Plugins.Aliases">
             <inheritdoc/>
         </member>
-        <member name="P:Exiled.Events.Commands.Plugins.Description">
+        <member name="P:Exiled.Events.Commands.Show.Plugins.Description">
             <inheritdoc/>
         </member>
-        <member name="M:Exiled.Events.Commands.Plugins.Execute(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
+        <member name="M:Exiled.Events.Commands.Show.Plugins.Execute(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
             <inheritdoc/>
         </member>
-        <member name="T:Exiled.Events.Commands.Show">
+        <member name="T:Exiled.Events.Commands.Show.Show">
             <summary>
             The command to show all plugins.
             </summary>
         </member>
-        <member name="M:Exiled.Events.Commands.Show.#ctor">
+        <member name="M:Exiled.Events.Commands.Show.Show.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:Exiled.Events.Commands.Show"/> class.
+            Initializes a new instance of the <see cref="T:Exiled.Events.Commands.Show.Show"/> class.
             </summary>
         </member>
-        <member name="P:Exiled.Events.Commands.Show.Command">
+        <member name="P:Exiled.Events.Commands.Show.Show.Command">
             <inheritdoc/>
         </member>
-        <member name="P:Exiled.Events.Commands.Show.Aliases">
+        <member name="P:Exiled.Events.Commands.Show.Show.Aliases">
             <inheritdoc/>
         </member>
-        <member name="P:Exiled.Events.Commands.Show.Description">
+        <member name="P:Exiled.Events.Commands.Show.Show.Description">
             <inheritdoc/>
         </member>
-        <member name="M:Exiled.Events.Commands.Show.LoadGeneratedCommands">
+        <member name="M:Exiled.Events.Commands.Show.Show.LoadGeneratedCommands">
             <inheritdoc/>
         </member>
-        <member name="M:Exiled.Events.Commands.Show.ExecuteParent(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
+        <member name="M:Exiled.Events.Commands.Show.Show.ExecuteParent(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
             <inheritdoc/>
         </member>
         <member name="T:Exiled.Events.Config">
@@ -263,7 +246,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ActivatingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not SCP-914 can be activated.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ActivatingWarheadPanelEventArgs">
@@ -291,12 +274,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ActivatingWarheadPanelEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the warhead can be activated.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ActivatingWorkstationEventArgs">
             <summary>
-            Contains all informations before a player activates the workstation.
+            Contains all informations before a player activates a workstation.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.ActivatingWorkstationEventArgs.#ctor(Exiled.API.Features.Player,WorkStation,System.Boolean)">
@@ -319,12 +302,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ActivatingWorkstationEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the workstation can be activated.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.AddingTargetEventArgs">
             <summary>
-            Contains all information before adding a target to SCP-096.
+            Contains all informations before adding a target to SCP-096.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.AddingTargetEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,System.Int32,System.Single)">
@@ -338,7 +321,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.AddingTargetEventArgs.Scp096">
             <summary>
-            Gets the <see cref="T:Exiled.API.Features.Player"/> object of the SCP-096.
+            Gets the <see cref="T:Exiled.API.Features.Player"/> that is controlling SCP-096.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.AddingTargetEventArgs.Target">
@@ -348,22 +331,22 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.AddingTargetEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether gets or sets whether or not the target is allowed to be added.
+            Gets or sets a value indicating whether or not the target is allowed to be added.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.AddingTargetEventArgs.AhpToAdd">
             <summary>
-            Gets or sets the amount of AHP to add to 096 if <see cref="P:Exiled.Events.EventArgs.AddingTargetEventArgs.IsAllowed"/> is true.
+            Gets or sets the amount of AHP to add to SCP-096 if <see cref="P:Exiled.Events.EventArgs.AddingTargetEventArgs.IsAllowed"/> is true.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.AddingTargetEventArgs.EnrageTimeToAdd">
             <summary>
-            Gets or sets how much time is added to <see cref="P:Exiled.Events.EventArgs.AddingTargetEventArgs.Scp096"/>'s enrage timer if <see cref="P:Exiled.Events.EventArgs.AddingTargetEventArgs.IsAllowed"/> is true.
+            Gets or sets how much time is added to SCP-096's enrage timer if <see cref="P:Exiled.Events.EventArgs.AddingTargetEventArgs.IsAllowed"/> is true.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.AnnouncingDecontaminationEventArgs">
             <summary>
-            Contains all informations before starting the decontamination.
+            Contains all informations before C.A.S.S.I.E announces light containment zone decontamination.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.AnnouncingDecontaminationEventArgs.#ctor(System.Int32,System.Boolean)">
@@ -390,7 +373,7 @@
         </member>
         <member name="T:Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs">
             <summary>
-            Contains all informations before announcing the ntf entrance.
+            Contains all informations before C.A.S.S.I.E announces the NTF entrance.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs.#ctor(System.Int32,System.String,System.Int32,System.Boolean)">
@@ -404,27 +387,27 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs.ScpsLeft">
             <summary>
-            Gets the number of scps left.
+            Gets the number of SCPs left.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs.UnitName">
             <summary>
-            Gets or sets the unit name.
+            Gets or sets the NTF unit name.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs.UnitNumber">
             <summary>
-            Gets or sets the unit number.
+            Gets or sets the NTF unit number.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the NTF spawn will be announced by C.A.S.S.I.E.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs">
             <summary>
-            Contains all informations before announcing an SCP termination.
+            Contains all informations before C.A.S.S.I.E announces an SCP termination.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.#ctor(Exiled.API.Features.Player,Role,PlayerStats.HitInfo,System.String,System.Boolean)">
@@ -444,7 +427,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Role">
             <summary>
-            Gets the killed <see cref="P:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Role"/>.
+            Gets the killed <see cref="T:Exiled.API.Extensions.Role"/>.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.HitInfo">
@@ -459,7 +442,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the SCP termination will be announced by C.A.S.S.I.E.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.BannedEventArgs">
@@ -467,17 +450,28 @@
             Contains all informations after banning a player from the server.
             </summary>
         </member>
-        <member name="M:Exiled.Events.EventArgs.BannedEventArgs.#ctor(Exiled.API.Features.Player,BanDetails,BanHandler.BanType)">
+        <member name="M:Exiled.Events.EventArgs.BannedEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,BanDetails,BanHandler.BanType)">
             <summary>
             Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.BannedEventArgs"/> class.
             </summary>
-            <param name="player">The banned player.</param>
+            <param name="target">The banned player.</param>
+            <param name="issuer">The issuer player.</param>
             <param name="details">The ban details.</param>
             <param name="type"><inheritdoc cref="P:Exiled.Events.EventArgs.BannedEventArgs.Type"/></param>
         </member>
         <member name="P:Exiled.Events.EventArgs.BannedEventArgs.Player">
             <summary>
             Gets the banned player.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.BannedEventArgs.Target">
+            <summary>
+            Gets the banned player.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.BannedEventArgs.Issuer">
+            <summary>
+            Gets the issuer player.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.BannedEventArgs.Details">
@@ -492,7 +486,7 @@
         </member>
         <member name="T:Exiled.Events.EventArgs.BanningEventArgs">
             <summary>
-            Contains all informations before banning a player.
+            Contains all informations before banning a player from the server.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.BanningEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,System.Int32,System.String,System.String,System.Boolean)">
@@ -511,6 +505,28 @@
             Gets or sets the ban duration.
             </summary>
         </member>
+        <member name="T:Exiled.Events.EventArgs.BlinkingEventArgs">
+            <summary>
+            Contains all informations before a players blink near SCP-173.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.BlinkingEventArgs.#ctor(Exiled.API.Features.Player,System.Collections.Generic.List{Exiled.API.Features.Player})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.BlinkingEventArgs"/> class.
+            </summary>
+            <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.BlinkingEventArgs.Player"/></param>
+            <param name="targets"><inheritdoc cref="P:Exiled.Events.EventArgs.BlinkingEventArgs.Targets"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.BlinkingEventArgs.Player">
+            <summary>
+            Gets the player who controlling SCP-173.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.BlinkingEventArgs.Targets">
+            <summary>
+            Gets a list of players who have triggered SCP-173.
+            </summary>
+        </member>
         <member name="T:Exiled.Events.EventArgs.CalmingDownEventArgs">
             <summary>
             Contains all informations before SCP-096 calms down.
@@ -522,7 +538,129 @@
             </summary>
             <param name="scp096">The <see cref="T:PlayableScps.Scp096"/> instance.</param>
             <param name="player">The player who's controlling SCP-096.</param>
-            <param name="isAllowed">Indicates whether the event can be executed or not.</param>
+            <param name="isAllowed">Indicates whether or not SCP-096 can calm down.</param>
+        </member>
+        <member name="T:Exiled.Events.EventArgs.ChangingAttachmentsEventArgs">
+            <summary>
+            Contains all informations before changing item attachments.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.ChangingAttachmentsEventArgs.#ctor(Inventory.SyncItemInfo,Exiled.API.Enums.SightType,Exiled.API.Enums.BarrelType,Exiled.API.Enums.OtherType,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.ChangingAttachmentsEventArgs"/> class.
+            </summary>
+            <param name="item"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.OldItem"/></param>
+            <param name="newSight"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewSight"/></param>
+            <param name="newBarrel"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewBarrel"/></param>
+            <param name="newOther"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewOther"/></param>
+            <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.IsAllowed"/></param>
+        </member>
+        <member name="T:Exiled.Events.EventArgs.ChangingAttributesEventArgs">
+            <summary>
+            Contains all informations before changing item attributes.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.ChangingAttributesEventArgs.#ctor(Inventory.SyncItemInfo,Inventory.SyncItemInfo,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.ChangingAttributesEventArgs"/> class.
+            </summary>
+            <param name="oldItem"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.OldItem"/></param>
+            <param name="newItem"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewItem"/></param>
+            <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.IsAllowed"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.OldItem">
+            <summary>
+            Gets the old item.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewItem">
+            <summary>
+            Gets or sets the item.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewId">
+            <summary>
+            Gets or sets the item type.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewDurability">
+            <summary>
+            Gets or sets the new item durability.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewUniqueId">
+            <summary>
+            Gets or sets the new item unique id.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewSight">
+            <summary>
+            Gets or sets the new item sight attachment.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewBarrel">
+            <summary>
+            Gets or sets the new item barrel attachment.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewOther">
+            <summary>
+            Gets or sets the new item other attachment.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.IsAllowed">
+            <summary>
+            Gets or sets a value indicating whether the event can be executed or not.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.EventArgs.ChangingCameraEventArgs">
+            <summary>
+            Contains all informations before a SCP-079 changes the current camera.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.ChangingCameraEventArgs.#ctor(Exiled.API.Features.Player,Camera079,System.Single,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.ChangingCameraEventArgs"/> class.
+            </summary>
+            <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingCameraEventArgs.Player"/></param>
+            <param name="newCamera"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingCameraEventArgs.Camera"/></param>
+            <param name="manaCost"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingCameraEventArgs.APCost"/></param>
+            <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingCameraEventArgs.IsAllowed"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingCameraEventArgs.Player">
+            <summary>
+            Gets the player who is SCP-079.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingCameraEventArgs.Camera">
+            <summary>
+            Gets or sets the camera SCP-079 will be moved to.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingCameraEventArgs.APCost">
+            <summary>
+            Gets or sets the amount of AP that will be required to switch cameras.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ChangingCameraEventArgs.IsAllowed">
+            <summary>
+            Gets or sets a value indicating whether or not SCP-079 can switch cameras.
+            Defaults to a value describing whether or not SCP-079 has enough AP to switch.
+            Can be set to true to allow a switch regardless of SCP-079's AP amount.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.EventArgs.ChangingDurabilityEventArgs">
+            <summary>
+            Contains all informations before changing item durability.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.ChangingDurabilityEventArgs.#ctor(Inventory.SyncItemInfo,System.Single,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.ChangingDurabilityEventArgs"/> class.
+            </summary>
+            <param name="item"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.OldItem"/></param>
+            <param name="newDurability"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.NewDurability"/></param>
+            <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingAttributesEventArgs.IsAllowed"/></param>
         </member>
         <member name="T:Exiled.Events.EventArgs.ChangingGroupEventArgs">
             <summary>
@@ -549,7 +687,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ChangingGroupEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can change groups.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs">
@@ -572,7 +710,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can be intercom muted/unmuted.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.IsMuted">
@@ -582,7 +720,7 @@
         </member>
         <member name="T:Exiled.Events.EventArgs.ChangingItemEventArgs">
             <summary>
-            Contains all informations before a player changes the item in his hand.
+            Contains all informations before a player's held item changes.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.ChangingItemEventArgs.#ctor(Exiled.API.Features.Player,Inventory.SyncItemInfo,Inventory.SyncItemInfo)">
@@ -610,7 +748,7 @@
         </member>
         <member name="T:Exiled.Events.EventArgs.ChangingKnobSettingEventArgs">
             <summary>
-            Contains all informations before changing the SCP-914 knob setting.
+            Contains all informations before a player changes the SCP-914 knob setting.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.#ctor(Exiled.API.Features.Player,Scp914.Scp914Knob,System.Boolean)">
@@ -633,7 +771,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not SCP-914's knob setting can be changed.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ChangingLeverStatusEventArgs">
@@ -655,7 +793,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ChangingLeverStatusEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the lever status will change.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs">
@@ -678,7 +816,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can be muted/unmuted.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.IsMuted">
@@ -688,7 +826,7 @@
         </member>
         <member name="T:Exiled.Events.EventArgs.ChangingRoleEventArgs">
             <summary>
-            Contains all informations before a player changes his role.
+            Contains all informations before a player's <see cref="T:RoleType"/> changes.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.ChangingRoleEventArgs.#ctor(Exiled.API.Features.Player,RoleType,System.Collections.Generic.List{ItemType},System.Boolean,System.Boolean)">
@@ -703,7 +841,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.Player">
             <summary>
-            Gets the player who'll change his role.
+            Gets the player whose <see cref="T:RoleType"/> is changing.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.NewRole">
@@ -718,7 +856,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.IsEscaped">
             <summary>
-            Gets or sets a value indicating whether the player is escaped or not.
+            Gets or sets a value indicating whether the player escaped or not.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.ShouldPreservePosition">
@@ -737,7 +875,7 @@
             </summary>
             <param name="player">The player who's closing the generator.</param>
             <param name="generator">The <see cref="T:Generator079"/> instance.</param>
-            <param name="isAllowed">Indicates whether the event can be executed or not.</param>
+            <param name="isAllowed">Indicates whether or not the generator can be closed.</param>
         </member>
         <member name="T:Exiled.Events.EventArgs.ContainingEventArgs">
             <summary>
@@ -764,12 +902,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ContainingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not SCP-106 can be recontained.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.CreatingPortalEventArgs">
             <summary>
-            Contains all informations before creating a portal with SCP-096.
+            Contains all informations before SCP-106 creates a portal.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.CreatingPortalEventArgs.#ctor(Exiled.API.Features.Player,UnityEngine.Vector3,System.Boolean)">
@@ -792,12 +930,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.CreatingPortalEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not SCP-106 can create a portal.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.DamagingWindowEventArgs">
             <summary>
-            Contains the damage done to the window.
+            Contains all informations before damage is dealt to a <see cref="T:BreakableWindow"/>.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.DamagingWindowEventArgs.#ctor(BreakableWindow,System.Single)">
@@ -809,7 +947,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.DamagingWindowEventArgs.Window">
             <summary>
-            Gets the <see cref="T:BreakableWindow"/> object.
+            Gets the <see cref="T:BreakableWindow"/> object that is damaged.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.DamagingWindowEventArgs.Damage">
@@ -819,7 +957,7 @@
         </member>
         <member name="T:Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs">
             <summary>
-            Contains all informations before a player activates the workstation.
+            Contains all informations before a player deactivates a workstation.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.#ctor(Exiled.API.Features.Player,WorkStation,System.Boolean)">
@@ -828,7 +966,7 @@
             </summary>
             <param name="player"><inheritdoc cref="T:Exiled.API.Features.Player"/></param>
             <param name="station"><inheritdoc cref="N:Exiled.Permissions"/></param>
-            <param name="isAllowed">Indicates whether the event can be executed or not.</param>
+            <param name="isAllowed">Gets or sets a value indicating whether or not the workstation can be deactivated.</param>
         </member>
         <member name="T:Exiled.Events.EventArgs.DecontaminatingEventArgs">
             <summary>
@@ -843,7 +981,23 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.DecontaminatingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not light containment zone decontamination can begin.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.EventArgs.DestroyingEventArgs">
+            <summary>
+            Contains all informations before a player's object is destroyed.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.DestroyingEventArgs.#ctor(Exiled.API.Features.Player)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.DestroyingEventArgs"/> class.
+            </summary>
+            <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.DestroyingEventArgs.Player"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.DestroyingEventArgs.Player">
+            <summary>
+            Gets the destoying player.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.DiedEventArgs">
@@ -899,7 +1053,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.DroppingItemEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the item can be dropped.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.DyingEventArgs">
@@ -933,12 +1087,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.DyingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether gets or sets if the player should be killed or not.
+            Gets or sets a value indicating whether or not the player can be killed.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.EjectingGeneratorTabletEventArgs">
             <summary>
-            Contains all informations before a player ejects a tablet.
+            Contains all informations before a player ejects a tablet from a generator.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.EjectingGeneratorTabletEventArgs.#ctor(Exiled.API.Features.Player,Generator079,System.Boolean)">
@@ -947,7 +1101,42 @@
             </summary>
             <param name="player">The player who's ejecting the tablet.</param>
             <param name="generator">The <see cref="T:Generator079"/> instance.</param>
-            <param name="isAllowed">Indicates whether the event can be executed or not.</param>
+            <param name="isAllowed">Indicates whether or not the tablet can be ejected.</param>
+        </member>
+        <member name="T:Exiled.Events.EventArgs.ElevatorTeleportEventArgs">
+            <summary>
+            Contains all informations before SCP-079 changes rooms via elevator.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.ElevatorTeleportEventArgs.#ctor(Exiled.API.Features.Player,Camera079,System.Single,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.ElevatorTeleportEventArgs"/> class.
+            </summary>
+            <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.ElevatorTeleportEventArgs.Player"/></param>
+            <param name="camera"><inheritdoc cref="P:Exiled.Events.EventArgs.ElevatorTeleportEventArgs.Camera"/></param>
+            <param name="apCost"><inheritdoc cref="P:Exiled.Events.EventArgs.ElevatorTeleportEventArgs.APCost"/></param>
+            <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.ElevatorTeleportEventArgs.IsAllowed"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ElevatorTeleportEventArgs.Player">
+            <summary>
+            Gets the player who is controlling SCP-079.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ElevatorTeleportEventArgs.Camera">
+            <summary>
+            Gets or sets the <see cref="T:Camera079"/> that SCP-079 will be moved to.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ElevatorTeleportEventArgs.APCost">
+            <summary>
+            Gets or sets the amount of AP will be consumed during the level change.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.ElevatorTeleportEventArgs.IsAllowed">
+            <summary>
+            Gets or sets a value indicating whether or not SCP-079 can teleport.
+            Defaults to a <see cref="T:System.Boolean"/> describing whether or not SCP-079 has enough AP to teleport.
+            </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.EndingRoundEventArgs">
             <summary>
@@ -1008,7 +1197,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.EnragingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not SCP-096 can be enraged.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs">
@@ -1030,7 +1219,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can activate the femur breaker.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs">
@@ -1038,17 +1227,23 @@
             Contains all informations before a player enters the pocket dimension.
             </summary>
         </member>
-        <member name="M:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.#ctor(Exiled.API.Features.Player,UnityEngine.Vector3,System.Boolean)">
+        <member name="M:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.#ctor(Exiled.API.Features.Player,UnityEngine.Vector3,Exiled.API.Features.Player,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs"/> class.
             </summary>
             <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.Player"/></param>
             <param name="position"><inheritdoc cref="P:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.Position"/></param>
+            <param name="scp106"><inheritdoc cref="P:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.Scp106"/></param>
             <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.IsAllowed"/></param>
         </member>
         <member name="P:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.Player">
             <summary>
             Gets the player who's entering the pocket dimension.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.Scp106">
+            <summary>
+            Gets the SCP-106 who sent the player to the pocket dimension.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.Position">
@@ -1058,7 +1253,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can enter the pocket dimension.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.EscapingEventArgs">
@@ -1081,12 +1276,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.EscapingEventArgs.NewRole">
             <summary>
-            Gets or sets the new player's role, assigned after escaping.
+            Gets or sets the role that will be assigned when the player escapes.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.EscapingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can escape.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs">
@@ -1109,12 +1304,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs.TeleportPosition">
             <summary>
-            Gets or sets the position in which the player is going to be teleported.
+            Gets or sets the position in which the player is going to be teleported to.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can successfully escape the pocket dimension.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs">
@@ -1131,6 +1326,11 @@
             <param name="isFrag"><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.IsFrag"/></param>
             <param name="grenade"><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Grenade"/></param>
             <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.IsAllowed"/></param>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Finalize">
+            <summary>
+            Finalizes an instance of the <see cref="T:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs"/> class.
+            </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Thrower">
             <summary>
@@ -1159,12 +1359,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the grenade can be thrown.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs">
             <summary>
-            Contains all informations before a player dies from walking through the incorrect exit in the pocket dimension.
+            Contains all informations before a player dies from walking through an incorrect exit in the pocket dimension.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs.#ctor(Exiled.API.Features.Player,PocketDimensionTeleport,System.Boolean)">
@@ -1187,12 +1387,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player dies by failing the pocket dimension escape.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.FinishingRecallEventArgs">
             <summary>
-            Contains all informations before a player is infected.
+            Contains all informations before SCP-049 finishes recalling a player.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.FinishingRecallEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,System.Boolean)">
@@ -1205,17 +1405,17 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.FinishingRecallEventArgs.Target">
             <summary>
-            Gets the player who's getting infected.
+            Gets the player who's getting recalled.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.FinishingRecallEventArgs.Scp049">
             <summary>
-            Gets the player who is SCP049.
+            Gets the player who is controlling SCP-049.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.FinishingRecallEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can be recalled.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.GainingExperienceEventArgs">
@@ -1249,7 +1449,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.GainingExperienceEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the experience is successfully granted.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.GainingLevelEventArgs">
@@ -1283,7 +1483,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.GainingLevelEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the level is successfully granted.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.GeneratorActivatedEventArgs">
@@ -1327,12 +1527,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.HandcuffingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can be handcuffed.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.HurtingEventArgs">
             <summary>
-            Contains all informations before a player gets hurt.
+            Contains all informations before a player gets damaged.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.HurtingEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,PlayerStats.HitInfo,System.Boolean)">
@@ -1381,7 +1581,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.HurtingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player will be dealt damage.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs">
@@ -1409,12 +1609,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the tablet can be inserted.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.InteractedEventArgs">
             <summary>
-            Contains all player's informations after he has interacted with something.
+            Contains all informations after a player has interacted with an interactable.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.InteractedEventArgs.#ctor(Exiled.API.Features.Player)">
@@ -1433,7 +1633,7 @@
             Contains all informations before a player interacts with a door.
             </summary>
         </member>
-        <member name="M:Exiled.Events.EventArgs.InteractingDoorEventArgs.#ctor(Exiled.API.Features.Player,Door,System.Boolean)">
+        <member name="M:Exiled.Events.EventArgs.InteractingDoorEventArgs.#ctor(Exiled.API.Features.Player,Interactables.Interobjects.DoorUtils.DoorVariant,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.InteractingDoorEventArgs"/> class.
             </summary>
@@ -1453,7 +1653,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.InteractingDoorEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can interact with the door.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.InteractingElevatorEventArgs">
@@ -1480,9 +1680,14 @@
             Gets the <see cref="T:Lift.Elevator"/> instance.
             </summary>
         </member>
+        <member name="P:Exiled.Events.EventArgs.InteractingElevatorEventArgs.Lift">
+            <summary>
+            Gets the <see cref="T:Lift"/> instance.
+            </summary>
+        </member>
         <member name="P:Exiled.Events.EventArgs.InteractingElevatorEventArgs.Status">
             <summary>
-            Gets the <see cref="T:Lift"/> current <see cref="T:Lift.Status"/>.
+            Gets the <see cref="P:Exiled.Events.EventArgs.InteractingElevatorEventArgs.Lift"/> current <see cref="T:Lift.Status"/>.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.InteractingElevatorEventArgs.Type">
@@ -1492,7 +1697,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.InteractingElevatorEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can interact with the elevator.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.InteractingLockerEventArgs">
@@ -1541,12 +1746,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.InteractingLockerEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can interact with the locker.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.InteractingTeslaEventArgs">
             <summary>
-            Contains all informations before a player triggers a tesla through SCP-079.
+            Contains all informations before SCP-079 triggers a tesla gate.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.InteractingTeslaEventArgs.#ctor(Exiled.API.Features.Player,TeslaGate,System.Boolean)">
@@ -1559,22 +1764,22 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.InteractingTeslaEventArgs.Player">
             <summary>
-            Gets the player who's triggering the tesla through SCP-079.
+            Gets the player who's controlling SCP-079.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.InteractingTeslaEventArgs.Tesla">
             <summary>
-            Gets the tesla game object, that SCP-079 is triggering.
+            Gets the <see cref="T:TeslaGate"/> that SCP-079 is triggering.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.InteractingTeslaEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not SCP-079 can interact with the tesla gate.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.IntercomSpeakingEventArgs">
             <summary>
-            Contains all informations before a player speaks to the itercom.
+            Contains all informations before a player speaks to the intercom.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.IntercomSpeakingEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean)">
@@ -1591,7 +1796,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.IntercomSpeakingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can speak to the intercom.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ItemDroppedEventArgs">
@@ -1618,14 +1823,14 @@
         </member>
         <member name="T:Exiled.Events.EventArgs.JoinedEventArgs">
             <summary>
-            Contains all player's informations, after he joins the server.
+            Contains all informations after a player joins the server.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.JoinedEventArgs.#ctor(Exiled.API.Features.Player)">
             <summary>
             Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.JoinedEventArgs"/> class.
             </summary>
-            <param name="player">The joined player.</param>
+            <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.JoinedEventArgs.Player"/></param>
         </member>
         <member name="P:Exiled.Events.EventArgs.JoinedEventArgs.Player">
             <summary>
@@ -1634,18 +1839,23 @@
         </member>
         <member name="T:Exiled.Events.EventArgs.KickedEventArgs">
             <summary>
-            Contains all iformations after banning a player from the server.
+            Contains all informations after kicking a player from the server.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.KickedEventArgs.#ctor(Exiled.API.Features.Player,System.String,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.KickedEventArgs"/> class.
             </summary>
-            <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.KickedEventArgs.Player"/></param>
+            <param name="target"><inheritdoc cref="P:Exiled.Events.EventArgs.KickedEventArgs.Player"/></param>
             <param name="reason"><inheritdoc cref="P:Exiled.Events.EventArgs.KickedEventArgs.Reason"/></param>
             <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.KickedEventArgs.IsAllowed"/></param>
         </member>
         <member name="P:Exiled.Events.EventArgs.KickedEventArgs.Player">
+            <summary>
+            Gets the kicked player.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.KickedEventArgs.Target">
             <summary>
             Gets the kicked player.
             </summary>
@@ -1662,7 +1872,7 @@
         </member>
         <member name="T:Exiled.Events.EventArgs.KickingEventArgs">
             <summary>
-            Contains all informations before kicking a player.
+            Contains all informations before kicking a player from the server.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.KickingEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,System.String,System.String,System.Boolean)">
@@ -1697,7 +1907,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.KickingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not action is taken against the target.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.KickingEventArgs.LogBanChange(System.String)">
@@ -1719,7 +1929,7 @@
         </member>
         <member name="T:Exiled.Events.EventArgs.LocalReportingEventArgs">
             <summary>
-            Contains information about the report to local administrators.
+            Contains informations before a report is sent to local administrators.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.LocalReportingEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,System.String,System.Boolean)">
@@ -1748,7 +1958,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.LocalReportingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the process can be processed or not.
+            Gets or sets a value indicating whether the report can be processed or not.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.OpeningGeneratorEventArgs">
@@ -1776,7 +1986,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.OpeningGeneratorEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the generator can be opened.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.PickingUpItemEventArgs">
@@ -1794,12 +2004,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.PickingUpItemEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the item can be picked up.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.PickingUpScp330EventArgs">
             <summary>
-            Contains all informations before a player picks up an item.
+            Contains all informations before a player interacts with SCP-330.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.PickingUpScp330EventArgs.#ctor(Exiled.API.Features.Player,System.Int32,ItemType,System.Boolean)">
@@ -1813,12 +2023,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.Player">
             <summary>
-            Gets the player who picking up the scp330.
+            Gets the player who's interacting with SCP-330.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can interact with SCP-330.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.Usage">
@@ -1828,7 +2038,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.IsSevere">
             <summary>
-            Gets or sets a value indicating whether pickup should be severe.
+            Gets or sets a value indicating whether or not the interaction should be severe.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.PickingUpScp330EventArgs.ItemId">
@@ -1873,7 +2083,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.PlacingBloodEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the blood can be placed.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.PlacingDecalEventArgs">
@@ -1913,7 +2123,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.PlacingDecalEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the decal can be placed.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.PreAuthenticatingEventArgs">
@@ -2048,7 +2258,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ReceivingEffectEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether or not the effect will be allowed to be applied.
+            Gets or sets a value indicating whether or not the effect will be applied.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.ReceivingEffectEventArgs.Duration">
@@ -2079,12 +2289,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.RecontainedEventArgs.Target">
             <summary>
-            Gets the player that was SCP-079.
+            Gets the player that previously controlled SCP-079.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ReloadingWeaponEventArgs">
             <summary>
-            Contains all informations before a player reloads his weapon.
+            Contains all informations before a player's weapon is reloaded.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.ReloadingWeaponEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean,System.Boolean)">
@@ -2107,12 +2317,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ReloadingWeaponEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the weapon can be reloaded.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.RemovingHandcuffsEventArgs">
             <summary>
-            Contains all informations freeing a handcuffed player.
+            Contains all informations before freeing a handcuffed player.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.RemovingHandcuffsEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,System.Boolean)">
@@ -2160,12 +2370,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ReportingCheaterEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the report will be sent.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.RespawningTeamEventArgs">
             <summary>
-            Contains all informations before spawning a wave of <see cref="F:Team.CHI"/> or <see cref="F:Team.MTF"/>..
+            Contains all informations before spawning a wave of <see cref="F:Respawning.SpawnableTeamType.NineTailedFox"/> or <see cref="F:Respawning.SpawnableTeamType.ChaosInsurgency"/>.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.RespawningTeamEventArgs.#ctor(System.Collections.Generic.List{Exiled.API.Features.Player},Respawning.SpawnableTeamType,System.Boolean)">
@@ -2188,12 +2398,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.RespawningTeamEventArgs.NextKnownTeam">
             <summary>
-            Gets or sets a value indicating what the next respawnable team is..
+            Gets or sets a value indicating what the next respawnable team is.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.RespawningTeamEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the spawn can occur.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.RespawningTeamEventArgs.SpawnableTeam">
@@ -2283,12 +2493,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.SendingConsoleCommandEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the console command can be sent.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs">
             <summary>
-            Contains all informations before the SCP-914 machine upgrades items inside it.
+            Contains all informations before sending a remote admin message.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs.#ctor(CommandSender,Exiled.API.Features.Player,System.String,System.Collections.Generic.List{System.String},System.Boolean)">
@@ -2333,12 +2543,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the RemoteAdmin command can be sent.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ShootingEventArgs">
             <summary>
-            Contains all informations before shooting with a weapon.
+            Contains all informations before a player fires a weapon.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.ShootingEventArgs.#ctor(Exiled.API.Features.Player,UnityEngine.GameObject,UnityEngine.Vector3,System.Boolean)">
@@ -2362,17 +2572,17 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ShootingEventArgs.Position">
             <summary>
-            Gets or sets the position of the shoot.
+            Gets or sets the position of the shot.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.ShootingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the shot can be fired.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ShotEventArgs">
             <summary>
-            Contains all informations after a player has shot.
+            Contains all informations after a player has fired a weapon.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.ShotEventArgs.#ctor(Exiled.API.Features.Player,UnityEngine.GameObject,HitBoxType,System.Single,System.Single,System.Boolean)">
@@ -2418,7 +2628,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ShotEventArgs.CanHurt">
             <summary>
-            Gets or sets a value indicating whether the shot can hurt the target or notc.
+            Gets or sets a value indicating whether or not the shot can hurt the target.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.SpawnedItemEventArgs">
@@ -2503,12 +2713,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Locked">
             <summary>
-            Gets or sets a value indicating whether or not the Pickup will be locked.
+            Gets or sets a value indicating whether or not the pickup will be locked.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.SpawningItemEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the item can be spawned.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.SpawningRagdollEventArgs">
@@ -2516,7 +2726,7 @@
             Contains all informations before spawning a player ragdoll.
             </summary>
         </member>
-        <member name="M:Exiled.Events.EventArgs.SpawningRagdollEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,UnityEngine.Vector3,UnityEngine.Quaternion,RoleType,PlayerStats.HitInfo,System.Boolean,System.String,System.String,System.Int32,System.Boolean)">
+        <member name="M:Exiled.Events.EventArgs.SpawningRagdollEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,RoleType,PlayerStats.HitInfo,System.Boolean,System.String,System.String,System.Int32,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.SpawningRagdollEventArgs"/> class.
             </summary>
@@ -2524,6 +2734,7 @@
             <param name="owner"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Owner"/></param>
             <param name="position"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Position"/></param>
             <param name="rotation"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Rotation"/></param>
+            <param name="velocity"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity"/></param>
             <param name="roleType"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType"/></param>
             <param name="hinInformations"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations"/></param>
             <param name="isRecallAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed"/></param>
@@ -2539,7 +2750,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Owner">
             <summary>
-            Gets the player, owner of the ragdoll.
+            Gets the owner of the ragdoll (typically the player who died).
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Position">
@@ -2552,9 +2763,14 @@
             Gets or sets the ragdoll rotation.
             </summary>
         </member>
+        <member name="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity">
+            <summary>
+            Gets or sets the adapted ragdoll velocity.
+            </summary>
+        </member>
         <member name="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType">
             <summary>
-            Gets or sets the role type of the ragdoll owner.
+            Gets or sets the RoleType of the ragdoll owner.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations">
@@ -2564,7 +2780,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed">
             <summary>
-            Gets or sets a value indicating whether the player can be revived by SCP-049 or not.
+            Gets or sets a value indicating whether or not the player can be revived by SCP-049.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.DissonanceId">
@@ -2579,12 +2795,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerId">
             <summary>
-            Gets or sets the ragdoll playr id.
+            Gets or sets the ragdoll player id.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the ragdoll will be spawned.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.StartingEventArgs">
@@ -2599,9 +2815,14 @@
             <param name="player">The player who's going to start the warhead.</param>
             <param name="isAllowed">Indicating whether the event can be executed or not.</param>
         </member>
+        <member name="P:Exiled.Events.EventArgs.StartingEventArgs.IsAuto">
+            <summary>
+            Gets a value indicating whether or not the nuke was set off automatically.
+            </summary>
+        </member>
         <member name="T:Exiled.Events.EventArgs.StartingRecallEventArgs">
             <summary>
-            Contains all informations before a player is infected.
+            Contains all informations before SCP-049 begins recalling a player.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.StartingRecallEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,System.Boolean)">
@@ -2614,22 +2835,22 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.StartingRecallEventArgs.Target">
             <summary>
-            Gets the player who's getting infected.
+            Gets the player who's getting recalled.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.StartingRecallEventArgs.Scp049">
             <summary>
-            Gets the player who is SCP049.
+            Gets the player who is controlling SCP-049.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.StartingRecallEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether the recall can begin.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.StartingSpeakerEventArgs">
             <summary>
-            Contains all informations before a player triggers a speaker through SCP-079.
+            Contains all informations before SCP-079 uses a speaker.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.StartingSpeakerEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Room,System.Single,System.Boolean)">
@@ -2643,12 +2864,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.StartingSpeakerEventArgs.Player">
             <summary>
-            Gets the player who's triggering the speaker through SCP-079.
+            Gets the player who's controlling SCP-079.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.StartingSpeakerEventArgs.Room">
             <summary>
-            Gets the room where the camera is located, that SCP-079 is triggering.
+            Gets the room that the speaker is located in.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.StartingSpeakerEventArgs.APDrain">
@@ -2658,15 +2879,15 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.StartingSpeakerEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not SCP-079 can use the speaker.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.StartPryingGateEventArgs">
             <summary>
-            Contains all information before SCP-096 starts prying a gate open.
+            Contains all information before SCP-096 begins prying a gate open.
             </summary>
         </member>
-        <member name="M:Exiled.Events.EventArgs.StartPryingGateEventArgs.#ctor(Exiled.API.Features.Player,Door)">
+        <member name="M:Exiled.Events.EventArgs.StartPryingGateEventArgs.#ctor(Exiled.API.Features.Player,Interactables.Interobjects.PryableDoor)">
             <summary>
             Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.StartPryingGateEventArgs"/> class.
             </summary>
@@ -2675,7 +2896,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.StartPryingGateEventArgs.Player">
             <summary>
-            Gets the <see cref="P:Exiled.Events.EventArgs.StartPryingGateEventArgs.Player"/> object of the SCP-096.
+            Gets the player that is controlling SCP-096.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.StartPryingGateEventArgs.Gate">
@@ -2685,7 +2906,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.StartPryingGateEventArgs.IsAllowed">
             <summary>
-            Gets or Sets a value indicating whether or not they should be allowed to pry the gate open.
+            Gets or Sets a value indicating whether or not the gate can be pried open by SCP-096.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.StoppingEventArgs">
@@ -2707,12 +2928,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.StoppingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the warhead can be stopped.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.StoppingMedicalItemEventArgs">
             <summary>
-            Contains all informations before the SCP-914 machine upgrades items inside it.
+            Contains all informations before a player cancels usage of a medical item.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.StoppingMedicalItemEventArgs.#ctor(Exiled.API.Features.Player,ItemType,System.Single,System.Boolean)">
@@ -2722,7 +2943,7 @@
             <param name="player">The player who's stopping the use of the medical item.</param>
             <param name="item">The medical item that won't be consumed.</param>
             <param name="cooldown">The cooldown left for completing the use of the medical item.</param>
-            <param name="isAllowed"><inheritdoc cref="P:Exiled.Events.EventArgs.UsingMedicalItemEventArgs.IsAllowed"/></param>
+            <param name="isAllowed">Whether or not the player can cancel usage of the medical item.</param>
         </member>
         <member name="P:Exiled.Events.EventArgs.StoppingMedicalItemEventArgs.Cooldown">
             <summary>
@@ -2731,7 +2952,7 @@
         </member>
         <member name="T:Exiled.Events.EventArgs.StoppingSpeakerEventArgs">
             <summary>
-            Contains all informations before a player stopping a speaker through SCP-079.
+            Contains all informations before SCP-079 finishes using a speaker.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.StoppingSpeakerEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Room,System.Boolean)">
@@ -2744,17 +2965,17 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.StoppingSpeakerEventArgs.Player">
             <summary>
-            Gets the player who's stopping the speaker through SCP-079.
+            Gets the player who's controlling SCP-079.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.StoppingSpeakerEventArgs.Room">
             <summary>
-            Gets the room where the camera is located, that SCP-079 is stopping.
+            Gets the room that the speaker is located in.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.StoppingSpeakerEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not SCP-079 can stop using the speaker.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.SyncingDataEventArgs">
@@ -2788,12 +3009,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.SyncingDataEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player's data can be synced with the server.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.TeleportingEventArgs">
             <summary>
-            Contains all informations before teleporting an SCP-106.
+            Contains all informations before SCP-106 teleports using a portal.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.TeleportingEventArgs.#ctor(Exiled.API.Features.Player,UnityEngine.Vector3,System.Boolean)">
@@ -2816,7 +3037,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.TeleportingEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not SCP-106 can teleport using a portal.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs">
@@ -2867,7 +3088,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the grenade can be thrown.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.TriggeringTeslaEventArgs">
@@ -2890,17 +3111,17 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsInHurtingRange">
             <summary>
-            Gets or sets a value indicating whether the player is in hurting range or not.
+            Gets or sets a value indicating whether or not the player is in hurting range.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsTriggerable">
             <summary>
-            Gets or sets a value indicating whether the tesla is going to be triggered or not.
+            Gets or sets a value indicating whether or not the tesla is going to be activated.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.UnlockingGeneratorEventArgs">
             <summary>
-            Contains all informations before the SCP-914 machine upgrades items inside it.
+            Contains all informations before a generator is unlocked.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.UnlockingGeneratorEventArgs.#ctor(Exiled.API.Features.Player,Generator079,System.Boolean)">
@@ -2923,12 +3144,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.UnlockingGeneratorEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the generator can be unlocked.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.UpgradingItemsEventArgs">
             <summary>
-            Contains all informations before the SCP-914 machine upgrades items inside it.
+            Contains all informations before SCP-914 upgrades players and items.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.UpgradingItemsEventArgs.#ctor(Scp914.Scp914Machine,System.Collections.Generic.List{Exiled.API.Features.Player},System.Collections.Generic.List{Pickup},Scp914.Scp914Knob,System.Boolean)">
@@ -2948,12 +3169,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.UpgradingItemsEventArgs.Players">
             <summary>
-            Gets all players inside SCP-914.
+            Gets a list of players inside SCP-914.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.UpgradingItemsEventArgs.Items">
             <summary>
-            Gets all items to be upgraded inside SCP-914.
+            Gets a list of items to be upgraded inside SCP-914.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.UpgradingItemsEventArgs.KnobSetting">
@@ -2963,12 +3184,12 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.UpgradingItemsEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the upgrade is successful.
             </summary>
         </member>
         <member name="T:Exiled.Events.EventArgs.UsedMedicalItemEventArgs">
             <summary>
-            Contains all informations after a player uses a medical item on himself.
+            Contains all informations after a player uses a medical item.
             </summary>
         </member>
         <member name="M:Exiled.Events.EventArgs.UsedMedicalItemEventArgs.#ctor(Exiled.API.Features.Player,ItemType)">
@@ -3009,7 +3230,23 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.UsingMedicalItemEventArgs.IsAllowed">
             <summary>
-            Gets or sets a value indicating whether the event can be executed or not.
+            Gets or sets a value indicating whether or not the player can use the medical item.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.EventArgs.VerifiedEventArgs">
+            <summary>
+            Contains all informations after the server verifies a player.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.VerifiedEventArgs.#ctor(Exiled.API.Features.Player)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.VerifiedEventArgs"/> class.
+            </summary>
+            <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.VerifiedEventArgs.Player"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.VerifiedEventArgs.Player">
+            <summary>
+            Gets the verified player.
             </summary>
         </member>
         <member name="T:Exiled.Events.Events">
@@ -3099,6 +3336,33 @@
             <param name="ev">Source event.</param>
             <exception cref="T:System.ArgumentNullException">Event is null.</exception>
         </member>
+        <member name="T:Exiled.Events.Handlers.Item">
+            <summary>
+            Item related events.
+            </summary>
+        </member>
+        <member name="E:Exiled.Events.Handlers.Item.ChangingDurability">
+            <summary>
+            Invoked before the durability of an item is changed.
+            </summary>
+        </member>
+        <member name="E:Exiled.Events.Handlers.Item.ChangingAttachments">
+            <summary>
+            Invoked before item attachments are changed.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Item.OnChangingDurability(Exiled.Events.EventArgs.ChangingDurabilityEventArgs)">
+            <summary>
+            Called before the durability of an item is changed.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingDurabilityEventArgs"/> instance.</param>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Item.OnChangingAttachments(Exiled.Events.EventArgs.ChangingAttachmentsEventArgs)">
+            <summary>
+            Called before item attachments are changed.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingAttachmentsEventArgs"/> instance.</param>
+        </member>
         <member name="T:Exiled.Events.Handlers.Map">
             <summary>
             Map related events.
@@ -3131,7 +3395,7 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Map.GeneratorActivated">
             <summary>
-            Invoked after a generator has been activated.
+            Invoked after a <see cref="T:Generator079"/> has been activated.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Map.Decontaminating">
@@ -3157,6 +3421,11 @@
         <member name="E:Exiled.Events.Handlers.Map.SpawnedItem">
             <summary>
             Invoked after an item is spawned.
+            </summary>
+        </member>
+        <member name="E:Exiled.Events.Handlers.Map.Generated">
+            <summary>
+            Invoked after the map is generated.
             </summary>
         </member>
         <member name="M:Exiled.Events.Handlers.Map.OnPlacingDecal(Exiled.Events.EventArgs.PlacingDecalEventArgs)">
@@ -3191,7 +3460,7 @@
         </member>
         <member name="M:Exiled.Events.Handlers.Map.OnGeneratorActivated(Exiled.Events.EventArgs.GeneratorActivatedEventArgs)">
             <summary>
-            Called after a generator has been activated.
+            Called after a <see cref="T:Generator079"/> has been activated.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.GeneratorActivatedEventArgs"/> instance.</param>
         </member>
@@ -3225,6 +3494,11 @@
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.SpawnedItemEventArgs"/> instance.</param>
         </member>
+        <member name="M:Exiled.Events.Handlers.Map.OnGenerated">
+            <summary>
+            Called after the map is generated.
+            </summary>
+        </member>
         <member name="T:Exiled.Events.Handlers.Player">
             <summary>
             Player related events.
@@ -3237,27 +3511,27 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Kicking">
             <summary>
-            Invoked before kicking a player.
+            Invoked before kicking a player from the server.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Kicked">
             <summary>
-            Invoked after a player has been kicked.
+            Invoked after a player has been kicked from the server.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Banning">
             <summary>
-            Invoked before banning a player.
+            Invoked before banning a player from the server.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Banned">
             <summary>
-            Invoked after a player has been banned.
+            Invoked after a player has been banned from the server.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.MedicalItemUsed">
             <summary>
-            Invoked after a player used a medical item.
+            Invoked after a player uses a medical item.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.StoppingMedicalItem">
@@ -3290,9 +3564,19 @@
             Invoked after a player has joined the server.
             </summary>
         </member>
+        <member name="E:Exiled.Events.Handlers.Player.Verified">
+            <summary>
+            Ivoked after a player has been verified.
+            </summary>
+        </member>
         <member name="E:Exiled.Events.Handlers.Player.Left">
             <summary>
             Invoked after a player has left the server.
+            </summary>
+        </member>
+        <member name="E:Exiled.Events.Handlers.Player.Destroying">
+            <summary>
+            Invoked before destroying a player.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Hurting">
@@ -3332,12 +3616,12 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Player.PickingUpItem">
             <summary>
-            Invoked before picking up an item
+            Invoked before picking up an item.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.PickingUpScp330">
             <summary>
-            Invoked before picking up an scp330
+            Invoked before a player interacts with SCP-330.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Handcuffing">
@@ -3347,47 +3631,47 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Player.RemovingHandcuffs">
             <summary>
-            Invoked before removing handcuffs to a player.
+            Invoked before freeing a handcuffed player.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Escaping">
             <summary>
-            Invoked before escaping from the facility.
+            Invoked before a player escapes.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.IntercomSpeaking">
             <summary>
-            Invoked before speaking to the intercom.
+            Invoked before a player begins speaking to the intercom.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Shot">
             <summary>
-            Invoked after a player's shot.
+            Invoked after a player shoots a weapon.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Shooting">
             <summary>
-            Invoked before shooting.
+            Invoked before a player shoots a weapon.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.EnteringPocketDimension">
             <summary>
-            Invoked before entering the pocket dimension.
+            Invoked before a player enters the pocket dimension.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.EscapingPocketDimension">
             <summary>
-            Invoked before escaping the pocket dimension.
+            Invoked before a player escapes the pocket dimension.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.FailingEscapePocketDimension">
             <summary>
-            Invoked before escaping the pocket dimension.
+            Invoked before a player fails to escape the pocket dimension.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.ReloadingWeapon">
             <summary>
-            Invoked before reloading a weapon.
+            Invoked before a player reloads a weapon.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Spawning">
@@ -3397,7 +3681,7 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Player.EnteringFemurBreaker">
             <summary>
-            Invoked before entering the femur breaker
+            Invoked before a player enters the femur breaker.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.SyncingData">
@@ -3407,7 +3691,7 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Player.ChangingItem">
             <summary>
-            Invoked before changing a player changes the item in his hand.
+            Invoked before a player's held item changes.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.ChangingGroup">
@@ -3417,287 +3701,299 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Player.InteractingDoor">
             <summary>
-            Invoked before interacting with a door.
+            Invoked before a player interacts with a door.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.InteractingElevator">
             <summary>
-            Invoked before interacting with an elevator.
+            Invoked before a player interacts with an elevator.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.InteractingLocker">
             <summary>
-            Invoked before interacting with a locker.
+            Invoked before a player interacts with a locker.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.TriggeringTesla">
             <summary>
-            Invoked before triggering a tesla.
+            Invoked before a player triggers a tesla gate.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.UnlockingGenerator">
             <summary>
-            Invoked before unlocking a generator.
+            Invoked before a player unlocks a generator.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.OpeningGenerator">
             <summary>
-            Invoked before opening a generator.
+            Invoked before a player opens a generator.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.ClosingGenerator">
             <summary>
-            Invoked befroe closing a generator.
+            Invoked before a player closes a generator.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.InsertingGeneratorTablet">
             <summary>
-            Invoked before inserting a generator.
+            Invoked before a player inserts a workstation tablet into a generator.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.EjectingGeneratorTablet">
             <summary>
-            Invoked before ejecting a generator.
+            Invoked before a player ejects the workstation tablet out of a generator.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.ReceivingEffect">
             <summary>
-            Invoked before receiving an effect.
+            Invoked before a player receives a status effect.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.ActivatingWorkstation">
             <summary>
-            Invoked before activating workstation.
+            Invoked before a workstation is activated.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.DeactivatingWorkstation">
             <summary>
-            Invoked before deactivating workstation.
+            Invoked before a workstation is deactivated.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.ChangingMuteStatus">
             <summary>
-            Invoked before changing user mute status.
+            Invoked before an user's mute status is changed.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.ChangingIntercomMuteStatus">
             <summary>
-            Invoked before changing user intercom mute status.
+            Invoked before an user's intercom mute status is changed.
             </summary>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnPreAuthenticating(Exiled.Events.EventArgs.PreAuthenticatingEventArgs)">
             <summary>
-            Invoked before pre-authenticating a player.
+            Called before pre-authenticating a player.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.PreAuthenticatingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnKicking(Exiled.Events.EventArgs.KickingEventArgs)">
             <summary>
-            Invoked before kicking a player.
+            Called before kicking a player from the server.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.KickingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnKicked(Exiled.Events.EventArgs.KickedEventArgs)">
             <summary>
-            Invoked after a player has been kicked.
+            Called after a player has been kicked from the server.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.KickedEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnBanning(Exiled.Events.EventArgs.BanningEventArgs)">
             <summary>
-            Invoked before banning a player.
+            Called before banning a player from the server.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.BanningEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnBanned(Exiled.Events.EventArgs.BannedEventArgs)">
             <summary>
-            Invoked after a player has been banned.
+            Called after a player has been banned from the server.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.BannedEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnMedicalItemUsed(Exiled.Events.EventArgs.UsedMedicalItemEventArgs)">
             <summary>
-            Invoked after a player used a medical item.
+            Called after a player used a medical item.
             </summary>
             <param name="ev">The <see cref="E:Exiled.Events.Handlers.Player.MedicalItemUsed"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnStoppingMedicalItem(Exiled.Events.EventArgs.StoppingMedicalItemEventArgs)">
             <summary>
-            Invoked after a player has stopped the use of a medical item.
+            Called after a player has stopped the use of a medical item.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.StoppingMedicalItemEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnInteracted(Exiled.Events.EventArgs.InteractedEventArgs)">
             <summary>
-            Invoked after a player interacted with something.
+            Called after a player interacted with something.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.InteractedEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnSpawningRagdoll(Exiled.Events.EventArgs.SpawningRagdollEventArgs)">
             <summary>
-            Invoked before spawning a player's ragdoll.
+            Called before spawning a player's ragdoll.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.SpawningRagdollEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnActivatingWarheadPanel(Exiled.Events.EventArgs.ActivatingWarheadPanelEventArgs)">
             <summary>
-            Invoked before activating the warhead panel.
+            Called before activating the warhead panel.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ActivatingWarheadPanelEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnUsingMedicalItem(Exiled.Events.EventArgs.UsingMedicalItemEventArgs)">
             <summary>
-            Invoked before using a medical item.
+            Called before using a medical item.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.UsingMedicalItemEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnJoined(Exiled.Events.EventArgs.JoinedEventArgs)">
             <summary>
-            Invoked after a player has joined the server.
+            Called after a player has joined the server.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.JoinedEventArgs"/> instance.</param>
         </member>
+        <member name="M:Exiled.Events.Handlers.Player.OnVerified(Exiled.Events.EventArgs.VerifiedEventArgs)">
+            <summary>
+            Called after a player has been verified.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.VerifiedEventArgs"/> instance.</param>
+        </member>
         <member name="M:Exiled.Events.Handlers.Player.OnLeft(Exiled.Events.EventArgs.LeftEventArgs)">
             <summary>
-            Invoked after a player has left the server.
+            Called after a player has left the server.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.LeftEventArgs"/> instance.</param>
         </member>
+        <member name="M:Exiled.Events.Handlers.Player.OnDestroying(Exiled.Events.EventArgs.DestroyingEventArgs)">
+            <summary>
+            Called before destroying a player.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.DestroyingEventArgs"/> instance.</param>
+        </member>
         <member name="M:Exiled.Events.Handlers.Player.OnHurting(Exiled.Events.EventArgs.HurtingEventArgs)">
             <summary>
-            Invoked before hurting a player.
+            Called before hurting a player.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.HurtingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnDying(Exiled.Events.EventArgs.DyingEventArgs)">
             <summary>
-            Invoked before a player dies.
+            Called before a player dies.
             </summary>
             <param name="ev"><see cref="T:Exiled.Events.EventArgs.DyingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnDied(Exiled.Events.EventArgs.DiedEventArgs)">
             <summary>
-            Invoked after a player died.
+            Called after a player died.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.DiedEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs)">
             <summary>
-            Invoked before changing a player's role.
+            Called before changing a player's role.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingRoleEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnThrowingGrenade(Exiled.Events.EventArgs.ThrowingGrenadeEventArgs)">
             <summary>
-            Invoked before throwing a grenade.
+            Called before throwing a grenade.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnDroppingItem(Exiled.Events.EventArgs.DroppingItemEventArgs)">
             <summary>
-            Invoked before dropping an item.
+            Called before dropping an item.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.DroppingItemEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnItemDropped(Exiled.Events.EventArgs.ItemDroppedEventArgs)">
             <summary>
-            Invoked after an item has been dropped.
+            Called after a player drops an item.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ItemDroppedEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnPickingUpItem(Exiled.Events.EventArgs.PickingUpItemEventArgs)">
             <summary>
-            Invoked before picking up an item.
+            Called before a user picks up an item.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.PickingUpItemEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnPickingUpScp330(Exiled.Events.EventArgs.PickingUpScp330EventArgs)">
             <summary>
-            Invoked before picking up an item.
+            Called before a player picks up an item.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.PickingUpScp330EventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnHandcuffing(Exiled.Events.EventArgs.HandcuffingEventArgs)">
             <summary>
-            Invoked before handcuffing a player.
+            Called before handcuffing a player.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.HandcuffingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnRemovingHandcuffs(Exiled.Events.EventArgs.RemovingHandcuffsEventArgs)">
             <summary>
-            Invoked before removing handcuffs to a player.
+            Called before freeing a handcuffed player.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.RemovingHandcuffsEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnEscaping(Exiled.Events.EventArgs.EscapingEventArgs)">
             <summary>
-            Invoked before escaping from the facility.
+            Called before a player escapes.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.EscapingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnIntercomSpeaking(Exiled.Events.EventArgs.IntercomSpeakingEventArgs)">
             <summary>
-            Invoked before speaking to the intercom.
+            Called before a player begins speaking to the intercom.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.IntercomSpeakingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnShot(Exiled.Events.EventArgs.ShotEventArgs)">
             <summary>
-            Invoked after a player's shot.
+            Called after a player shoots a weapon.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ShotEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnShooting(Exiled.Events.EventArgs.ShootingEventArgs)">
             <summary>
-            Invoked before shooting.
+            Called before a player shoots a weapon.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ShootingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnEnteringPocketDimension(Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs)">
             <summary>
-            Invoked before entering the pocket dimension.
+            Called before a player enters the pocket dimension.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnEscapingPocketDimension(Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs)">
             <summary>
-            Invoked before escaping the pocket dimension.
+            Called before a player escapes the pocket dimension.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnFailingEscapePocketDimension(Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs)">
             <summary>
-            Invoked before choosing the incorrect pocket dimension exit.
+            Called before a player fails to escape the pocket dimension.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnReloadingWeapon(Exiled.Events.EventArgs.ReloadingWeaponEventArgs)">
             <summary>
-            Invoked before reloading a weapon.
+            Called before a player reloads a weapon.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ReloadingWeaponEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnSpawning(Exiled.Events.EventArgs.SpawningEventArgs)">
             <summary>
-            Invoked before spawning a player.
+            Called before spawning a player.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.SpawningEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnEnteringFemurBreaker(Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs)">
             <summary>
-            Invoked before entering the femur breaker.
+            Called before a player enters the femur breaker.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnSyncingData(Exiled.Events.EventArgs.SyncingDataEventArgs)">
             <summary>
-            Invoked before syncing player's data.
+            Called before syncing player's data.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.SyncingDataEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnChangingItem(Exiled.Events.EventArgs.ChangingItemEventArgs)">
             <summary>
-            Invoked before changing a player changes the item in his hand.
+            Called before a player's held item changes.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingItemEventArgs"/> instance.</param>
         </member>
@@ -3709,118 +4005,123 @@
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnInteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs)">
             <summary>
-            Called before interacting with a door.
+            Called before a player interacts with a door.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.PlacingDecalEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnInteractingElevator(Exiled.Events.EventArgs.InteractingElevatorEventArgs)">
             <summary>
-            Called before interacting with an elevator.
+            Called before a player interacts with an elevator.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.PlacingDecalEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnInteractingLocker(Exiled.Events.EventArgs.InteractingLockerEventArgs)">
             <summary>
-            Called before interacting with a locker.
+            Called before a player interacts with a locker.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.PlacingDecalEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnTriggeringTesla(Exiled.Events.EventArgs.TriggeringTeslaEventArgs)">
             <summary>
-            Called before triggering a tesla.
+            Called before a player triggers a tesla.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.TriggeringTeslaEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnUnlockingGenerator(Exiled.Events.EventArgs.UnlockingGeneratorEventArgs)">
             <summary>
-            Called before unlocking a generator.
+            Called before a player unlocks a generator.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.UnlockingGeneratorEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnOpeningGenerator(Exiled.Events.EventArgs.OpeningGeneratorEventArgs)">
             <summary>
-            Called before opening a generator.
+            Called before a player opens a generator.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.OpeningGeneratorEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnClosingGenerator(Exiled.Events.EventArgs.ClosingGeneratorEventArgs)">
             <summary>
-            Called before closing a generator.
+            Called before a player closes a generator.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ClosingGeneratorEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnInsertingGeneratorTablet(Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs)">
             <summary>
-            Called before inserting a generator.
+            Called before a player inserts a workstation tablet into a generator.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnEjectingGeneratorTablet(Exiled.Events.EventArgs.EjectingGeneratorTabletEventArgs)">
             <summary>
-            Called before ejecting a generator.
+            Called before a player ejects the workstation tablet out of a generator.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.EjectingGeneratorTabletEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnReceivingEffect(Exiled.Events.EventArgs.ReceivingEffectEventArgs)">
             <summary>
-            Called before receiving an effect.
+            Called before a player receives a status effect.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ReceivingEffectEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnActivatingWorkstation(Exiled.Events.EventArgs.ActivatingWorkstationEventArgs)">
             <summary>
-            Called before activating workstation.
+            Called before a workstation is activated.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ActivatingWorkstationEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnDeactivatingWorkstation(Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs)">
             <summary>
-            Called before deactivating workstation.
+            Called before a workstation is deactivated.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnChangingMuteStatus(Exiled.Events.EventArgs.ChangingMuteStatusEventArgs)">
             <summary>
-            Called before changing user mute status.
+            Called before an user's mute status is changed.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingMuteStatusEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnChangingIntercomMuteStatus(Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs)">
             <summary>
-            Called before changing user intercom mute status.
+            Called before an user's intercom mute status is changed.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs"/> instance.</param>
         </member>
         <member name="T:Exiled.Events.Handlers.Scp049">
             <summary>
-            Scp049 related events.
+            SCP-049 related events.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Scp049.FinishingRecall">
             <summary>
-            Invoked before a player is infected.
+            Invoked before SCP-049 finishes recalling a player.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Scp049.StartingRecall">
             <summary>
-            Invoked before Scp049 starts to infect a player.
+            Invoked before SCP-049 begins recalling a player.
             </summary>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp049.OnFinishingRecall(Exiled.Events.EventArgs.FinishingRecallEventArgs)">
             <summary>
-            Invoked before a player is recalled.
+            Called before SCP-049 finishes recalling a player.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.FinishingRecallEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp049.OnStartingRecall(Exiled.Events.EventArgs.StartingRecallEventArgs)">
             <summary>
-            Invoked before Scp049 starts to recall a player.
+            Called before Scp049 starts to recall a player.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.StartingRecallEventArgs"/> instance.</param>
         </member>
         <member name="T:Exiled.Events.Handlers.Scp079">
             <summary>
             SCP-079 related events.
+            </summary>
+        </member>
+        <member name="E:Exiled.Events.Handlers.Scp079.ChangingCamera">
+            <summary>
+            Invoked before SCP-079 switches cameras.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Scp079.GainingExperience">
@@ -3843,14 +4144,19 @@
             Invoked before triggering a door with SCP-079.
             </summary>
         </member>
+        <member name="E:Exiled.Events.Handlers.Scp079.ElevatorTeleport">
+            <summary>
+            Invoked before SCP-079 teleports using an elevator.
+            </summary>
+        </member>
         <member name="E:Exiled.Events.Handlers.Scp079.StartingSpeaker">
             <summary>
-            Invoked before triggering a speaker with SCP-079.
+            Invoked before SCP-079 uses a speaker.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Scp079.StoppingSpeaker">
             <summary>
-            Invoked before stopping a speaker with SCP-079.
+            Invoked before SCP-079 finishes using a speaker.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Scp079.Recontained">
@@ -3858,45 +4164,57 @@
             Invoked after Scp079 recontainment.
             </summary>
         </member>
+        <member name="M:Exiled.Events.Handlers.Scp079.OnChangingCamera(Exiled.Events.EventArgs.ChangingCameraEventArgs)">
+            <summary>
+            Called before SCP-079 switches cameras.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingCameraEventArgs"/> instance.</param>
+        </member>
         <member name="M:Exiled.Events.Handlers.Scp079.OnGainingExperience(Exiled.Events.EventArgs.GainingExperienceEventArgs)">
             <summary>
-            Invoked before gaining experience with SCP-079.
+            Called before gaining experience with SCP-079.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.GainingExperienceEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp079.OnGainingLevel(Exiled.Events.EventArgs.GainingLevelEventArgs)">
             <summary>
-            Invoked before gaining levels with SCP-079.
+            Called before gaining levels with SCP-079.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.GainingLevelEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp079.OnInteractingTesla(Exiled.Events.EventArgs.InteractingTeslaEventArgs)">
             <summary>
-            Invoked before triggering a tesla with SCP-079.
+            Called before triggering a tesla with SCP-079.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.InteractingTeslaEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp079.OnInteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs)">
             <summary>
-            Invoked before interacting with a door with SCP-079.
+            Called before interacting with a door with SCP-079.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.InteractingDoorEventArgs"/> instance.</param>
         </member>
+        <member name="M:Exiled.Events.Handlers.Scp079.OnElevatorTeleport(Exiled.Events.EventArgs.ElevatorTeleportEventArgs)">
+            <summary>
+            Called before SCP-079 teleports using an elevator.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ElevatorTeleportEventArgs"/> instance.</param>
+        </member>
         <member name="M:Exiled.Events.Handlers.Scp079.OnStartingSpeaker(Exiled.Events.EventArgs.StartingSpeakerEventArgs)">
             <summary>
-            Invoked before interacting with a speaker with SCP-079.
+            Called before interacting with a speaker with SCP-079.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.StartingSpeakerEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp079.OnStoppingSpeaker(Exiled.Events.EventArgs.StoppingSpeakerEventArgs)">
             <summary>
-            Invoked before stopping with a speaker with SCP-079.
+            Called before SCP-079 finishes using a speaker.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.StoppingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp079.OnRecontained(Exiled.Events.EventArgs.RecontainedEventArgs)">
             <summary>
-            Called after 079 recontainment.
+            Called after SCP-079 is recontained.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.RecontainedEventArgs"/> instance.</param>
         </member>
@@ -3907,12 +4225,12 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Scp096.Enraging">
             <summary>
-            Invoked before enraging with SCP-096.
+            Invoked before SCP-096 is enraged.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Scp096.CalmingDown">
             <summary>
-            Invoked before calming down with SCP-096.
+            Invoked before SCP-096 calms down.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Scp096.AddingTarget">
@@ -3922,30 +4240,30 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Scp096.StartPryingGate">
             <summary>
-            Invoked before Scp096 starts prying open a gate.
+            Invoked before SCP-096 begins prying open a gate.
             </summary>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp096.OnEnraging(Exiled.Events.EventArgs.EnragingEventArgs)">
             <summary>
-            Invoked before enraging with SCP-096.
+            Called before SCP-096 is enraged.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.EnragingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp096.OnCalmingDown(Exiled.Events.EventArgs.CalmingDownEventArgs)">
             <summary>
-            Invoked before calming down with SCP-096.
+            Called before SCP-096 calms down.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.CalmingDownEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp096.OnAddingTarget(Exiled.Events.EventArgs.AddingTargetEventArgs)">
             <summary>
-            Invoked before adding a target to SCP-096.
+            Called before adding a target to SCP-096.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.AddingTargetEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp096.OnStartPryingGate(Exiled.Events.EventArgs.StartPryingGateEventArgs)">
             <summary>
-            Invoked before Scp096 starts prying open a gate.
+            Called before SCP-096 begins prying open a gate.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.StartPryingGateEventArgs"/> instance.</param>
         </member>
@@ -3956,12 +4274,12 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Scp106.CreatingPortal">
             <summary>
-            Invoked before creating an SCP-106 portal.
+            Invoked before SCP-106 creates a portal.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Scp106.Teleporting">
             <summary>
-            Invoked before teleporting with SCP-106.
+            Invoked before SCP-106 teleports using a portal.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Scp106.Containing">
@@ -3971,21 +4289,37 @@
         </member>
         <member name="M:Exiled.Events.Handlers.Scp106.OnCreatingPortal(Exiled.Events.EventArgs.CreatingPortalEventArgs)">
             <summary>
-            Invoked before creating an SCP-106 portal.
+            Called before SCP-106 creates a portal.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.CreatingPortalEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp106.OnTeleporting(Exiled.Events.EventArgs.TeleportingEventArgs)">
             <summary>
-            Invoked before teleporting with SCP-106.
+            Called before SCP-106 teleports using a portal.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.TeleportingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp106.OnContaining(Exiled.Events.EventArgs.ContainingEventArgs)">
             <summary>
-            Invoked before containing SCP-106.
+            Called before containing SCP-106.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ContainingEventArgs"/> instance.</param>
+        </member>
+        <member name="T:Exiled.Events.Handlers.Scp173">
+            <summary>
+            SCP-173 related events.
+            </summary>
+        </member>
+        <member name="E:Exiled.Events.Handlers.Scp173.Blinking">
+            <summary>
+            Invoked before players near SCP-173 blink.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Scp173.OnBlinking(Exiled.Events.EventArgs.BlinkingEventArgs)">
+            <summary>
+            Called before players near SCP-173 blink.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.BlinkingEventArgs"/> instance.</param>
         </member>
         <member name="T:Exiled.Events.Handlers.Scp914">
             <summary>
@@ -3994,7 +4328,7 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Scp914.UpgradingItems">
             <summary>
-            Invoked before upgrading items in the SCP-914 machine.
+            Invoked before SCP-914 upgrades players and items.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Scp914.Activating">
@@ -4009,19 +4343,19 @@
         </member>
         <member name="M:Exiled.Events.Handlers.Scp914.OnUpgradingItems(Exiled.Events.EventArgs.UpgradingItemsEventArgs)">
             <summary>
-            Called before upgrading items in the SCP-914 machine.
+            Called before SCP-914 upgrades players and items.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.UpgradingItemsEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp914.OnActivating(Exiled.Events.EventArgs.ActivatingEventArgs)">
             <summary>
-            Invoked before activating the SCP-914 machine.
+            Called before activating the SCP-914 machine.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ActivatingEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Scp914.OnChangingKnobSetting(Exiled.Events.EventArgs.ChangingKnobSettingEventArgs)">
             <summary>
-            Invoked before changing the SCP-914 machine knob setting.
+            Called before changing the SCP-914 machine knob setting.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingKnobSettingEventArgs"/> instance.</param>
         </member>
@@ -4042,7 +4376,7 @@
         </member>
         <member name="E:Exiled.Events.Handlers.Server.EndingRound">
             <summary>
-            Invoked before ending a round
+            Invoked before ending a round.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Server.RoundEnded">
@@ -4211,9 +4545,28 @@
         </member>
         <member name="M:Exiled.Events.Handlers.Warhead.OnChangingLeverStatus(Exiled.Events.EventArgs.ChangingLeverStatusEventArgs)">
             <summary>
-            Invoked before changing the warhead lever status.
+            Called before changing the warhead lever status.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingLeverStatusEventArgs"/> instance.</param>
+        </member>
+        <member name="T:Exiled.Events.InternalHandlers.MapGenerated">
+            <summary>
+            Handles <see cref="E:Exiled.Events.Handlers.Map.Generated"/> event.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.InternalHandlers.MapGenerated.OnMapGenerated">
+            <summary>
+            Called once the map is generated.
+            </summary>
+            <remarks>
+            This fixes an issue where
+            all those extensions that
+            require calling the central
+            property of the Map class in
+            the API were corrupted due to
+            a missed call, such as before
+            getting the elevator type.
+            </remarks>
         </member>
         <member name="T:Exiled.Events.InternalHandlers.Round">
             <summary>
@@ -4231,6 +4584,37 @@
         </member>
         <member name="M:Exiled.Events.InternalHandlers.Round.OnChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs)">
             <inheritdoc cref="M:Exiled.Events.Handlers.Player.OnChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs)"/>
+        </member>
+        <member name="T:Exiled.Events.InternalHandlers.SceneUnloaded">
+            <summary>
+            Handles scene unload event.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.InternalHandlers.SceneUnloaded.OnSceneUnloaded(UnityEngine.SceneManagement.Scene)">
+            <summary>
+            Called once when the server changes the scene.
+            </summary>
+            <remarks>
+            This fixes the main issue with ghost mode,
+            when it spams with a NRE error.
+            Before that, we were clearing the cache
+            on WaitForPlayers event, but
+            sometimes (ordinally on silent rount restart)
+            the server accepts players' tokens before
+            WaitForPlayers event is called.
+            </remarks>
+        </member>
+        <member name="T:Exiled.Events.Patches.Events.Item.ChangingAttachments">
+            <summary>
+            Patches <see cref="M:Inventory.SyncListItemInfo.ModifyAttachments(System.Int32,System.Int32,System.Int32,System.Int32)"/>.
+            Adds the <see cref="E:Exiled.Events.Handlers.Item.ChangingAttachments"/> event.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.Patches.Events.Item.ChangingDurability">
+            <summary>
+            Patches <see cref="M:Inventory.SyncListItemInfo.ModifyDuration(System.Int32,System.Single)"/>.
+            Adds the <see cref="E:Exiled.Events.Handlers.Item.ChangingDurability"/> event.
+            </summary>
         </member>
         <member name="T:Exiled.Events.Patches.Events.Map.AnnouncingDecontamination">
             <summary>
@@ -4294,7 +4678,7 @@
         </member>
         <member name="T:Exiled.Events.Patches.Events.Map.SpawningItem">
             <summary>
-            Patches <see cref="M:RandomItemSpawner.SpawnerItemToSpawn.DoorTrigger"/>.
+            Patches <see cref="M:RandomItemSpawner.SpawnerItemToSpawn.Spawn"/>.
             Adds the <see cref="E:Exiled.Events.Handlers.Map.SpawningItem"/> and <see cref="E:Exiled.Events.Handlers.Map.SpawnedItem"/> events.
             </summary>
         </member>
@@ -4360,7 +4744,7 @@
         </member>
         <member name="T:Exiled.Events.Patches.Events.Player.Died">
             <summary>
-            Patches <see cref="M:PlayerStats.HurtPlayer(PlayerStats.HitInfo,UnityEngine.GameObject,System.Boolean)"/>.
+            Patches <see cref="M:PlayerStats.HurtPlayer(PlayerStats.HitInfo,UnityEngine.GameObject,System.Boolean,System.Boolean)"/>.
             Adds the <see cref="E:Exiled.Events.Handlers.Player.Died"/> event.
             </summary>
         </member>
@@ -4390,7 +4774,7 @@
         </member>
         <member name="T:Exiled.Events.Patches.Events.Player.Hurting">
             <summary>
-            Patches <see cref="M:PlayerStats.HurtPlayer(PlayerStats.HitInfo,UnityEngine.GameObject,System.Boolean)"/>.
+            Patches <see cref="M:PlayerStats.HurtPlayer(PlayerStats.HitInfo,UnityEngine.GameObject,System.Boolean,System.Boolean)"/>.
             Adds the <see cref="E:Exiled.Events.Handlers.Player.Hurting"/> event.
             </summary>
         </member>
@@ -4408,7 +4792,7 @@
         </member>
         <member name="T:Exiled.Events.Patches.Events.Player.InteractingDoor">
             <summary>
-            Patches <see cref="M:PlayerInteract.CallCmdOpenDoor(UnityEngine.GameObject)"/>.
+            Patches <see cref="M:Interactables.Interobjects.DoorUtils.DoorVariant.ServerInteract(ReferenceHub,System.Byte)"/>.
             Adds the <see cref="E:Exiled.Events.Handlers.Player.InteractingDoor"/> event.
             </summary>
         </member>
@@ -4438,7 +4822,7 @@
         </member>
         <member name="T:Exiled.Events.Patches.Events.Player.Joined">
             <summary>
-            Patches <see cref="M:PlayerManager.AddPlayer(UnityEngine.GameObject)"/>.
+            Patches <see cref="M:ReferenceHub.Awake"/>.
             Adds the <see cref="E:Exiled.Events.Handlers.Player.Joined"/> event.
             </summary>
         </member>
@@ -4568,6 +4952,12 @@
             Adds the <see cref="E:Exiled.Events.Handlers.Scp049.StartingRecall"/> and <see cref="E:Exiled.Events.Handlers.Scp049.FinishingRecall"/> event.
             </summary>
         </member>
+        <member name="T:Exiled.Events.Patches.Events.Scp079.ChangingCamera">
+            <summary>
+            Patches <see cref="M:Scp079PlayerScript.CallCmdSwitchCamera(System.UInt16,System.Boolean)"/>.
+            Adds the <see cref="E:Exiled.Events.Handlers.Scp079.ChangingCamera"/> event.
+            </summary>
+        </member>
         <member name="T:Exiled.Events.Patches.Events.Scp079.GainingExperience">
             <summary>
             Patches <see cref="M:Scp079PlayerScript.CallRpcGainExp(ExpGainType,RoleType)"/>.
@@ -4615,7 +5005,7 @@
         </member>
         <member name="T:Exiled.Events.Patches.Events.Scp096.StartPryingGate">
             <summary>
-            Patches the <see cref="M:PlayableScps.Scp096.PryGate(Door)"/> method.
+            Patches the <see cref="M:PlayableScps.Scp096.PryGate(Interactables.Interobjects.PryableDoor)"/> method.
             Adds the <see cref="E:Exiled.Events.Handlers.Scp096.StartPryingGate"/> event.
             </summary>
         </member>
@@ -4635,6 +5025,12 @@
             <summary>
             Patches <see cref="M:Scp106PlayerScript.CallCmdUsePortal"/>.
             Adds the <see cref="T:Exiled.Events.Patches.Events.Scp106.Teleporting"/> event.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.Patches.Events.Scp173.Blinking">
+            <summary>
+            Patches <see cref="M:Scp173PlayerScript.DoBlinkingSequence"/>.
+            Adds the <see cref="E:Exiled.Events.Handlers.Scp173.Blinking"/> event.
             </summary>
         </member>
         <member name="T:Exiled.Events.Patches.Events.Scp914.Activating">
@@ -4682,7 +5078,7 @@
         </member>
         <member name="T:Exiled.Events.Patches.Events.Server.RoundStarted">
             <summary>
-            Patches <see cref="M:CharacterClassManager.CmdStartRound"/>.
+            Patches <see cref="M:CharacterClassManager.CallRpcRoundStarted"/>.
             Adds the RoundStarted event.
             </summary>
         </member>
@@ -4749,6 +5145,11 @@
         <member name="T:Exiled.Events.Patches.Fixes.CharacterClassManagerLoadSpam">
             <summary>
             Fixes <see cref="P:Mirror.NetworkBehaviour.isServer"/> property.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.Patches.Fixes.DoubleMute">
+            <summary>
+            Fixes <see cref="P:CharacterClassManager.NetworkMuted"/> property.
             </summary>
         </member>
         <member name="T:Exiled.Events.Patches.Fixes.DoubleSpawn">

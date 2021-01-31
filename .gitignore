@@ -82,3 +82,14 @@
 UltimateAFK/obj/
 
 UltimateAFK/bin/Debug/
+
+UltimateAFK/bin/Release/
+UltimateAFK/bin/*
+
+packages/EXILED.2.1.29/.signature.p7s
+
+packages/EXILED.2.1.29/EXILED.2.1.29.nupkg
+
+packages/EXILED.2.1.15/.signature.p7s
+
+packages/EXILED.2.1.29/images/Exiled_Icon.jpg
