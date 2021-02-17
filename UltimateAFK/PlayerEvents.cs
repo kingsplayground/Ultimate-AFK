@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Reflection;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using Exiled.Permissions.Extensions;
+using Exiled.Loader;
 
 namespace UltimateAFK
 {
@@ -12,6 +14,13 @@ namespace UltimateAFK
 		public PlayerEvents(MainClass plugin)
 		{
 			this.plugin = plugin;
+		}
+
+		public static bool IsGhost(Player player)
+		{
+			Assembly assembly = Loader.Plugins.FirstOrDefault(pl => pl.Name == "GhostSpectator")?.Assembly;
+			if (assembly == null) return false;
+			return ((bool)assembly.GetType("GhostSpectator.API")?.GetMethod("IsGhost")?.Invoke(null, new object[] { player })) == true;
 		}
 
 		public void OnPlayerJoined(JoinedEventArgs ev)
@@ -29,9 +38,15 @@ namespace UltimateAFK
 				if (ev.Player == null) return;
 				AFKComponent afkComponent = ev.Player.GameObject.gameObject.GetComponent<AFKComponent>();
 
-				if (afkComponent != null && !plugin.Config.IgnorePermissionsAndIP)
-					if (ev.Player.CheckPermission("uafk.ignore") || ev.Player.IPAddress == "127.0.0.1") //127.0.0.1 is sometimes used for "Pets" which causes issues
-						afkComponent.disabled = true;
+				if (afkComponent != null)
+                {
+					if (!plugin.Config.IgnorePermissionsAndIP)
+						if (ev.Player.CheckPermission("uafk.ignore") || ev.Player.IPAddress == "127.0.0.1") //127.0.0.1 is sometimes used for "Pets" which causes issues
+							afkComponent.disabled = true;
+					if (IsGhost(ev.Player))
+							afkComponent.disabled = true;
+				}
+					
 
 			}
 			catch (Exception e)
