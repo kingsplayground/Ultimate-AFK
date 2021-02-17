@@ -68,7 +68,7 @@ namespace UltimateAFK
             //Log.Info($"AFK Time: {this.AFKTime} AFK Count: {this.AFKCount}");
             if (this.ply.Team == Team.RIP || Player.List.Count() <= plugin.Config.MinPlayers || (plugin.Config.IgnoreTut && this.ply.Team == Team.TUT)) return;
 
-            bool isScp079 = (this.ply.Role == RoleType.Scp079) ? true : false;
+            bool isScp079 = (this.ply.Role == RoleType.Scp079);
             bool scp096TryNotToCry = false;
 
             // When SCP096 is in the state "TryNotToCry" he cannot move or it will cancel,
@@ -76,7 +76,7 @@ namespace UltimateAFK
             if (this.ply.Role == RoleType.Scp096)
             {
                 PlayableScps.Scp096 scp096 = this.ply.ReferenceHub.scpsController.CurrentScp as PlayableScps.Scp096;
-                scp096TryNotToCry = (scp096.PlayerState == Scp096PlayerState.TryNotToCry) ? true : false;
+                scp096TryNotToCry = (scp096.PlayerState == Scp096PlayerState.TryNotToCry);
             }
 
             Vector3 CurrentPos = this.ply.Position;

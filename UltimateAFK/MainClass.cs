@@ -51,7 +51,7 @@ namespace UltimateAFK
         public override string Author { get; } = "Thomasjosif";
         public override string Name { get; } = "Ultimate AFK";
         public override string Prefix { get; } = "uAFK";
-        public override Version Version { get; } = new Version(3, 1, 4);
+        public override Version Version { get; } = new Version(3, 1, 5);
         public override Version RequiredExiledVersion { get; } = new Version(2, 1, 29, 0);
         public PlayerEvents PlayerEvents;
 
