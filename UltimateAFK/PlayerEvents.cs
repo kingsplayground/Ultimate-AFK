@@ -4,6 +4,7 @@ using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using Exiled.Permissions.Extensions;
 using Exiled.Loader;
+using System.Linq;
 
 namespace UltimateAFK
 {
@@ -14,13 +15,6 @@ namespace UltimateAFK
 		public PlayerEvents(MainClass plugin)
 		{
 			this.plugin = plugin;
-		}
-
-		public static bool IsGhost(Player player)
-		{
-			Assembly assembly = Loader.Plugins.FirstOrDefault(pl => pl.Name == "GhostSpectator")?.Assembly;
-			if (assembly == null) return false;
-			return ((bool)assembly.GetType("GhostSpectator.API")?.GetMethod("IsGhost")?.Invoke(null, new object[] { player })) == true;
 		}
 
 		public void OnPlayerJoined(JoinedEventArgs ev)
@@ -140,7 +134,11 @@ namespace UltimateAFK
 			}
 		}
 
-		// Thanks iopietro!
+		/// <summary>
+		/// Reset the AFK time of a player.
+		/// Thanks iopietro!
+		/// </summary>
+		/// <param name="player"></param>
 		public void ResetAFKTime(Player player)
 		{
 			try
@@ -157,6 +155,18 @@ namespace UltimateAFK
 			{
 				Log.Error($"ERROR In ResetAFKTime(): {e}");
 			}
+		}
+
+		/// <summary>
+		/// Checks if a player is a "ghost" using GhostSpectator's API.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static bool IsGhost(Player player)
+		{
+			Assembly assembly = Loader.Plugins.FirstOrDefault(pl => pl.Name == "GhostSpectator")?.Assembly;
+			if (assembly == null) return false;
+			return ((bool)assembly.GetType("GhostSpectator.API")?.GetMethod("IsGhost")?.Invoke(null, new object[] { player })) == true;
 		}
 	}
 }
