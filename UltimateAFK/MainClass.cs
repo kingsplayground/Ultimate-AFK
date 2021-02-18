@@ -64,7 +64,7 @@ namespace UltimateAFK
             {
                 PlayerEvents = new PlayerEvents(this);
 
-                Handlers.Player.Joined += PlayerEvents.OnPlayerJoined;
+                Handlers.Player.Verified += PlayerEvents.OnPlayerVerified;
                 Handlers.Player.ChangingRole += PlayerEvents.OnSetClass;
                 Handlers.Player.Shooting += PlayerEvents.OnPlayerShoot;
                 Handlers.Player.InteractingDoor += PlayerEvents.OnDoorInteract;
@@ -85,7 +85,7 @@ namespace UltimateAFK
         public override void OnDisabled()
         {
             base.OnDisabled();
-            Handlers.Player.Joined -= PlayerEvents.OnPlayerJoined;
+            Handlers.Player.Verified -= PlayerEvents.OnPlayerVerified;
             Handlers.Player.ChangingRole -= PlayerEvents.OnSetClass;
             Handlers.Player.Shooting -= PlayerEvents.OnPlayerShoot;
             Handlers.Player.InteractingDoor -= PlayerEvents.OnDoorInteract;
