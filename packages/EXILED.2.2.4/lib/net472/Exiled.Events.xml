@@ -984,6 +984,28 @@
             Gets or sets a value indicating whether or not light containment zone decontamination can begin.
             </summary>
         </member>
+        <member name="T:Exiled.Events.EventArgs.DequippedMedicalItemEventArgs">
+            <summary>
+            Contains all informations after a player dequipes a medical item.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.EventArgs.DequippedMedicalItemEventArgs.#ctor(Exiled.API.Features.Player,ItemType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.EventArgs.DequippedMedicalItemEventArgs"/> class.
+            </summary>
+            <param name="player"><inheritdoc cref="P:Exiled.Events.EventArgs.DequippedMedicalItemEventArgs.Player"/></param>
+            <param name="item"><inheritdoc cref="P:Exiled.Events.EventArgs.DequippedMedicalItemEventArgs.Item"/></param>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.DequippedMedicalItemEventArgs.Player">
+            <summary>
+            Gets the player who used the medical item.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.EventArgs.DequippedMedicalItemEventArgs.Item">
+            <summary>
+            Gets the medical item that the player consumed.
+            </summary>
+        </member>
         <member name="T:Exiled.Events.EventArgs.DestroyingEventArgs">
             <summary>
             Contains all informations before a player's object is destroyed.
@@ -1682,7 +1704,7 @@
         </member>
         <member name="P:Exiled.Events.EventArgs.InteractingElevatorEventArgs.Lift">
             <summary>
-            Gets the <see cref="T:Lift"/> instance.
+            Gets the <see cref="P:Exiled.Events.EventArgs.InteractingElevatorEventArgs.Lift"/> instance.
             </summary>
         </member>
         <member name="P:Exiled.Events.EventArgs.InteractingElevatorEventArgs.Status">
@@ -3336,6 +3358,61 @@
             <param name="ev">Source event.</param>
             <exception cref="T:System.ArgumentNullException">Event is null.</exception>
         </member>
+        <member name="T:Exiled.Events.Handlers.Internal.MapGenerated">
+            <summary>
+            Handles <see cref="E:Exiled.Events.Handlers.Map.Generated"/> event.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Internal.MapGenerated.OnMapGenerated">
+            <summary>
+            Called once the map is generated.
+            </summary>
+            <remarks>
+            This fixes an issue where
+            all those extensions that
+            require calling the central
+            property of the Map class in
+            the API were corrupted due to
+            a missed call, such as before
+            getting the elevator type.
+            </remarks>
+        </member>
+        <member name="T:Exiled.Events.Handlers.Internal.Round">
+            <summary>
+            Handles some round clean-up events and some others related to players.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Internal.Round.OnWaitingForPlayers">
+            <inheritdoc cref="M:Exiled.Events.Handlers.Server.OnWaitingForPlayers"/>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Internal.Round.OnRestartingRound">
+            <inheritdoc cref="M:Exiled.Events.Handlers.Server.OnRestartingRound"/>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Internal.Round.OnRoundStarted">
+            <inheritdoc cref="M:Exiled.Events.Handlers.Server.OnRoundStarted"/>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Internal.Round.OnChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs)">
+            <inheritdoc cref="M:Exiled.Events.Handlers.Player.OnChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs)"/>
+        </member>
+        <member name="T:Exiled.Events.Handlers.Internal.SceneUnloaded">
+            <summary>
+            Handles scene unload event.
+            </summary>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Internal.SceneUnloaded.OnSceneUnloaded(UnityEngine.SceneManagement.Scene)">
+            <summary>
+            Called once when the server changes the scene.
+            </summary>
+            <remarks>
+            This fixes the main issue with ghost mode,
+            when it spams with a NRE error.
+            Before that, we were clearing the cache
+            on WaitForPlayers event, but
+            sometimes (ordinally on silent rount restart)
+            the server accepts players' tokens before
+            WaitForPlayers event is called.
+            </remarks>
+        </member>
         <member name="T:Exiled.Events.Handlers.Item">
             <summary>
             Item related events.
@@ -3533,6 +3610,19 @@
             <summary>
             Invoked after a player uses a medical item.
             </summary>
+            <remarks>
+            Invoked after <see cref="E:Exiled.Events.Handlers.Player.MedicalItemDequipped"/>, if a player's class has
+            changed during their health increase, won't fire.
+            </remarks>
+        </member>
+        <member name="E:Exiled.Events.Handlers.Player.MedicalItemDequipped">
+            <summary>
+            Invoked after a player dequips a medical item.
+            </summary>
+            <remarks>
+            Invoked before <see cref="E:Exiled.Events.Handlers.Player.MedicalItemUsed"/>, if a player cancels the
+            use of a medical item, won't fire.
+            </remarks>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.StoppingMedicalItem">
             <summary>
@@ -3617,11 +3707,6 @@
         <member name="E:Exiled.Events.Handlers.Player.PickingUpItem">
             <summary>
             Invoked before picking up an item.
-            </summary>
-        </member>
-        <member name="E:Exiled.Events.Handlers.Player.PickingUpScp330">
-            <summary>
-            Invoked before a player interacts with SCP-330.
             </summary>
         </member>
         <member name="E:Exiled.Events.Handlers.Player.Handcuffing">
@@ -3803,7 +3888,13 @@
             <summary>
             Called after a player used a medical item.
             </summary>
-            <param name="ev">The <see cref="E:Exiled.Events.Handlers.Player.MedicalItemUsed"/> instance.</param>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.UsedMedicalItemEventArgs"/> instance.</param>
+        </member>
+        <member name="M:Exiled.Events.Handlers.Player.OnMedicalItemDequipped(Exiled.Events.EventArgs.DequippedMedicalItemEventArgs)">
+            <summary>
+            Called after a player dequipped a medical item.
+            </summary>
+            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.DequippedMedicalItemEventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnStoppingMedicalItem(Exiled.Events.EventArgs.StoppingMedicalItemEventArgs)">
             <summary>
@@ -3906,12 +3997,6 @@
             Called before a user picks up an item.
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.PickingUpItemEventArgs"/> instance.</param>
-        </member>
-        <member name="M:Exiled.Events.Handlers.Player.OnPickingUpScp330(Exiled.Events.EventArgs.PickingUpScp330EventArgs)">
-            <summary>
-            Called before a player picks up an item.
-            </summary>
-            <param name="ev">The <see cref="T:Exiled.Events.EventArgs.PickingUpScp330EventArgs"/> instance.</param>
         </member>
         <member name="M:Exiled.Events.Handlers.Player.OnHandcuffing(Exiled.Events.EventArgs.HandcuffingEventArgs)">
             <summary>
@@ -4549,61 +4634,6 @@
             </summary>
             <param name="ev">The <see cref="T:Exiled.Events.EventArgs.ChangingLeverStatusEventArgs"/> instance.</param>
         </member>
-        <member name="T:Exiled.Events.InternalHandlers.MapGenerated">
-            <summary>
-            Handles <see cref="E:Exiled.Events.Handlers.Map.Generated"/> event.
-            </summary>
-        </member>
-        <member name="M:Exiled.Events.InternalHandlers.MapGenerated.OnMapGenerated">
-            <summary>
-            Called once the map is generated.
-            </summary>
-            <remarks>
-            This fixes an issue where
-            all those extensions that
-            require calling the central
-            property of the Map class in
-            the API were corrupted due to
-            a missed call, such as before
-            getting the elevator type.
-            </remarks>
-        </member>
-        <member name="T:Exiled.Events.InternalHandlers.Round">
-            <summary>
-            Handles some round clean-up events and some others related to players.
-            </summary>
-        </member>
-        <member name="M:Exiled.Events.InternalHandlers.Round.OnWaitingForPlayers">
-            <inheritdoc cref="M:Exiled.Events.Handlers.Server.OnWaitingForPlayers"/>
-        </member>
-        <member name="M:Exiled.Events.InternalHandlers.Round.OnRestartingRound">
-            <inheritdoc cref="M:Exiled.Events.Handlers.Server.OnRestartingRound"/>
-        </member>
-        <member name="M:Exiled.Events.InternalHandlers.Round.OnRoundStarted">
-            <inheritdoc cref="M:Exiled.Events.Handlers.Server.OnRoundStarted"/>
-        </member>
-        <member name="M:Exiled.Events.InternalHandlers.Round.OnChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs)">
-            <inheritdoc cref="M:Exiled.Events.Handlers.Player.OnChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs)"/>
-        </member>
-        <member name="T:Exiled.Events.InternalHandlers.SceneUnloaded">
-            <summary>
-            Handles scene unload event.
-            </summary>
-        </member>
-        <member name="M:Exiled.Events.InternalHandlers.SceneUnloaded.OnSceneUnloaded(UnityEngine.SceneManagement.Scene)">
-            <summary>
-            Called once when the server changes the scene.
-            </summary>
-            <remarks>
-            This fixes the main issue with ghost mode,
-            when it spams with a NRE error.
-            Before that, we were clearing the cache
-            on WaitForPlayers event, but
-            sometimes (ordinally on silent rount restart)
-            the server accepts players' tokens before
-            WaitForPlayers event is called.
-            </remarks>
-        </member>
         <member name="T:Exiled.Events.Patches.Events.Item.ChangingAttachments">
             <summary>
             Patches <see cref="M:Inventory.SyncListItemInfo.ModifyAttachments(System.Int32,System.Int32,System.Int32,System.Int32)"/>.
@@ -4740,6 +4770,12 @@
             <summary>
             Patch the <see cref="M:WorkStation.UnconnectTablet(UnityEngine.GameObject)"/>.
             Adds the <see cref="E:Exiled.Events.Handlers.Player.ActivatingWorkstation"/> event.
+            </summary>
+        </member>
+        <member name="T:Exiled.Events.Patches.Events.Player.DequippedMedicalItem">
+            <summary>
+            Patches <see cref="M:ConsumableAndWearableItems.SendRpc(ConsumableAndWearableItems.HealAnimation,System.Int32)"/>.
+            Adds the <see cref="E:Exiled.Events.Handlers.Player.MedicalItemUsed"/> event.
             </summary>
         </member>
         <member name="T:Exiled.Events.Patches.Events.Player.Died">
@@ -4930,7 +4966,7 @@
         </member>
         <member name="T:Exiled.Events.Patches.Events.Player.UsedMedicalItem">
             <summary>
-            Patches <see cref="M:ConsumableAndWearableItems.SendRpc(ConsumableAndWearableItems.HealAnimation,System.Int32)"/>.
+            Patches a method, the class in which it's defined, is compiler-generated, <see cref="T:ConsumableAndWearableItems"/>.
             Adds the <see cref="E:Exiled.Events.Handlers.Player.MedicalItemUsed"/> event.
             </summary>
         </member>
@@ -5102,7 +5138,7 @@
         </member>
         <member name="T:Exiled.Events.Patches.Events.Server.WaitingForPlayers">
             <summary>
-            Patches <see cref="M:ServerConsole.AddLog(System.String,System.ConsoleColor)"/>.
+            Patches a method, the class in which it's defined, is compiler-generated, <see cref="T:CharacterClassManager"/>.
             Adds the WaitingForPlayers event.
             </summary>
         </member>
@@ -5191,6 +5227,41 @@
             <summary>
             Patches <see cref="M:Stamina.ProcessStamina"/>.
             </summary>
+        </member>
+        <member name="T:Exiled.Events.Utils.NextEnumerator`1">
+            <summary>
+            An implementation of <see cref="T:System.Collections.Generic.IEnumerator`1"/> that
+            allows to get two elements in one move.
+            Very useful in patches.
+            </summary>
+            <typeparam name="T"><inheritdoc cref="T:System.Collections.Generic.IEnumerator`1"/></typeparam>
+        </member>
+        <member name="M:Exiled.Events.Utils.NextEnumerator`1.#ctor(System.Collections.Generic.IEnumerator{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Events.Utils.NextEnumerator`1"/> class.
+            </summary>
+            <param name="enumerator">The innner <see cref="T:System.Collections.Generic.IEnumerator`1"/>.</param>
+        </member>
+        <member name="P:Exiled.Events.Utils.NextEnumerator`1.Current">
+            <inheritdoc cref="P:System.Collections.Generic.IEnumerator`1.Current"/>
+        </member>
+        <member name="P:Exiled.Events.Utils.NextEnumerator`1.NextCurrent">
+            <summary>
+            Gets the next element in the collection.
+            Might be null if there's no element after <see cref="P:Exiled.Events.Utils.NextEnumerator`1.Current"/>.
+            </summary>
+        </member>
+        <member name="P:Exiled.Events.Utils.NextEnumerator`1.System#Collections#IEnumerator#Current">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Events.Utils.NextEnumerator`1.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Events.Utils.NextEnumerator`1.Reset">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Events.Utils.NextEnumerator`1.MoveNext">
+            <inheritdoc/>
         </member>
     </members>
 </doc>

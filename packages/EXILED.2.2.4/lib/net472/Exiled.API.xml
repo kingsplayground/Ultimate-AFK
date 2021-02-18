@@ -1736,6 +1736,13 @@
             <param name="input">Input string.</param>
             <returns>String without spaces.</returns>
         </member>
+        <member name="M:Exiled.API.Extensions.String.GetRawUserId(System.String)">
+            <summary>
+            Gets the player's user id without the authentication.
+            </summary>
+            <param name="userId">The user id.</param>
+            <returns>Returns the raw user id.</returns>
+        </member>
         <member name="T:Exiled.API.Features.Badge">
             <summary>
             Represents the in-game badge.
@@ -2146,6 +2153,13 @@
             <param name="doorName">The door name.</param>
             <returns>The <see cref="T:Interactables.Interobjects.DoorUtils.DoorVariant"/> or null if a door with this name doesn't exist.</returns>
         </member>
+        <member name="M:Exiled.API.Features.Map.ChangeUnitColor(System.Int32,System.String)">
+            <summary>
+            Changes the color of a MTF unit.
+            </summary>
+            <param name="index">The index of the unit color you want to change.</param>
+            <param name="color">The new color of the Unit.</param>
+        </member>
         <member name="M:Exiled.API.Features.Map.ClearCache">
             <summary>
             Clears the lazy loading game object cache.
@@ -2204,7 +2218,7 @@
         </member>
         <member name="T:Exiled.API.Features.Player">
             <summary>
-            Represents the in-game player, by encapsulating a <see cref="T:ReferenceHub"/>.
+            Represents the in-game player, by encapsulating a <see cref="P:Exiled.API.Features.Player.ReferenceHub"/>.
             </summary>
         </member>
         <member name="M:Exiled.API.Features.Player.#ctor(ReferenceHub)">
@@ -2246,7 +2260,7 @@
         </member>
         <member name="P:Exiled.API.Features.Player.ReferenceHub">
             <summary>
-            Gets the encapsulated <see cref="T:ReferenceHub"/>.
+            Gets the encapsulated <see cref="P:Exiled.API.Features.Player.ReferenceHub"/>.
             </summary>
         </member>
         <member name="P:Exiled.API.Features.Player.GameObject">
@@ -2623,7 +2637,7 @@
         </member>
         <member name="P:Exiled.API.Features.Player.Stamina">
             <summary>
-            Gets the <see cref="T:Stamina"/> class.
+            Gets the <see cref="P:Exiled.API.Features.Player.Stamina"/> class.
             </summary>
         </member>
         <member name="P:Exiled.API.Features.Player.Level">
@@ -2704,6 +2718,11 @@
             Gets a value indicating whether player has hands.
             </summary>
         </member>
+        <member name="P:Exiled.API.Features.Player.UnverifiedPlayers">
+            <summary>
+            Gets a dictionary for storing player objects of connected but not yet verified players.
+            </summary>
+        </member>
         <member name="M:Exiled.API.Features.Player.Get(Team)">
             <summary>
             Gets a <see cref="T:Exiled.API.Features.Player"/> <see cref="T:System.Collections.Generic.IEnumerable`1"/> filtered by team.
@@ -2717,6 +2736,13 @@
             </summary>
             <param name="role">The players' role.</param>
             <returns>Returns the filtered <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</returns>
+        </member>
+        <member name="M:Exiled.API.Features.Player.Get(CommandSender)">
+            <summary>
+            Gets the <see cref="T:Exiled.API.Features.Player"/> belonging to the CommandSender, if any.
+            </summary>
+            <param name="sender">The command sender.</param>
+            <returns>Returns a player or null if not found.</returns>
         </member>
         <member name="M:Exiled.API.Features.Player.Get(ReferenceHub)">
             <summary>

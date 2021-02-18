@@ -26,18 +26,5 @@
         <member name="M:Exiled.Updater.Updater.OnEnabled">
             <inheritdoc/>
         </member>
-        <member name="T:Exiled.VersionComparer">
-            <summary>
-            Default version comparer using <see cref="M:System.Version.CompareTo(System.Version)"/>.
-            </summary>
-        </member>
-        <member name="F:Exiled.VersionComparer.Instance">
-            <summary>
-            Readonly instance of <see cref="T:Exiled.VersionComparer"/>.
-            </summary>
-        </member>
-        <member name="M:Exiled.VersionComparer.Compare(System.Version,System.Version)">
-            <inheritdoc />
-        </member>
     </members>
 </doc>
