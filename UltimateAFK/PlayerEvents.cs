@@ -17,7 +17,7 @@ namespace UltimateAFK
 			this.plugin = plugin;
 		}
 
-		public void OnPlayerJoined(JoinedEventArgs ev)
+		public void OnPlayerVerified(VerifiedEventArgs ev)
 		{
 			// Add a component to the player to check AFK status.
 			AFKComponent afkComponent = ev.Player.GameObject.gameObject.AddComponent<AFKComponent>();
