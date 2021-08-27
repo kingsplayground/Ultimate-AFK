@@ -10,8 +10,8 @@ using MEC;
 
 namespace UltimateAFK
 {
-    public class PlayerEvents
-    {
+	public class PlayerEvents
+	{
 		public MainClass plugin;
 
 		internal static Dictionary<Player, AFKData> ReplacingPlayers = new Dictionary<Player, AFKData>();
@@ -37,12 +37,12 @@ namespace UltimateAFK
 				AFKComponent afkComponent = ev.Player.GameObject.gameObject.GetComponent<AFKComponent>();
 
 				if (afkComponent != null)
-                {
+				{
 					if (!plugin.Config.IgnorePermissionsAndIP)
 						if (ev.Player.CheckPermission("uafk.ignore") || ev.Player.IPAddress == "127.0.0.1") //127.0.0.1 is sometimes used for "Pets" which causes issues
 							afkComponent.disabled = true;
 					if (IsGhost(ev.Player))
-							afkComponent.disabled = true;
+						afkComponent.disabled = true;
 				}
 
 				if (ReplacingPlayers.ContainsKey(ev.Player))
@@ -196,7 +196,7 @@ namespace UltimateAFK
 
 				if (afkComponent != null)
 					afkComponent.AFKTime = 0;
-				
+
 			}
 			catch (Exception e)
 			{
