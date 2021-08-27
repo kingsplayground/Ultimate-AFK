@@ -5,12 +5,16 @@ using Exiled.Events.EventArgs;
 using Exiled.Permissions.Extensions;
 using Exiled.Loader;
 using System.Linq;
+using System.Collections.Generic;
+using MEC;
 
 namespace UltimateAFK
 {
     public class PlayerEvents
     {
 		public MainClass plugin;
+
+		internal static Dictionary<Player, AFKData> ReplacingPlayers = new Dictionary<Player, AFKData>();
 
 		public PlayerEvents(MainClass plugin)
 		{
@@ -40,7 +44,14 @@ namespace UltimateAFK
 					if (IsGhost(ev.Player))
 							afkComponent.disabled = true;
 				}
-					
+
+				if (ReplacingPlayers.ContainsKey(ev.Player))
+				{
+					AFKData data = ReplacingPlayers[ev.Player];
+					ev.Items.Clear();
+					ev.Items.AddRange(data.items);
+				}
+
 
 			}
 			catch (Exception e)
@@ -110,7 +121,7 @@ namespace UltimateAFK
 				Log.Error($"ERROR In OnLockerInteract(): {e}");
 			}
 		}
-		public void OnDropItem(ItemDroppedEventArgs ev)
+		public void OnDropItem(DroppingItemEventArgs ev)
 		{
 			try
 			{
@@ -131,6 +142,42 @@ namespace UltimateAFK
 			catch (Exception e)
 			{
 				Log.Error($"ERROR In OnSCP079Exp(): {e}");
+			}
+		}
+
+		public void OnRoundStarted()
+		{
+			ReplacingPlayers.Clear();
+		}
+
+		public void OnSpawning(SpawningEventArgs ev)
+		{
+			if (ReplacingPlayers.ContainsKey(ev.Player))
+			{
+				AFKData data = ReplacingPlayers[ev.Player];
+				data.afkComp.PlayerToReplace = null;
+				ev.Position = data.spawnLocation;
+				ev.Player.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");
+				Timing.CallDelayed(0.4f, () =>
+				{
+					Assembly easyEvents = Loader.Plugins.FirstOrDefault(pl => pl.Name == "EasyEvents")?.Assembly;
+					ev.Player.Health = data.health;
+					foreach (ItemType ammoType in data.ammo.Keys)
+					{
+						ev.Player.Inventory.UserInventory.ReserveAmmo[ammoType] = data.ammo[ammoType];
+						ev.Player.Inventory.SendAmmoNextFrame = true;
+					}
+
+					if (data.is079)
+					{
+						ev.Player.Level = data.level;
+						ev.Player.Experience = data.xp;
+						ev.Player.Energy = data.energy;
+					}
+
+					if (data.roleEasyEvents != null) easyEvents?.GetType("EasyEvents.CustomRoles")?.GetMethod("ChangeRole")?.Invoke(null, new object[] { ev.Player, data.roleEasyEvents });
+					PlayerEvents.ReplacingPlayers.Remove(ev.Player);
+				});
 			}
 		}
 

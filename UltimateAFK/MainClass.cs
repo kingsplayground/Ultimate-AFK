@@ -43,6 +43,7 @@ using System;
 using Handlers = Exiled.Events.Handlers;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using HarmonyLib;
 
 namespace UltimateAFK
 {
@@ -52,7 +53,6 @@ namespace UltimateAFK
         public override string Name { get; } = "Ultimate AFK";
         public override string Prefix { get; } = "uAFK";
         public override Version Version { get; } = new Version(3, 1, 6);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 2, 4);
         public PlayerEvents PlayerEvents;
 
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
@@ -71,8 +71,10 @@ namespace UltimateAFK
                 Handlers.Scp914.Activating += PlayerEvents.On914Activate;
                 Handlers.Scp914.ChangingKnobSetting += PlayerEvents.On914Change;
                 Handlers.Player.InteractingLocker += PlayerEvents.OnLockerInteract;
-                Handlers.Player.ItemDropped += PlayerEvents.OnDropItem;
+                Handlers.Player.DroppingItem += PlayerEvents.OnDropItem;
                 Handlers.Scp079.GainingExperience += PlayerEvents.OnSCP079Exp;
+                Handlers.Player.Spawning += PlayerEvents.OnSpawning;
+                Handlers.Server.RoundStarted += PlayerEvents.OnRoundStarted;
 
                 Log.Info($"UltimateAFK plugin loaded.\n Written by Thomasjosif for King's Playground");
             }
@@ -92,8 +94,10 @@ namespace UltimateAFK
             Handlers.Scp914.Activating -= PlayerEvents.On914Activate;
             Handlers.Scp914.ChangingKnobSetting -= PlayerEvents.On914Change;
             Handlers.Player.InteractingLocker -= PlayerEvents.OnLockerInteract;
-            Handlers.Player.ItemDropped -= PlayerEvents.OnDropItem;
+            Handlers.Player.DroppingItem -= PlayerEvents.OnDropItem;
             Handlers.Scp079.GainingExperience -= PlayerEvents.OnSCP079Exp;
+            Handlers.Player.Spawning -= PlayerEvents.OnSpawning;
+            Handlers.Server.RoundStarted -= PlayerEvents.OnRoundStarted;
 
             PlayerEvents = null;
         }

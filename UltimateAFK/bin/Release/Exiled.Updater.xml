@@ -20,9 +20,6 @@
             Gets a value that indicates which assemblies should be excluded from the update.
             </summary>
         </member>
-        <member name="P:Exiled.Updater.Updater.Author">
-            <inheritdoc />
-        </member>
         <member name="M:Exiled.Updater.Updater.OnEnabled">
             <inheritdoc/>
         </member>

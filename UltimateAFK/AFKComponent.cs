@@ -5,9 +5,10 @@ using MEC;
 using Exiled.API.Features;
 using Exiled.Loader;
 using PlayableScps;
-using scp035.API;
 using System.Reflection;
 using Exiled.API.Enums;
+using System.Collections.Generic;
+using Exiled.API.Features.Items;
 
 namespace UltimateAFK
 {
@@ -29,9 +30,6 @@ namespace UltimateAFK
         // Do not change this delay. It will screw up the detection
         public float delay = 1.0f;
 
-        private Player TryGet035() => Scp035Data.GetScp035();
-        private void TrySpawn035(Player player) => Scp035Data.Spawn035(player);
-
         // Expose replacing player for plugin support
         public Player PlayerToReplace;
 
@@ -47,6 +45,7 @@ namespace UltimateAFK
             if (timer > delay)
             {
                 timer = 0f;
+                //Log.Info(this.disabled);
                 if (!this.disabled)
                 {
                     try
@@ -65,8 +64,8 @@ namespace UltimateAFK
         // Also, since the gameObject for the player is deleted when they disconnect, we don't need to worry about cleaning any variables :) 
         private void AFKChecker()
         {
-            //Log.Info($"AFK Time: {this.AFKTime} AFK Count: {this.AFKCount}");
-            if (this.ply.Team == Team.RIP || Player.List.Count() <= plugin.Config.MinPlayers || (plugin.Config.IgnoreTut && this.ply.Team == Team.TUT)) return;
+			//Log.Info($"AFK Time: {this.AFKTime} AFK Count: {this.AFKCount}");
+			if (this.ply.Team == Team.RIP || Player.List.Count() <= plugin.Config.MinPlayers || (plugin.Config.IgnoreTut && this.ply.Team == Team.TUT)) return;
 
             bool isScp079 = (this.ply.Role == RoleType.Scp079);
             bool scp096TryNotToCry = false;
@@ -105,7 +104,7 @@ namespace UltimateAFK
                 warning = warning.Replace("%timeleft%", secondsuntilspec.ToString());
 
                 this.ply.ClearBroadcasts();
-                this.ply.Broadcast(1, $"{plugin.Config.MsgPrefix} {warning}");
+                this.ply.Broadcast(1, $"{plugin.Config.MsgPrefix} {warning}", Broadcast.BroadcastFlags.Normal, false);
                 return;
             }
 
@@ -123,28 +122,26 @@ namespace UltimateAFK
                 var roleEasyEvents = easyEvents?.GetType("EasyEvents.Util")?.GetMethod("GetRole")?.Invoke(null, new object[] { this.ply });
 
                 // SCP035 Support (Credit DCReplace)
-                bool is035 = false;
-                try
-                {
-                    is035 = this.ply.Id == TryGet035()?.Id;
-                }
-                catch (Exception e)
-                {
-                    Log.Debug($"SCP-035 is not installed, skipping method call: {e}");
-                }
+                bool is035 = this.ply.Id == TryGet035()?.Id;
+
+                bool isCISpy = TryGetSpies()?.ContainsKey(this.ply) ?? false;
+
+                bool isSerpentsHand = TryGetSH()?.Contains(this.ply) ?? false;
 
                 // Credit: DCReplace :)
                 // I mean at this point 90% of this has been rewritten lol...
-                var inventory = this.ply.Inventory.items.Select(x => x.id).ToList();
+                List<ItemType> inventory = this.ply.Items.Select(item => item.Type).ToList();
 
                 RoleType role = this.ply.Role;
                 Vector3 pos = this.ply.Position;
                 float health = this.ply.Health;
 
                 // New strange ammo system because the old one was fucked.
-                uint ammo1 = this.ply.Ammo[(int)AmmoType.Nato556];
-                uint ammo2 = this.ply.Ammo[(int)AmmoType.Nato762];
-                uint ammo3 = this.ply.Ammo[(int)AmmoType.Nato9];
+                Dictionary<ItemType, ushort> ammo = new Dictionary<ItemType, ushort>();
+                foreach (ItemType ammoType in this.ply.Ammo.Keys)
+                {
+                    ammo.Add(ammoType, this.ply.Ammo[ammoType]);
+                }
 
                 // Stuff for 079
                 byte Level079 = 0;
@@ -160,47 +157,40 @@ namespace UltimateAFK
                 if (PlayerToReplace != null)
                 {
                     // Make the player a spectator first so other plugins can do things on player changing role with uAFK.
-                    this.ply.Inventory.Clear(); // Clear their items to prevent dupes.
+                    this.ply.ClearInventory(); // Clear their items to prevent dupes.
                     this.ply.SetRole(RoleType.Spectator);
                     this.ply.Broadcast(30, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgFspec}");
 
-                    PlayerToReplace.SetRole(role);
-
-                    Timing.CallDelayed(0.3f, () =>
+                    PlayerEvents.ReplacingPlayers.Add(PlayerToReplace, new AFKData()
                     {
-                        if (is035)
-                        {
-                            try
-                            {
-                                TrySpawn035(PlayerToReplace);
-                            }
-                            catch (Exception e)
-                            {
-                                Log.Debug($"SCP-035 is not installed, skipping method call: {e}");
-                            }
-                        }
-                        PlayerToReplace.Position = pos;
-
-                        PlayerToReplace.ClearInventory();
-                        PlayerToReplace.ResetInventory(inventory);
-
-                        PlayerToReplace.Health = health;
-
-                        PlayerToReplace.Ammo[(int)AmmoType.Nato556] = ammo1;
-                        PlayerToReplace.Ammo[(int)AmmoType.Nato762] = ammo2;
-                        PlayerToReplace.Ammo[(int)AmmoType.Nato9] = ammo3;
-
-                        if (isScp079)
-                        {
-                            PlayerToReplace.Level = Level079;
-                            PlayerToReplace.Experience = Exp079;
-                            PlayerToReplace.Energy = AP079;
-                        }
-
-                        PlayerToReplace.Broadcast(10, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgReplace}");
-						if (roleEasyEvents != null) easyEvents?.GetType("EasyEvents.CustomRoles")?.GetMethod("ChangeRole")?.Invoke(null, new object[] { PlayerToReplace, roleEasyEvents });
-                        PlayerToReplace = null;
+                        afkComp = this,
+                        spawnLocation = pos,
+                        ammo = ammo,
+                        items = inventory,
+                        is079 = isScp079,
+                        level = this.ply.Level,
+                        xp = this.ply.Experience,
+                        energy = this.ply.Energy,
+                        health = health,
+                        roleEasyEvents = roleEasyEvents
                     });
+
+                    if (is035)
+                    {
+                        TrySpawn035(PlayerToReplace);
+                    }
+                    else if (isCISpy)
+					{
+                        TrySpawnSpy(PlayerToReplace, this.ply, TryGetSpies());
+					}
+                    else if (isSerpentsHand)
+					{
+                        TrySpawnSH(PlayerToReplace);
+					}
+                    else
+					{
+                        PlayerToReplace.SetRole(role);
+                    }
                 }
                 else
                 {
@@ -230,6 +220,53 @@ namespace UltimateAFK
         {
             hub.SetRole(RoleType.Spectator);
             hub.Broadcast(30, $"{plugin.Config.MsgPrefix} {plugin.Config.MsgFspec}");
+        }
+
+        private Player TryGet035()
+        {
+            Player scp035 = null;
+            if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "scp035") != null)
+                scp035 = (Player)Loader.Plugins.First(pl => pl.Name == "scp035").Assembly.GetType("scp035.API.Scp035Data").GetMethod("GetScp035", BindingFlags.Public | BindingFlags.Static).Invoke(null, null);
+            return scp035;
+        }
+
+        private List<Player> TryGetSH()
+        {
+            List<Player> players = new List<Player>();
+            if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "SerpentsHand") != null)
+                players = (List<Player>)Loader.Plugins.First(pl => pl.Name == "SerpentsHand").Assembly.GetType("SerpentsHand.API.SerpentsHand").GetMethod("GetSHPlayers", BindingFlags.Public | BindingFlags.Static).Invoke(null, null);
+            return players;
+        }
+
+        private Dictionary<Player, bool> TryGetSpies()
+        {
+            Dictionary<Player, bool> players = new Dictionary<Player, bool>();
+            if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "CiSpy") != null)
+                players = (Dictionary<Player, bool>)Loader.Plugins.First(pl => pl.Name == "CiSpy").Assembly.GetType("CISpy.API.SpyData").GetMethod("GetSpies", BindingFlags.Public | BindingFlags.Static).Invoke(null, null);
+            return players;
+        }
+
+        private void TrySpawnSpy(Player player, Player dc, Dictionary<Player, bool> spies)
+        {
+            if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "CiSpy") != null)
+            {
+                Loader.Plugins.First(pl => pl.Name == "CiSpy").Assembly.GetType("CISpy.API.SpyData").GetMethod("MakeSpy", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { player, spies[dc], false });
+            }
+        }
+
+        private void TrySpawnSH(Player player)
+        {
+            if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "SerpentsHand") != null)
+            {
+                Loader.Plugins.First(pl => pl.Name == "SerpentsHand").Assembly.GetType("SerpentsHand.API.SerpentsHand").GetMethod("SpawnPlayer", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { player, false });
+            }
+        }
+        private void TrySpawn035(Player player)
+        {
+            if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "scp035") != null)
+            {
+                Loader.Plugins.First(pl => pl.Name == "scp035").Assembly.GetType("scp035.API.Scp035Data").GetMethod("GetScp035", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { player });
+            }
         }
 
         private bool IsPastReplaceTime()
