@@ -124,10 +124,6 @@ namespace UltimateAFK
                 // SCP035 Support (Credit DCReplace)
                 bool is035 = this.ply.Id == TryGet035()?.Id;
 
-                bool isCISpy = TryGetSpies()?.ContainsKey(this.ply) ?? false;
-
-                bool isSerpentsHand = TryGetSH()?.Contains(this.ply) ?? false;
-
                 // Credit: DCReplace :)
                 // I mean at this point 90% of this has been rewritten lol...
                 List<ItemType> inventory = this.ply.Items.Select(item => item.Type).ToList();
@@ -179,14 +175,6 @@ namespace UltimateAFK
                     {
                         TrySpawn035(PlayerToReplace);
                     }
-                    else if (isCISpy)
-					{
-                        TrySpawnSpy(PlayerToReplace, this.ply, TryGetSpies());
-					}
-                    else if (isSerpentsHand)
-					{
-                        TrySpawnSH(PlayerToReplace);
-					}
                     else
 					{
                         PlayerToReplace.SetRole(role);
@@ -228,38 +216,6 @@ namespace UltimateAFK
             if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "scp035") != null)
                 scp035 = (Player)Loader.Plugins.First(pl => pl.Name == "scp035").Assembly.GetType("scp035.API.Scp035Data").GetMethod("GetScp035", BindingFlags.Public | BindingFlags.Static).Invoke(null, null);
             return scp035;
-        }
-
-        private List<Player> TryGetSH()
-        {
-            List<Player> players = new List<Player>();
-            if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "SerpentsHand") != null)
-                players = (List<Player>)Loader.Plugins.First(pl => pl.Name == "SerpentsHand").Assembly.GetType("SerpentsHand.API.SerpentsHand").GetMethod("GetSHPlayers", BindingFlags.Public | BindingFlags.Static).Invoke(null, null);
-            return players;
-        }
-
-        private Dictionary<Player, bool> TryGetSpies()
-        {
-            Dictionary<Player, bool> players = new Dictionary<Player, bool>();
-            if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "CiSpy") != null)
-                players = (Dictionary<Player, bool>)Loader.Plugins.First(pl => pl.Name == "CiSpy").Assembly.GetType("CISpy.API.SpyData").GetMethod("GetSpies", BindingFlags.Public | BindingFlags.Static).Invoke(null, null);
-            return players;
-        }
-
-        private void TrySpawnSpy(Player player, Player dc, Dictionary<Player, bool> spies)
-        {
-            if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "CiSpy") != null)
-            {
-                Loader.Plugins.First(pl => pl.Name == "CiSpy").Assembly.GetType("CISpy.API.SpyData").GetMethod("MakeSpy", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { player, spies[dc], false });
-            }
-        }
-
-        private void TrySpawnSH(Player player)
-        {
-            if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "SerpentsHand") != null)
-            {
-                Loader.Plugins.First(pl => pl.Name == "SerpentsHand").Assembly.GetType("SerpentsHand.API.SerpentsHand").GetMethod("SpawnPlayer", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { player, false });
-            }
         }
         private void TrySpawn035(Player player)
         {
