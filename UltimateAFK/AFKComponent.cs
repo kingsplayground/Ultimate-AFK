@@ -221,7 +221,7 @@ namespace UltimateAFK
 		{
 			if (Loader.Plugins.FirstOrDefault(pl => pl.Name == "scp035") != null)
 			{
-				Loader.Plugins.First(pl => pl.Name == "scp035").Assembly.GetType("scp035.API.Scp035Data").GetMethod("GetScp035", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { player });
+				Loader.Plugins.First(pl => pl.Name == "scp035").Assembly.GetType("scp035.API.Scp035Data").GetMethod("Spawn035", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { player });
 			}
 		}
 
