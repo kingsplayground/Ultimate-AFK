@@ -43,59 +43,63 @@ using System;
 using Handlers = Exiled.Events.Handlers;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using HarmonyLib;
 
 namespace UltimateAFK
 {
-    public class MainClass : Plugin<Config>
-    {
-        public override string Author { get; } = "Thomasjosif";
-        public override string Name { get; } = "Ultimate AFK";
-        public override string Prefix { get; } = "uAFK";
-        public override Version Version { get; } = new Version(3, 1, 6);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 2, 4);
-        public PlayerEvents PlayerEvents;
+	public class MainClass : Plugin<Config>
+	{
+		public override string Author { get; } = "Thomasjosif";
+		public override string Name { get; } = "Ultimate AFK";
+		public override string Prefix { get; } = "uAFK";
+		public override Version Version { get; } = new Version(3, 1, 6);
+		public PlayerEvents PlayerEvents;
 
-        public override PluginPriority Priority { get; } = PluginPriority.Medium;
+		public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
-        public override void OnEnabled()
-        {
-            base.OnEnabled();
-            try
-            {
-                PlayerEvents = new PlayerEvents(this);
+		public override void OnEnabled()
+		{
+			base.OnEnabled();
+			try
+			{
+				PlayerEvents = new PlayerEvents(this);
 
-                Handlers.Player.Verified += PlayerEvents.OnPlayerVerified;
-                Handlers.Player.ChangingRole += PlayerEvents.OnSetClass;
-                Handlers.Player.Shooting += PlayerEvents.OnPlayerShoot;
-                Handlers.Player.InteractingDoor += PlayerEvents.OnDoorInteract;
-                Handlers.Scp914.Activating += PlayerEvents.On914Activate;
-                Handlers.Scp914.ChangingKnobSetting += PlayerEvents.On914Change;
-                Handlers.Player.InteractingLocker += PlayerEvents.OnLockerInteract;
-                Handlers.Player.ItemDropped += PlayerEvents.OnDropItem;
-                Handlers.Scp079.GainingExperience += PlayerEvents.OnSCP079Exp;
+				Handlers.Player.Verified += PlayerEvents.OnPlayerVerified;
+				Handlers.Player.ChangingRole += PlayerEvents.OnSetClass;
+				Handlers.Player.Shooting += PlayerEvents.OnPlayerShoot;
+				Handlers.Player.InteractingDoor += PlayerEvents.OnDoorInteract;
+				Handlers.Scp914.Activating += PlayerEvents.On914Activate;
+				Handlers.Scp914.ChangingKnobSetting += PlayerEvents.On914Change;
+				Handlers.Player.InteractingLocker += PlayerEvents.OnLockerInteract;
+				Handlers.Player.DroppingItem += PlayerEvents.OnDropItem;
+				Handlers.Scp079.GainingExperience += PlayerEvents.OnSCP079Exp;
+				Handlers.Player.Spawning += PlayerEvents.OnSpawning;
+				Handlers.Server.RoundStarted += PlayerEvents.OnRoundStarted;
 
-                Log.Info($"UltimateAFK plugin loaded.\n Written by Thomasjosif for King's Playground");
-            }
-            catch (Exception e)
-            {
-                Log.Error($"There was an error loading the plugin: {e}");
-            }
+				Log.Info($"UltimateAFK plugin loaded.\n Written by Thomasjosif for King's Playground");
+			}
+			catch (Exception e)
+			{
+				Log.Error($"There was an error loading the plugin: {e}");
+			}
 
-        }
-        public override void OnDisabled()
-        {
-            base.OnDisabled();
-            Handlers.Player.Verified -= PlayerEvents.OnPlayerVerified;
-            Handlers.Player.ChangingRole -= PlayerEvents.OnSetClass;
-            Handlers.Player.Shooting -= PlayerEvents.OnPlayerShoot;
-            Handlers.Player.InteractingDoor -= PlayerEvents.OnDoorInteract;
-            Handlers.Scp914.Activating -= PlayerEvents.On914Activate;
-            Handlers.Scp914.ChangingKnobSetting -= PlayerEvents.On914Change;
-            Handlers.Player.InteractingLocker -= PlayerEvents.OnLockerInteract;
-            Handlers.Player.ItemDropped -= PlayerEvents.OnDropItem;
-            Handlers.Scp079.GainingExperience -= PlayerEvents.OnSCP079Exp;
+		}
+		public override void OnDisabled()
+		{
+			base.OnDisabled();
+			Handlers.Player.Verified -= PlayerEvents.OnPlayerVerified;
+			Handlers.Player.ChangingRole -= PlayerEvents.OnSetClass;
+			Handlers.Player.Shooting -= PlayerEvents.OnPlayerShoot;
+			Handlers.Player.InteractingDoor -= PlayerEvents.OnDoorInteract;
+			Handlers.Scp914.Activating -= PlayerEvents.On914Activate;
+			Handlers.Scp914.ChangingKnobSetting -= PlayerEvents.On914Change;
+			Handlers.Player.InteractingLocker -= PlayerEvents.OnLockerInteract;
+			Handlers.Player.DroppingItem -= PlayerEvents.OnDropItem;
+			Handlers.Scp079.GainingExperience -= PlayerEvents.OnSCP079Exp;
+			Handlers.Player.Spawning -= PlayerEvents.OnSpawning;
+			Handlers.Server.RoundStarted -= PlayerEvents.OnRoundStarted;
 
-            PlayerEvents = null;
-        }
-    }
+			PlayerEvents = null;
+		}
+	}
 }

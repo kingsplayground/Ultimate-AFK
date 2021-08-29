@@ -27,17 +27,7 @@
             Used to handle plugin configs.
             </summary>
         </member>
-        <member name="P:Exiled.Loader.ConfigManager.Serializer">
-            <summary>
-            Gets the config serializer.
-            </summary>
-        </member>
-        <member name="P:Exiled.Loader.ConfigManager.Deserializer">
-            <summary>
-            Gets the config serializer.
-            </summary>
-        </member>
-        <member name="M:Exiled.Loader.ConfigManager.Load(System.String)">
+        <member name="M:Exiled.Loader.ConfigManager.LoadSorted(System.String)">
             <summary>
             Loads all plugin configs.
             </summary>
@@ -57,7 +47,7 @@
             <param name="configs">The configs to be saved, already serialized in yaml format.</param>
             <returns>Returns a value indicating whether the configs have been saved successfully or not.</returns>
         </member>
-        <member name="M:Exiled.Loader.ConfigManager.Save(System.Collections.Generic.Dictionary{System.String,Exiled.API.Interfaces.IConfig})">
+        <member name="M:Exiled.Loader.ConfigManager.Save(System.Collections.Generic.SortedDictionary{System.String,Exiled.API.Interfaces.IConfig})">
             <summary>
             Saves plugin configs.
             </summary>
@@ -176,6 +166,20 @@
         <member name="M:Exiled.Loader.Features.Configs.CommentsPropertyDescriptor.Read(System.Object)">
             <inheritdoc/>
         </member>
+        <member name="T:Exiled.Loader.Features.Configs.CustomConverters.VectorsConverter">
+            <summary>
+            Converts a Vector2, Vector3 or Vector4 to Yaml configs and vice versa.
+            </summary>
+        </member>
+        <member name="M:Exiled.Loader.Features.Configs.CustomConverters.VectorsConverter.Accepts(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Loader.Features.Configs.CustomConverters.VectorsConverter.ReadYaml(YamlDotNet.Core.IParser,System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Loader.Features.Configs.CustomConverters.VectorsConverter.WriteYaml(YamlDotNet.Core.IEmitter,System.Object,System.Type)">
+            <inheritdoc/>
+        </member>
         <member name="T:Exiled.Loader.Features.Configs.ValidatingNodeDeserializer">
             <summary>
             Basic configs validation.
@@ -248,6 +252,16 @@
             Gets plugin dependencies.
             </summary>
         </member>
+        <member name="P:Exiled.Loader.Loader.Serializer">
+            <summary>
+            Gets the serializer for configs and translations.
+            </summary>
+        </member>
+        <member name="P:Exiled.Loader.Loader.Deserializer">
+            <summary>
+            Gets the deserializer for configs and translations.
+            </summary>
+        </member>
         <member name="M:Exiled.Loader.Loader.Run(System.Reflection.Assembly[])">
             <summary>
             Runs the plugin manager, by loading all dependencies, plugins, configs and then enables all plugins.
@@ -313,6 +327,44 @@
             <param name="plugin">The <see cref="T:Exiled.API.Interfaces.IPlugin`1"/>.</param>
             <exception cref="T:System.ArgumentNullException">The provided plugin is null.</exception>
             <returns>The path of the plugin or null.</returns>
+        </member>
+        <member name="T:Exiled.Loader.TranslationManager">
+            <summary>
+            Used to handle plugin translations.
+            </summary>
+        </member>
+        <member name="M:Exiled.Loader.TranslationManager.Load(System.String)">
+            <summary>
+            Loads all plugin translations.
+            </summary>
+            <param name="rawTranslations">The raw translations to be loaded.</param>
+            <returns>Returns a dictionary of loaded translations.</returns>
+        </member>
+        <member name="M:Exiled.Loader.TranslationManager.Reload">
+            <summary>
+            Reads, Loads and Saves plugin translations.
+            </summary>
+            <returns>Returns a value indicating if the reloading process has been completed successfully or not.</returns>
+        </member>
+        <member name="M:Exiled.Loader.TranslationManager.Save(System.String)">
+            <summary>
+            Saves plugin translations.
+            </summary>
+            <param name="translations">The translations to be saved, already serialized in yaml format.</param>
+            <returns>Returns a value indicating whether the translations have been saved successfully or not.</returns>
+        </member>
+        <member name="M:Exiled.Loader.TranslationManager.Save(System.Collections.Generic.SortedDictionary{System.String,Exiled.API.Interfaces.ITranslation})">
+            <summary>
+            Saves plugin translations.
+            </summary>
+            <param name="translations">The translations to be saved.</param>
+            <returns>Returns a value indicating whether the translations have been saved successfully or not.</returns>
+        </member>
+        <member name="M:Exiled.Loader.TranslationManager.Read">
+            <summary>
+            Read all plugin translations.
+            </summary>
+            <returns>Returns the read translations.</returns>
         </member>
     </members>
 </doc>
