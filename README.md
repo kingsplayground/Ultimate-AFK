@@ -7,6 +7,10 @@ This is an updated version of the original Ultimate AFK plugin from https://gith
 - (Optional) Kick players from the server after repeated AFK detections!
 - Custom broadcasts to AFK Players to indicate to them if they are AFK. 
 - Works with SCP-079 by checking camera angle, and experience interactions
+
+# Permission
+If you give a role the `uafk.ignore` permission it will be ignored by the plugin and will never be set to afk, useful for administrators.
+
 # Installation
 
 **[EXILED](https://github.com/galaxy119/EXILED) must be installed for this to work.**
