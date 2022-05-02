@@ -100,10 +100,13 @@ namespace UltimateAFK.Handlers.Components
         #region AFKChecker | CRINGE AAAAAAAAAAAAAAA 
         private void AFKChecker()
         {
-            bool cantContinue = MyPlayer.IsDead || Player.List.Count() <= UltimateAFK.Instance.Config.MinPlayers || (UltimateAFK.Instance.Config.IgnoreTut && MyPlayer.IsTutorial) || !Round.IsStarted;
 
+            bool cantContinue = MyPlayer.IsDead || Player.List.Count() <= UltimateAFK.Instance.Config.MinPlayers || (UltimateAFK.Instance.Config.IgnoreTut && MyPlayer.IsTutorial) || Round.IsLobby;
+
+            //Log.Debug($"Can continue ? || Player is Dead {MyPlayer.IsDead} || Player list is low {Player.List.Count() <= UltimateAFK.Instance.Config.MinPlayers} || Player is tutorial and config says no {UltimateAFK.Instance.Config.IgnoreTut && MyPlayer.IsTutorial} || Round is in lobby {Round.IsLobby}");
             if (!cantContinue)
             {
+
                 #region Check if player is 079 or 096
                 Scp079Role scp079Role = MyPlayer.Role as Scp079Role;
                 Scp096Role scp096Role = MyPlayer.Role as Scp096Role;
@@ -134,6 +137,7 @@ namespace UltimateAFK.Handlers.Components
 
                 if (isMoving)
                 {
+
                     this.AFKLastPosition = position;
                     this.AFKLastAngle = vector;
                     this.AFKTime = 0;

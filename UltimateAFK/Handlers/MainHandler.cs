@@ -19,6 +19,8 @@ namespace UltimateAFK.Handlers
 
         public override void Start()
         {
+            Log.Warn("Loading MainHandler");
+
             Exiled.Events.Handlers.Player.Verified += OnVerify;
             Exiled.Events.Handlers.Player.ChangingRole += OnChangingRole;
 
@@ -39,6 +41,8 @@ namespace UltimateAFK.Handlers
             Exiled.Events.Handlers.Scp079.ChangingCamera += OnChangeCamara;
 
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundStarted;
+
+            Log.Warn("MainHandler Fully loaded");
         }
 
         public override void Stop()

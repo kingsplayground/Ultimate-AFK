@@ -16,7 +16,7 @@ namespace UltimateAFK
         [Description("The time it takes for a player to stand still before he is detected as AFK")]
         public int AfkTime { get; set; } = 80;
 
-        [Description("After being detected as AFK a message will appear on his face and he will be given this time to move or he will be Kicked/Moved to bystander.")]
+        [Description("After being detected as AFK a message will appear on his face and he will be given this time to move or he will be Kicked/Moved to spectator.")]
         public int GraceTime { get; set; } = 30;
 
         [Description("The number of times a player must be moved to spectator for a player to be kicked from the server. Use -1 to disable it")]
