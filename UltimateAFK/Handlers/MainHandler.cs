@@ -36,6 +36,8 @@ namespace UltimateAFK.Handlers
 
             Exiled.Events.Handlers.Scp079.GainingExperience += OnGaingExp;
 
+            Exiled.Events.Handlers.Scp079.ChangingCamera += OnChangeCamara;
+
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundStarted;
         }
 
@@ -57,6 +59,8 @@ namespace UltimateAFK.Handlers
             Exiled.Events.Handlers.Player.DroppingAmmo -= OnDroppingAmmo;
 
             Exiled.Events.Handlers.Scp079.GainingExperience -= OnGaingExp;
+
+            Exiled.Events.Handlers.Scp079.ChangingCamera -= OnChangeCamara;
 
             Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStarted;
 
@@ -175,6 +179,11 @@ namespace UltimateAFK.Handlers
         {
             ResetAFKTime(ev.Player);
 
+        }
+
+        public void OnChangeCamara(ChangingCameraEventArgs ev)
+        {
+            ResetAFKTime(ev.Player);
         }
 
         public void OnShooting(ShootingEventArgs ev)
