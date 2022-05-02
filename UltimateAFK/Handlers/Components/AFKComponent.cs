@@ -211,9 +211,16 @@ namespace UltimateAFK.Handlers.Components
                                 }
                                 else
                                 {
-                                    //Do nothing.
+                                    MyPlayer.SetRole(RoleType.Spectator);
+                                    MyPlayer.Broadcast(30, UltimateAFK.Instance.Config.MsgFspec, Broadcast.BroadcastFlags.Normal, true);
+                                    MyPlayer.SendConsoleMessage(UltimateAFK.Instance.Config.MsgFspec, "white");
                                 }
                             }
+                            else
+                            {
+                                //It does nothing because the player is dead, so why detect him as an afk?
+                            }
+
                         }
                     }
                 }
