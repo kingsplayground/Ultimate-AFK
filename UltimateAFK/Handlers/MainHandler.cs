@@ -14,6 +14,7 @@ namespace UltimateAFK.Handlers
     /// </summary>
     public class MainHandler : API.Base.Handler
     {
+        // A list of players who are replacing someone else
         public static Dictionary<Player, AFKData> ReplacingPlayers = new Dictionary<Player, AFKData>();
 
         public override void Start()
@@ -58,6 +59,9 @@ namespace UltimateAFK.Handlers
             Exiled.Events.Handlers.Scp079.GainingExperience -= OnGaingExp;
 
             Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStarted;
+
+            ReplacingPlayers.Clear();
+            ReplacingPlayers = null;
         }
 
 

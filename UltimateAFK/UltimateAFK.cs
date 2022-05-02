@@ -43,6 +43,8 @@ namespace UltimateAFK
         public override void OnDisabled()
         {
             Handlers.ForEach((h) => h.Stop());
+            Handlers.Clear();
+            Handlers = null;
             Instance = null;
             base.OnDisabled();
         }
