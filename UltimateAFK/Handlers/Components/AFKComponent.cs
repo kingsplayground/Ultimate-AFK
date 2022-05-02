@@ -193,12 +193,14 @@ namespace UltimateAFK.Handlers.Components
                                         Health = health,
                                     });
 
-                                    if (UltimateAFK.Instance.Config.AfkTime != -1)
+                                    if (UltimateAFK.Instance.Config.AfkCount != -1)
                                     {
                                         AFKCount++;
 
-                                        if (AFKCount > UltimateAFK.Instance.Config.AfkTime)
+                                        if (AFKCount > UltimateAFK.Instance.Config.AfkCount)
                                         {
+                                            MyPlayer.SendConsoleMessage(UltimateAFK.Instance.Config.MsgKick, "white");
+
                                             MyPlayer.Kick(UltimateAFK.Instance.Config.MsgKick, "[UltimateAFK]");
                                         }
                                     }

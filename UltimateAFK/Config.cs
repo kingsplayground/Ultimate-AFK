@@ -28,7 +28,7 @@ namespace UltimateAFK
         public int AfkCount { get; set; } = -1;
 
         [Description("When the player is detected as AFK and is in grace period this message will appear on his face. {0} represents the seconds the player has to move or be moved to spectator.")]
-        public string MsgGrace { get; set; } = "<color=white>[</color><color=green>Cerberus.AFK</color><color=white>]</color> <color=red>You will be moved to spectator if you do not move in less than <color=white>{0}</color> seconds.</color>";
+        public string MsgGrace { get; set; } = "<color=white>[</color><color=green>Ultimate-AFK</color><color=white>]</color> <color=red>You will be moved to spectator if you do not move in less than <color=white>{0}</color> seconds.</color>";
 
         [Description("This message will be sent to the player who has been moved to spectator when he is detected as AFK, it is also sent to the player's console.")]
         public string MsgFspec { get; set; } = "<color=red>You were detected as AFK and were moved to spectator. WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP</color>";

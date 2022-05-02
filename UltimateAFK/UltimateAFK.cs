@@ -32,11 +32,21 @@ namespace UltimateAFK
 
         public override void OnEnabled()
         {
+            Instance = this;
+
+            Handlers = new List<API.Base.Handler>()
+            {
+                new Handlers.MainHandler()
+            };
+
+            Handlers.ForEach(h => h.Start());
             base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
+            Handlers.ForEach((h) => h.Stop());
+            Instance = null;
             base.OnDisabled();
         }
 
