@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- This is taken from the Exiled repository, so thanks for facilitating me with the dependencies :) -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup Condition="$(BaseProperties) == '' OR $(BaseProperties) == 'true'">
@@ -15,7 +16,7 @@
 
   <PropertyGroup>
     <!-- This is the global version and is used for all projects that don't have a version -->
-    <Version Condition="$(Version) == ''">3.2.1</Version>
+    <Version Condition="$(Version) == ''">5.0.0</Version>
     <!-- Enables public beta warning via the PUBLIC_BETA constant -->
     <PublicBeta>false</PublicBeta>
 
