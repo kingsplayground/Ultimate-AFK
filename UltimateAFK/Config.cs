@@ -1,32 +1,42 @@
-﻿namespace UltimateAFK
-{
-    using System.ComponentModel;
-    using Exiled.API.Interfaces;
+﻿using Exiled.API.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-    public sealed class Config : IConfig
+namespace UltimateAFK
+{
+    public class Config : IConfig
     {
-        [Description("Is the plugin enabled?")]
         public bool IsEnabled { get; set; } = true;
-        [Description("Minimum required players for uAFK to be active.")]
-        public int MinPlayers { get; set; } = 2;
-        [Description("Do AFK players get replaced by spectators?")]
-        public bool TryReplace { get; private set; } = true;
-        [Description("Should Tutorials be ignored?")]
-        public bool IgnoreTut { get; private set; } = false;
-        [Description("How long can player not move?")]
-        public int AfkTime { get; private set; } = 30;
-        [Description("How long to wait before player gets kicked after getting a warning for not moving?")]
-        public int GraceTime { get; private set; } = 15;
-        [Description("After how many changes to spectator for AFK should player get kicked?")]
-        public int NumBeforeKick { get; private set; } = 2;
-        [Description("Maximum replace time, if the round time is past this value it will not replace the player (Set to -1 to disable)")]
-        public int MaxReplaceTime { get; private set; } = -1;
-        [Description("Don't touch this if you do not understand the repercussions! - Ignore Perm and IP Checks.")]
-        public bool IgnorePermissionsAndIP { get; private set; } = false;
-        public string MsgPrefix { get; private set; } = "<color=white>[</color><color=green>uAFK</color><color=white>]</color>";
-        public string MsgGrace { get; private set; } = "<color=red>You will be moved to spectator in</color> <color=white>%timeleft% seconds</color><color=red> if you do not move!</color>";
-        public string MsgFspec { get; private set; } = "You were detected as AFK and automatically moved to spectator!";
-        public string MsgKick { get; private set; } = "[Kicked by uAFK] You were AFK for too long!";
-        public string MsgReplace { get; private set; } = "You have replaced a player that was AFK.";
+
+        [Description("If the number of players is less than this the plugin will not work.")]
+        public int MinPlayers { get; set; } = 8;
+
+        [Description("Tutorials should be ignored ?")]
+        public bool IgnoreTut { get; set; } = true;
+
+        [Description("The time it takes for a player to stand still before he is detected as AFK")]
+        public int AfkTime { get; set; } = 80;
+
+        [Description("After being detected as AFK a message will appear on his face and he will be given this time to move or he will be Kicked/Moved to bystander.")]
+        public int GraceTime { get; set; } = 30;
+
+        [Description("The number of times a player must be moved to spectator for a player to be kicked from the server. Use -1 to disable it")]
+        public int AfkCount { get; set; } = -1;
+
+        [Description("When the player is detected as AFK and is in grace period this message will appear on his face. {0} represents the seconds the player has to move or be moved to spectator.")]
+        public string MsgGrace { get; set; } = "<color=white>[</color><color=green>Cerberus.AFK</color><color=white>]</color> <color=red>You will be moved to spectator if you do not move in less than <color=white>{0}</color> seconds.</color>";
+
+        [Description("This message will be sent to the player who has been moved to spectator when he is detected as AFK, it is also sent to the player's console.")]
+        public string MsgFspec { get; set; } = "<color=red>You were detected as AFK and were moved to spectator. WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP WAKE UP</color>";
+
+        [Description("This will be the reason for the Kick, due to the VSR it is obligatory to clarify that it is a plugin with flags like [UltimateAFK] or something similar.")]
+        public string MsgKick { get; set; } = "[Ultimate-AFK] You were removed from the server for being AFK for too long.!";
+
+        [Description("When a player replaces another player, this message will appear on the player's face and on the player console.")]
+        public string MsgReplace { get; set; } = "<color=red> You replaced an AFK player.</color>";
     }
 }
