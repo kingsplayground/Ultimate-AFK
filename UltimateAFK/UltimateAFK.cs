@@ -1,9 +1,6 @@
 ﻿using Exiled.API.Features;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UltimateAFK
 {
@@ -26,9 +23,9 @@ namespace UltimateAFK
 
         public override string Prefix => "Ultimate_Afk";
 
-        public override Version RequiredExiledVersion => new Version(5,0,0);
+        public override Version RequiredExiledVersion => new Version(5, 0, 0);
 
-        public override Version Version => new Version(5,0,0);
+        public override Version Version => new Version(5, 0, 0);
 
         public override void OnEnabled()
         {
@@ -50,6 +47,6 @@ namespace UltimateAFK
             base.OnDisabled();
         }
 
-        
+
     }
 }

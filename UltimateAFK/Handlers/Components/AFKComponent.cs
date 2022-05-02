@@ -1,13 +1,10 @@
-﻿using UltimateAFK.Handlers;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Exiled.API.Features.Roles;
 using Exiled.Events.EventArgs;
 using MEC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace UltimateAFK.Handlers.Components
@@ -225,7 +222,7 @@ namespace UltimateAFK.Handlers.Components
                     }
                 }
             }
-            
+
         }
         #endregion
 

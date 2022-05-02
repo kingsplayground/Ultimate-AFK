@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UltimateAFK.API.Base
+﻿namespace UltimateAFK.API.Base
 {
     /// <summary>
     /// Base API for <see cref="AFK"/> allow create handlers in a "easily" way.

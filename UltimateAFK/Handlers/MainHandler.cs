@@ -3,11 +3,7 @@ using Exiled.API.Features.Roles;
 using Exiled.Events.EventArgs;
 using Exiled.Permissions.Extensions;
 using MEC;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UltimateAFK.Handlers.Components;
 using UltimateAFK.Resources;
 
