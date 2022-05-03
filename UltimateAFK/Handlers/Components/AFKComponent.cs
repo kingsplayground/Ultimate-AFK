@@ -41,6 +41,7 @@ namespace UltimateAFK.Handlers.Components
             if (!(Player.Get(gameObject) is Player ply))
             {
                 Log.Error($"{this} Error Getting Player");
+
                 Destroy();
                 return;
             }
