@@ -1,4 +1,4 @@
-| ![Github All Releases](https://img.shields.io/github/downloads/SrLicht/Ultimate-AFK/total.svg) | <a href="https://github.com/SrLicht/Ultimate-AFK/releases"><img src="https://img.shields.io/github/v/release/SrLicht/Ultimate-AFK?include_prereleases&label=Release" alt="Releases"></a> | <a href="https://discord.gg/PyUkWTg"><img src="https://img.shields.io/discord/656673194693885975?color=%23aa0000&label=EXILED" alt="Support"></a> |
+| ![Github All Releases](https://img.shields.io/github/downloads/SrLicht/Ultimate-AFK/total.svg) | <a href="https://github.com/SrLicht/Ultimate-AFK/releases"><img src="https://img.shields.io/github/v/release/SrLicht/Ultimate-AFK?include_prereleases&label=Last Release" alt="Releases"></a> | <a href="https://discord.gg/PyUkWTg"><img src="https://img.shields.io/discord/656673194693885975?color=%23aa0000&label=EXILED" alt="Support"></a> |
 
 # Ultimate-AFK
 This is an updated version of the original Ultimate AFK plugin from https://github.com/kingsplayground/Ultimate-AFK.
