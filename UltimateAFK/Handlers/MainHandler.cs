@@ -1,7 +1,7 @@
 ﻿using Exiled.API.Features;
 using Exiled.API.Features.Roles;
+using Exiled.CustomItems.API.Features;
 using Exiled.Events.EventArgs;
-using Exiled.Permissions.Extensions;
 using MEC;
 using System.Collections.Generic;
 using UltimateAFK.Handlers.Components;
@@ -73,56 +73,102 @@ namespace UltimateAFK.Handlers
         }
 
 
+        // Player Join server
         public void OnVerify(VerifiedEventArgs ev)
         {
-            if (!ev.Player.GameObject.TryGetComponent<AFKComponent>(out var _))
+            if (ev.Player.GameObject.TryGetComponent<AFKComponent>(out var com))
+            {
+                com.Destroy();
+
+                ev.Player.GameObject.AddComponent<AFKComponent>();
+            }
+            else
             {
                 ev.Player.GameObject.AddComponent<AFKComponent>();
             }
+
+
         }
 
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (ev.Player != null && ev.Player.GameObject.TryGetComponent<AFKComponent>(out var component))
             {
-                if (ev.Player.CheckPermission("uafk.ignore") || ev.Player.SessionVariables.ContainsKey("IsNPC"))
+                try
                 {
-                    component.IsDisable = true;
-                }
-
-                if (ReplacingPlayers.TryGetValue(ev.Player, out var data))
-                {
-                    ev.Items.Clear();
-                    ev.Items.AddRange(data.Items);
-
-                    Timing.CallDelayed(0.8f, () =>
+                    if (ev.Player.SessionVariables.ContainsKey("IsNPC"))
                     {
-                        data.AfkComp.ReplacementPlayer = null;
+                        component.Destroy();
+                        Log.Warn("Destroying the component to a player who was an NPC");
+                        return;
+                    }
 
-                        ev.Player.Position = data.SpawnLocation;
-                        ev.Player.Broadcast(16, UltimateAFK.Instance.Config.MsgReplace, Broadcast.BroadcastFlags.Normal, true);
-                        ev.Player.SendConsoleMessage(UltimateAFK.Instance.Config.MsgReplace, "white");
-                        ev.Player.Health = data.Health;
-                        ev.Player.Inventory.UserInventory.ReserveAmmo = data.Ammo;
-                        ev.Player.Inventory.SendAmmoNextFrame = true;
+                    if (ReplacingPlayers.TryGetValue(ev.Player, out var data))
+                    {
+                        Log.Debug("Detecting player who replaces an AFK", Plugin.Config.DebugMode);
 
-                        if (ev.NewRole == RoleType.Scp079 && data.Is079)
+                        ev.Items.Clear();
+
+                        Log.Debug("Adding items from previous player", Plugin.Config.DebugMode);
+                        foreach (var item in data.Items)
                         {
-                            var scprole = ev.Player.Role as Scp079Role;
-
-                            scprole.Level = data.Level;
-
-                            scprole.Experience = data.Xp;
-
-                            scprole.Energy = data.Energy;
+                            ev.Items.Add(item.Type);
                         }
 
-                        ReplacingPlayers.Remove(ev.Player);
+                        Timing.CallDelayed(0.8f, () =>
+                        {
+                            Log.Debug("Changing player position and HP", Plugin.Config.DebugMode);
 
-                    });
+                            ev.Player.Position = data.Position;
+                            ev.Player.Broadcast(16, UltimateAFK.Instance.Config.MsgReplace, Broadcast.BroadcastFlags.Normal, true);
+                            ev.Player.SendConsoleMessage(UltimateAFK.Instance.Config.MsgReplace, "white");
+                            ev.Player.Health = data.Health;
+                            Log.Debug("Adding Ammo", Plugin.Config.DebugMode);
+
+                            ev.Player.Inventory.UserInventory.ReserveAmmo = data.Ammo;
+                            ev.Player.Inventory.SendAmmoNextFrame = true;
+
+
+                            if (ev.NewRole == RoleType.Scp079 && data.SCP079Role != null)
+                            {
+                                Log.Debug("The new role is a SCP079, transferring level and experience.", Plugin.Config.DebugMode);
+
+                                var scprole = ev.Player.Role as Scp079Role;
+                                scprole.Level = data.SCP079Role.Level;
+                                scprole.Energy = data.SCP079Role.Energy;
+                                scprole.Experience = data.SCP079Role.Experience;
+                            }
+
+                            if (data.CustomItems != null)
+                            {
+                                Log.Debug("The AFK had CustomItems added to its replacement.", Plugin.Config.DebugMode);
+                                foreach (var item in data.CustomItems)
+                                {
+                                    if (CustomItem.TryGet(item, out var citem))
+                                    {
+                                        Log.Debug($"CustomItem {citem.Name} was added to the player's inventory", Plugin.Config.DebugMode);
+
+                                        citem.Give(ev.Player, false);
+                                    }
+                                }
+                            }
+
+                            Log.Debug("Removing the replacement player from the dictionary", Plugin.Config.DebugMode);
+
+                            ReplacingPlayers.Remove(ev.Player);
+
+                        });
+                    }
                 }
+                catch (System.Exception e)
+                {
+                    Log.Error($"Error when trying to replace a player  || {e} {e.StackTrace}");
+                }
+
             }
         }
+
+
 
         public void OnRoundStarted()
         {
@@ -134,6 +180,14 @@ namespace UltimateAFK.Handlers
             if (ply != null && ply.GameObject.TryGetComponent<AFKComponent>(out var comp))
             {
                 comp.AFKTime = 0;
+            }
+        }
+
+        private IEnumerator<float> CountHandle()
+        {
+            while (true)
+            {
+                yield return Timing.WaitForSeconds(1.5f);
             }
         }
 
@@ -195,5 +249,6 @@ namespace UltimateAFK.Handlers
             ResetAFKTime(ev.Shooter);
         }
         #endregion
+
     }
 }
