@@ -129,9 +129,9 @@ namespace UltimateAFK.Handlers
 
                             Log.Debug("Adding Ammo", UltimateAFK.Instance.Config.DebugMode);
 
+                            ev.Player.Inventory.UserInventory.ReserveAmmo.Clear();
                             ev.Player.Inventory.UserInventory.ReserveAmmo = data.Ammo;
                             ev.Player.Inventory.SendAmmoNextFrame = true;
-
 
                             if (ev.NewRole == RoleType.Scp079 && data.SCP079Role != null)
                             {
