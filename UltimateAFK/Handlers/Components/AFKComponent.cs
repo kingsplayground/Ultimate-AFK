@@ -160,7 +160,7 @@ namespace UltimateAFK.Handlers.Components
                             {
                                 customitems = null;
                             }
-                            
+
 
                             var list = Player.List.Where(p => p.IsDead && p.UserId != MyPlayer.UserId && !p.IsOverwatchEnabled && !p.CheckPermission("uafk.ignore") && !p.SessionVariables.ContainsKey("IsNPC"));
                             ReplacementPlayer = list.FirstOrDefault();
