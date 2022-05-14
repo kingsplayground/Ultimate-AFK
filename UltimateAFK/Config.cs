@@ -7,6 +7,9 @@ namespace UltimateAFK
     {
         public bool IsEnabled { get; set; } = true;
 
+        [Description("If you have any error in the plugin operation activate this and create an Issue in Github https://github.com/SrLicht/Ultimate-AFK/issues")]
+        public bool DebugMode { get; set; } = false;
+
         [Description("If the number of players is less than this the plugin will not work.")]
         public int MinPlayers { get; set; } = 8;
 
