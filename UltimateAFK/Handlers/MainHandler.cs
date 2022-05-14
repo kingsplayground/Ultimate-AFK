@@ -80,12 +80,12 @@ namespace UltimateAFK.Handlers
             {
                 com.Destroy();
 
-                Log.Debug($"Adding the Component to  {ev.Player.Nickname}");
+                Log.Debug($"Adding the Component to  {ev.Player.Nickname}", UltimateAFK.Instance.Config.DebugMode);
                 ev.Player.GameObject.AddComponent<AFKComponent>();
             }
             else
             {
-                Log.Debug($"Adding the Component to  {ev.Player.Nickname}");
+                Log.Debug($"Adding the Component to  {ev.Player.Nickname}", UltimateAFK.Instance.Config.DebugMode);
 
                 ev.Player.GameObject.AddComponent<AFKComponent>();
             }
@@ -108,11 +108,11 @@ namespace UltimateAFK.Handlers
 
                     if (ReplacingPlayers.TryGetValue(ev.Player, out var data))
                     {
-                        Log.Debug("Detecting player who replaces an AFK");
+                        Log.Debug("Detecting player who replaces an AFK", UltimateAFK.Instance.Config.DebugMode);
 
                         ev.Items.Clear();
 
-                        Log.Debug("Adding items from previous player");
+                        Log.Debug("Adding items from previous player", UltimateAFK.Instance.Config.DebugMode);
                         foreach (var item in data.Items)
                         {
                             ev.Items.Add(item.Type);
@@ -126,7 +126,8 @@ namespace UltimateAFK.Handlers
                             ev.Player.Broadcast(16, UltimateAFK.Instance.Config.MsgReplace, Broadcast.BroadcastFlags.Normal, true);
                             ev.Player.SendConsoleMessage(UltimateAFK.Instance.Config.MsgReplace, "white");
                             ev.Player.Health = data.Health;
-                            Log.Debug("Adding Ammo");
+
+                            Log.Debug("Adding Ammo", UltimateAFK.Instance.Config.DebugMode);
 
                             ev.Player.Inventory.UserInventory.ReserveAmmo = data.Ammo;
                             ev.Player.Inventory.SendAmmoNextFrame = true;
@@ -134,7 +135,7 @@ namespace UltimateAFK.Handlers
 
                             if (ev.NewRole == RoleType.Scp079 && data.SCP079Role != null)
                             {
-                                Log.Debug("The new role is a SCP079, transferring level and experience.");
+                                Log.Debug("The new role is a SCP079, transferring level and experience.", UltimateAFK.Instance.Config.DebugMode);
 
                                 var scprole = ev.Player.Role as Scp079Role;
                                 scprole.Level = data.SCP079Role.Level;
@@ -144,19 +145,19 @@ namespace UltimateAFK.Handlers
 
                             if (data.CustomItems != null && Plugin.Config.CustomItemsSupport)
                             {
-                                Log.Debug("The AFK had CustomItems added to its replacement.");
+                                Log.Debug("The AFK had CustomItems added to its replacement.", UltimateAFK.Instance.Config.DebugMode);
                                 foreach (var item in data.CustomItems)
                                 {
                                     if (CustomItem.TryGet(item, out var citem))
                                     {
-                                        Log.Debug($"CustomItem {citem.Name} was added to the player's inventory");
+                                        Log.Debug($"CustomItem {citem.Name} was added to the player's inventory", UltimateAFK.Instance.Config.DebugMode);
 
                                         citem.Give(ev.Player, false);
                                     }
                                 }
                             }
 
-                            Log.Debug("Removing the replacement player from the dictionary");
+                            Log.Debug("Removing the replacement player from the dictionary", UltimateAFK.Instance.Config.DebugMode);
 
                             ReplacingPlayers.Remove(ev.Player);
 
