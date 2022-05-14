@@ -167,7 +167,7 @@ namespace UltimateAFK.Handlers.Components
 
                             if (ReplacementPlayer == null)
                             {
-                                Log.Debug("Unable to find replacement player, moving to spectator...");
+                                Log.Debug("Unable to find replacement player, moving to spectator...", UltimateAFK.Instance.Config.DebugMode);
 
                                 MyPlayer.SetRole(RoleType.Spectator);
                                 MyPlayer.Broadcast(30, UltimateAFK.Instance.Config.MsgFspec, Broadcast.BroadcastFlags.Normal, true);
@@ -175,7 +175,7 @@ namespace UltimateAFK.Handlers.Components
                             }
                             else
                             {
-                                Log.Debug($"Replacement Player found\nNickname: {ReplacementPlayer.Nickname}\nUserID: {ReplacementPlayer.UserId}\n Role: {ReplacementPlayer.Role.Type}");
+                                Log.Debug($"Replacement Player found\nNickname: {ReplacementPlayer.Nickname}\nUserID: {ReplacementPlayer.UserId}\n Role: {ReplacementPlayer.Role.Type}", UltimateAFK.Instance.Config.DebugMode);
 
                                 MainHandler.ReplacingPlayers.Add(ReplacementPlayer, new AFKData
                                 {
@@ -202,7 +202,7 @@ namespace UltimateAFK.Handlers.Components
                                     }
                                 }
 
-                                Log.Debug("Moving replacement player to the previous player's role");
+                                Log.Debug("Moving replacement player to the previous player's role", UltimateAFK.Instance.Config.DebugMode);
 
                                 this.ReplacementPlayer.SetRole(role);
 
