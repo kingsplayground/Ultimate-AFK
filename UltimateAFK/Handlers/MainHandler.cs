@@ -80,10 +80,13 @@ namespace UltimateAFK.Handlers
             {
                 com.Destroy();
 
+                Log.Debug($"Adding the Component to  {ev.Player.Nickname}");
                 ev.Player.GameObject.AddComponent<AFKComponent>();
             }
             else
             {
+                Log.Debug($"Adding the Component to  {ev.Player.Nickname}");
+
                 ev.Player.GameObject.AddComponent<AFKComponent>();
             }
 
@@ -105,17 +108,17 @@ namespace UltimateAFK.Handlers
 
                     if (ReplacingPlayers.TryGetValue(ev.Player, out var data))
                     {
-                        Log.Debug("Detecting player who replaces an AFK", Plugin.Config.DebugMode);
+                        Log.Debug("Detecting player who replaces an AFK");
 
                         ev.Items.Clear();
 
-                        Log.Debug("Adding items from previous player", Plugin.Config.DebugMode);
+                        Log.Debug("Adding items from previous player");
                         foreach (var item in data.Items)
                         {
                             ev.Items.Add(item.Type);
                         }
 
-                        Timing.CallDelayed(0.8f, () =>
+                        Timing.CallDelayed(1.2f, () =>
                         {
                             Log.Debug("Changing player position and HP", Plugin.Config.DebugMode);
 
@@ -123,7 +126,7 @@ namespace UltimateAFK.Handlers
                             ev.Player.Broadcast(16, UltimateAFK.Instance.Config.MsgReplace, Broadcast.BroadcastFlags.Normal, true);
                             ev.Player.SendConsoleMessage(UltimateAFK.Instance.Config.MsgReplace, "white");
                             ev.Player.Health = data.Health;
-                            Log.Debug("Adding Ammo", Plugin.Config.DebugMode);
+                            Log.Debug("Adding Ammo");
 
                             ev.Player.Inventory.UserInventory.ReserveAmmo = data.Ammo;
                             ev.Player.Inventory.SendAmmoNextFrame = true;
@@ -131,7 +134,7 @@ namespace UltimateAFK.Handlers
 
                             if (ev.NewRole == RoleType.Scp079 && data.SCP079Role != null)
                             {
-                                Log.Debug("The new role is a SCP079, transferring level and experience.", Plugin.Config.DebugMode);
+                                Log.Debug("The new role is a SCP079, transferring level and experience.");
 
                                 var scprole = ev.Player.Role as Scp079Role;
                                 scprole.Level = data.SCP079Role.Level;
@@ -139,21 +142,21 @@ namespace UltimateAFK.Handlers
                                 scprole.Experience = data.SCP079Role.Experience;
                             }
 
-                            if (data.CustomItems != null)
+                            if (data.CustomItems != null && Plugin.Config.CustomItemsSupport)
                             {
-                                Log.Debug("The AFK had CustomItems added to its replacement.", Plugin.Config.DebugMode);
+                                Log.Debug("The AFK had CustomItems added to its replacement.");
                                 foreach (var item in data.CustomItems)
                                 {
                                     if (CustomItem.TryGet(item, out var citem))
                                     {
-                                        Log.Debug($"CustomItem {citem.Name} was added to the player's inventory", Plugin.Config.DebugMode);
+                                        Log.Debug($"CustomItem {citem.Name} was added to the player's inventory");
 
                                         citem.Give(ev.Player, false);
                                     }
                                 }
                             }
 
-                            Log.Debug("Removing the replacement player from the dictionary", Plugin.Config.DebugMode);
+                            Log.Debug("Removing the replacement player from the dictionary");
 
                             ReplacingPlayers.Remove(ev.Player);
 
