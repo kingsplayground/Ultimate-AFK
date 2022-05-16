@@ -39,13 +39,5 @@ namespace UltimateAFK
 
         [Description("When a player replaces another player, this message will appear on the player's face and on the player console.")]
         public string MsgReplace { get; set; } = "<color=red> You replaced an AFK player.</color>";
-
-
-        //---------------------------> aaaaaaaaaa <--------------------------
-        public string CustomCommandPrefix { get; set; } = "safe";
-
-        public string[] CustomCommandAliases { get; set; } = { "sf" };
-
-        public string CustomCommandDescription { get; set; } = "Example";
     }
 }
