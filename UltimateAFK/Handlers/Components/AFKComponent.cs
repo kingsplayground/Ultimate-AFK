@@ -50,6 +50,7 @@ namespace UltimateAFK.Handlers.Components
             Exiled.Events.Handlers.Player.Jumping += OnJumping;
 
             // Coroutine dies when the component or the ReferenceHub (Player) is destroyed.
+
             CountHandler = Timing.RunCoroutine(CheckAfkPerSecond().CancelWith(this).CancelWith(gameObject));
 
             if (MyPlayer.CheckPermission("uafk.ignore"))
@@ -57,6 +58,8 @@ namespace UltimateAFK.Handlers.Components
                 Log.Debug($"The player {MyPlayer.Nickname} has the permission \"uafk.ignore\" disabling component");
                 IsDisable = true;
             }
+
+            Log.Debug($"{MyPlayer.Nickname} component fully loaded", UltimateAFK.Instance.Config.DebugMode);
         }
 
         public void Destroy()
@@ -70,9 +73,9 @@ namespace UltimateAFK.Handlers.Components
                 Exiled.Events.Handlers.Player.Jumping -= OnJumping;
                 Destroy(this);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Log.Error($"{this} " + e);
                 throw;
             }
         }
@@ -119,6 +122,8 @@ namespace UltimateAFK.Handlers.Components
                 {
 
                     var isAfk = AFKTime++ >= UltimateAFK.Instance.Config.AfkTime;
+
+                    Log.Debug($"{MyPlayer.Nickname} is in grace time AFKTIME: {AFKTime}", UltimateAFK.Instance.Config.DebugMode);
 
                     if (isAfk)
                     {
