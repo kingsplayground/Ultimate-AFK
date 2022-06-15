@@ -24,4 +24,4 @@ For technical and lazy reasons you need ``Exiled.CustomItems.dll`` since I use i
 
 ![image](https://user-images.githubusercontent.com/36207738/173796583-8f1a3287-3ab9-4d36-9aad-efbf142cb1e0.png)
 
-``Exiled.CustomItems`` does not contain any CustomItems and is only an API.
+``Exiled.CustomItems.dll`` does not contain any CustomItems and is only an API used for spawning and creating CustomItems, if you want CustomItems you need to download this plugin https://github.com/Exiled-Team/CustomItems
