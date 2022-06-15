@@ -5,7 +5,7 @@ param (
 )
 
 $Projects = @(
-    'UltimateAFK'
+    "UltimateAFK"
 )
 
 function Execute {
@@ -26,7 +26,7 @@ function CheckLastOperationStatus {
 }
 
 function GetSolutionVersion {
-    [XML]$PropsFile = Get-Content Exiled.props
+    [XML]$PropsFile = Get-Content Cerberus.props
     $Version = $PropsFile.Project.PropertyGroup[2].Version
     $Version = $Version.'#text'.Trim()
     return $Version
@@ -35,7 +35,7 @@ function GetSolutionVersion {
 # Restore projects
 Execute 'dotnet restore'
 # Build projects
-Execute 'dotnet build' '-c release'
+Execute 'dotnet build'
 # Build a NuGet package if needed
 if ($BuildNuGet) {
     $Version = GetSolutionVersion
