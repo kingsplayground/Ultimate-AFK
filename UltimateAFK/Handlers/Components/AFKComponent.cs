@@ -82,10 +82,14 @@ namespace UltimateAFK.Handlers.Components
 
         public void CheckAFK()
         {
+            Log.Debug("CheckAFK before the if call", UltimateAFK.Instance.Config.DebugMode);
+
             var cantcontinue = MyPlayer.IsDead || Player.List.Count() <= UltimateAFK.Instance.Config.MinPlayers || (UltimateAFK.Instance.Config.IgnoreTut && MyPlayer.IsTutorial) || Round.IsLobby;
 
             if (!cantcontinue)
             {
+                Log.Debug("CheckAFK inside the if called", UltimateAFK.Instance.Config.DebugMode);
+
                 bool isSCP079 = MyPlayer.Role is Scp079Role;
                 bool isSCP096 = MyPlayer.Role is Scp096Role;
                 bool isNotCrying = false;
@@ -111,6 +115,8 @@ namespace UltimateAFK.Handlers.Components
 
                 if (isMoving)
                 {
+                    Log.Debug("CheckAFK() player is moving, changing position variables", UltimateAFK.Instance.Config.DebugMode);
+
                     this.LastPosition = position;
                     this.LastRotation = vector;
                     this.AFKTime = 0;
@@ -225,8 +231,10 @@ namespace UltimateAFK.Handlers.Components
         {
             while (true)
             {
+                Log.Debug("Calling CheckAfkPerSecond() before If", UltimateAFK.Instance.Config.DebugMode);
                 if (!IsDisable && Round.IsStarted)
                 {
+                    Log.Debug("Call of CheckAfkPerSecond() inside If", UltimateAFK.Instance.Config.DebugMode);
                     CheckAFK();
                 }
 
@@ -239,6 +247,7 @@ namespace UltimateAFK.Handlers.Components
         {
             if (ev.Player == MyPlayer)
             {
+                Log.Debug($"OnDestroying | My player was destroyed by DestroyingEventArg, destroying component", UltimateAFK.Instance.Config.DebugMode);
                 Destroy();
             }
         }
@@ -248,6 +257,7 @@ namespace UltimateAFK.Handlers.Components
         {
             if (ev.Player != null && ev.Player == MyPlayer && !IsDisable)
             {
+                Log.Debug($"OnJumping | My player is jumping, resetting AFK counter", UltimateAFK.Instance.Config.DebugMode);
                 AFKTime = 0;
             }
         }
