@@ -53,11 +53,11 @@ namespace UltimateAFK.Handlers.Components
 
             CountHandler = Timing.RunCoroutine(CheckAfkPerSecond().CancelWith(this).CancelWith(gameObject));
 
-            /*if (MyPlayer.CheckPermission("uafk.ignore"))
+            if (MyPlayer.CheckPermission("uafk.ignore"))
             {
                 Log.Debug($"The player {MyPlayer.Nickname} has the permission \"uafk.ignore\" disabling component");
                 IsDisable = true;
-            }*/
+            }
 
             Log.Debug($"{MyPlayer.Nickname} component fully loaded", UltimateAFK.Instance.Config.DebugMode);
         }
@@ -186,6 +186,20 @@ namespace UltimateAFK.Handlers.Components
                             {
                                 Log.Debug("Unable to find replacement player, moving to spectator...", UltimateAFK.Instance.Config.DebugMode);
 
+                                if (UltimateAFK.Instance.Config.AfkCount != -1)
+                                {
+                                    AFKCount++;
+
+                                    if (AFKCount >= UltimateAFK.Instance.Config.AfkCount)
+                                    {
+                                        MyPlayer.SendConsoleMessage(UltimateAFK.Instance.Config.MsgKick, "white");
+
+                                        MyPlayer.Kick(UltimateAFK.Instance.Config.MsgKick, "[UltimateAFK]");
+
+                                        return;
+                                    }
+                                }
+
                                 MyPlayer.SetRole(RoleType.Spectator);
                                 MyPlayer.Broadcast(30, UltimateAFK.Instance.Config.MsgFspec, Broadcast.BroadcastFlags.Normal, true);
                                 MyPlayer.SendConsoleMessage(UltimateAFK.Instance.Config.MsgFspec, "white");
@@ -207,21 +221,23 @@ namespace UltimateAFK.Handlers.Components
                                 });
 
 
+                                Log.Debug("Moving replacement player to the previous player's role", UltimateAFK.Instance.Config.DebugMode);
+
+                                this.ReplacementPlayer.SetRole(role);
+
                                 if (UltimateAFK.Instance.Config.AfkCount != -1)
                                 {
                                     AFKCount++;
 
-                                    if (AFKCount > UltimateAFK.Instance.Config.AfkCount)
+                                    if (AFKCount >= UltimateAFK.Instance.Config.AfkCount)
                                     {
                                         MyPlayer.SendConsoleMessage(UltimateAFK.Instance.Config.MsgKick, "white");
 
                                         MyPlayer.Kick(UltimateAFK.Instance.Config.MsgKick, "[UltimateAFK]");
+
+                                        return;
                                     }
                                 }
-
-                                Log.Debug("Moving replacement player to the previous player's role", UltimateAFK.Instance.Config.DebugMode);
-
-                                this.ReplacementPlayer.SetRole(role);
 
                                 MyPlayer.SetRole(RoleType.Spectator);
                                 MyPlayer.Broadcast(30, UltimateAFK.Instance.Config.MsgFspec, Broadcast.BroadcastFlags.Normal, true);
