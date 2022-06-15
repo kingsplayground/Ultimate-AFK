@@ -20,7 +20,7 @@ Place the "UltimateAFK.dll" file in your Plugins folder.
 
 # IMPORTANT
 
-For technical and lazy reasons you need ``Exiled.CustomItems.dll`` since I use its API regardless if the CustomItemsSupport setting is false.
+For technical and Lazy reasons you have to have ``Exiled.CustomItems.dll`` in your plugins folder, this file is included in any current version of Exiled, and it doesn't matter if you have the CustomItemsSupport setting to false, you need ``Exiled.CustomItems``
 
 ![image](https://user-images.githubusercontent.com/36207738/173796583-8f1a3287-3ab9-4d36-9aad-efbf142cb1e0.png)
 
