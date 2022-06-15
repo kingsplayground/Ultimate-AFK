@@ -66,11 +66,17 @@ namespace UltimateAFK.Handlers.Components
         {
             try
             {
+                Log.Debug($"Calling Destroy", UltimateAFK.Instance.Config.DebugMode);
+
+                if (MyPlayer is null)
+                    Log.Debug("Player is null");
+
                 MyPlayer = null;
                 ReplacementPlayer = null;
 
                 Exiled.Events.Handlers.Player.Destroying -= OnDestroying;
                 Exiled.Events.Handlers.Player.Jumping -= OnJumping;
+
                 Destroy(this);
             }
             catch (Exception e)
