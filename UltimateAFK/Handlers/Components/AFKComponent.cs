@@ -53,11 +53,11 @@ namespace UltimateAFK.Handlers.Components
 
             CountHandler = Timing.RunCoroutine(CheckAfkPerSecond().CancelWith(this).CancelWith(gameObject));
 
-            if (MyPlayer.CheckPermission("uafk.ignore"))
+            /*if (MyPlayer.CheckPermission("uafk.ignore"))
             {
                 Log.Debug($"The player {MyPlayer.Nickname} has the permission \"uafk.ignore\" disabling component");
                 IsDisable = true;
-            }
+            }*/
 
             Log.Debug($"{MyPlayer.Nickname} component fully loaded", UltimateAFK.Instance.Config.DebugMode);
         }
@@ -90,9 +90,9 @@ namespace UltimateAFK.Handlers.Components
         {
             Log.Debug("CheckAFK before the if call", UltimateAFK.Instance.Config.DebugMode);
 
-            //var cantcontinue = MyPlayer.IsDead || Player.List.Count() <= UltimateAFK.Instance.Config.MinPlayers || (UltimateAFK.Instance.Config.IgnoreTut && MyPlayer.IsTutorial) || Round.IsLobby;
+            var cantcontinue = MyPlayer.IsDead || Player.List.Count() <= UltimateAFK.Instance.Config.MinPlayers || (UltimateAFK.Instance.Config.IgnoreTut && MyPlayer.IsTutorial) || Round.IsLobby;
 
-            if (Round.IsStarted)
+            if (!cantcontinue)
             {
                 Log.Debug("CheckAFK inside the if called", UltimateAFK.Instance.Config.DebugMode);
 
@@ -238,10 +238,20 @@ namespace UltimateAFK.Handlers.Components
             while (true)
             {
                 Log.Debug("Calling CheckAfkPerSecond() before If", UltimateAFK.Instance.Config.DebugMode);
+
                 if (!IsDisable && Round.IsStarted)
                 {
-                    Log.Debug("Call of CheckAfkPerSecond() inside If", UltimateAFK.Instance.Config.DebugMode);
-                    CheckAFK();
+                    try
+                    {
+                        Log.Debug("Call of CheckAfkPerSecond() inside If", UltimateAFK.Instance.Config.DebugMode);
+
+                        CheckAFK();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"{this} Error on CheckAFK(): {e} || {e.StackTrace}");
+                    }
+                    
                 }
 
                 yield return Timing.WaitForSeconds(1.2f);
