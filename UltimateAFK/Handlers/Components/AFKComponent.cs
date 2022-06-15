@@ -90,9 +90,9 @@ namespace UltimateAFK.Handlers.Components
         {
             Log.Debug("CheckAFK before the if call", UltimateAFK.Instance.Config.DebugMode);
 
-            var cantcontinue = MyPlayer.IsDead || Player.List.Count() <= UltimateAFK.Instance.Config.MinPlayers || (UltimateAFK.Instance.Config.IgnoreTut && MyPlayer.IsTutorial) || Round.IsLobby;
+            //var cantcontinue = MyPlayer.IsDead || Player.List.Count() <= UltimateAFK.Instance.Config.MinPlayers || (UltimateAFK.Instance.Config.IgnoreTut && MyPlayer.IsTutorial) || Round.IsLobby;
 
-            if (!cantcontinue)
+            if (Round.IsStarted)
             {
                 Log.Debug("CheckAFK inside the if called", UltimateAFK.Instance.Config.DebugMode);
 
