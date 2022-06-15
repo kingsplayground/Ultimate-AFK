@@ -14,7 +14,14 @@ This is an updated version of the original Ultimate AFK plugin from https://gith
 If you give a role the `uafk.ignore` permission it will be ignored by the plugin and will never be set to afk, useful for administrators.
 
 # Installation
-
 **[EXILED](https://github.com/galaxy119/EXILED) must be installed for this to work.**
 
 Place the "UltimateAFK.dll" file in your Plugins folder.
+
+# IMPORTANT
+
+For technical and lazy reasons you need ``Exiled.CustomItems.dll`` since I use its API regardless if the CustomItemsSupport setting is false.
+
+![image](https://user-images.githubusercontent.com/36207738/173796583-8f1a3287-3ab9-4d36-9aad-efbf142cb1e0.png)
+
+``Exiled.CustomItems`` does not contain any CustomItems and is only an API.
