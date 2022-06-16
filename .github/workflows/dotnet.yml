@@ -46,4 +46,4 @@ jobs:
       with:
         name: Build Results
         path: bin/Debug
-        retention-days: 3
+        retention-days: 1

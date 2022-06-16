@@ -206,7 +206,6 @@ namespace UltimateAFK.Handlers.Components
 
                                 });
 
-
                                 Log.Debug("Moving replacement player to the previous player's role", UltimateAFK.Instance.Config.DebugMode);
 
                                 this.ReplacementPlayer.SetRole(role);
@@ -224,6 +223,7 @@ namespace UltimateAFK.Handlers.Components
                                         return;
                                     }
                                 }
+
                                 // I do this, to avoid that when changing to spectator the items that the player had are thrown to the ground :)
                                 MyPlayer.ClearInventory();
 
