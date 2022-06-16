@@ -1,6 +1,5 @@
 ﻿using Exiled.API.Features;
 using Exiled.API.Features.Roles;
-using Exiled.CustomItems.API.Features;
 using Exiled.Events.EventArgs;
 using Exiled.Permissions.Extensions;
 using MEC;
@@ -69,7 +68,7 @@ namespace UltimateAFK.Handlers.Components
                 Log.Debug($"Calling Destroy", UltimateAFK.Instance.Config.DebugMode);
 
                 if (MyPlayer is null)
-                    Log.Debug("Player is null");
+                    Log.Debug("Player is null in Destroy()");
 
                 MyPlayer = null;
                 ReplacementPlayer = null;
@@ -88,13 +87,13 @@ namespace UltimateAFK.Handlers.Components
 
         public void CheckAFK()
         {
-            Log.Debug("CheckAFK before the if call", UltimateAFK.Instance.Config.DebugMode);
+            Log.Debug("CheckAFK before the if call", UltimateAFK.Instance.Config.DebugMode && UltimateAFK.Instance.Config.SpamLogs);
 
             var cantcontinue = MyPlayer.IsDead || Player.List.Count() <= UltimateAFK.Instance.Config.MinPlayers || (UltimateAFK.Instance.Config.IgnoreTut && MyPlayer.IsTutorial) || Round.IsLobby;
 
             if (!cantcontinue)
             {
-                Log.Debug("CheckAFK inside the if called", UltimateAFK.Instance.Config.DebugMode);
+                Log.Debug("CheckAFK inside the if called", UltimateAFK.Instance.Config.DebugMode && UltimateAFK.Instance.Config.SpamLogs);
 
                 bool isSCP079 = MyPlayer.Role is Scp079Role;
                 bool isSCP096 = MyPlayer.Role is Scp096Role;
@@ -135,7 +134,7 @@ namespace UltimateAFK.Handlers.Components
 
                     var isAfk = AFKTime++ >= UltimateAFK.Instance.Config.AfkTime;
 
-                    Log.Debug($"{MyPlayer.Nickname} is in grace time AFKTIME: {AFKTime}", UltimateAFK.Instance.Config.DebugMode);
+                    Log.Debug($"{MyPlayer.Nickname} is in not moving, AFKTime: {AFKTime}", UltimateAFK.Instance.Config.DebugMode);
 
                     if (isAfk)
                     {
@@ -162,21 +161,7 @@ namespace UltimateAFK.Handlers.Components
                             var ammo = MyPlayer.Ammo;
                             var customitems = new List<string>();
 
-                            if (UltimateAFK.Instance.Config.CustomItemsSupport)
-                            {
-                                foreach (var item in MyPlayer.Items)
-                                {
-                                    if (CustomItem.TryGet(item, out var citem))
-                                    {
-                                        customitems.Add(citem.Name);
-                                        items.Remove(item);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                customitems = null;
-                            }
+                            customitems = null;
 
 
                             var list = Player.List.Where(p => p.IsDead && p.UserId != MyPlayer.UserId && !p.IsOverwatchEnabled && !p.CheckPermission("uafk.ignore") && !p.SessionVariables.ContainsKey("IsNPC"));
@@ -253,13 +238,13 @@ namespace UltimateAFK.Handlers.Components
         {
             while (true)
             {
-                Log.Debug("Calling CheckAfkPerSecond() before If", UltimateAFK.Instance.Config.DebugMode);
+                Log.Debug("Calling CheckAfkPerSecond() before If", UltimateAFK.Instance.Config.DebugMode && UltimateAFK.Instance.Config.SpamLogs);
 
                 if (!IsDisable && Round.IsStarted)
                 {
                     try
                     {
-                        Log.Debug("Call of CheckAfkPerSecond() inside If", UltimateAFK.Instance.Config.DebugMode);
+                        Log.Debug("Call of CheckAfkPerSecond() inside If", UltimateAFK.Instance.Config.DebugMode && UltimateAFK.Instance.Config.SpamLogs);
 
                         CheckAFK();
                     }
@@ -267,7 +252,7 @@ namespace UltimateAFK.Handlers.Components
                     {
                         Log.Error($"{this} Error on CheckAFK(): {e} || {e.StackTrace}");
                     }
-                    
+
                 }
 
                 yield return Timing.WaitForSeconds(1.2f);

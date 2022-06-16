@@ -1,6 +1,5 @@
 ﻿using Exiled.API.Features;
 using Exiled.API.Features.Roles;
-using Exiled.CustomItems.API.Features;
 using Exiled.Events.EventArgs;
 using MEC;
 using System.Collections.Generic;
@@ -118,7 +117,7 @@ namespace UltimateAFK.Handlers
                             ev.Items.Add(item.Type);
                         }
 
-                        Timing.CallDelayed(1.2f, () =>
+                        Timing.CallDelayed(0.8f, () =>
                         {
                             Log.Debug("Changing player position and HP", Plugin.Config.DebugMode);
 
@@ -141,20 +140,6 @@ namespace UltimateAFK.Handlers
                                 scprole.Level = data.SCP079Role.Level;
                                 scprole.Energy = data.SCP079Role.Energy;
                                 scprole.Experience = data.SCP079Role.Experience;
-                            }
-
-                            if (data.CustomItems != null && Plugin.Config.CustomItemsSupport)
-                            {
-                                Log.Debug("The AFK had CustomItems added to its replacement.", UltimateAFK.Instance.Config.DebugMode);
-                                foreach (var item in data.CustomItems)
-                                {
-                                    if (CustomItem.TryGet(item, out var citem))
-                                    {
-                                        Log.Debug($"CustomItem {citem.Name} was added to the player's inventory", UltimateAFK.Instance.Config.DebugMode);
-
-                                        citem.Give(ev.Player, false);
-                                    }
-                                }
                             }
 
                             Log.Debug("Removing the replacement player from the dictionary", UltimateAFK.Instance.Config.DebugMode);

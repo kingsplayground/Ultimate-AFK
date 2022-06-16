@@ -10,8 +10,8 @@ namespace UltimateAFK
         [Description("If you have any error in the plugin operation activate this and create an Issue in Github https://github.com/SrLicht/Ultimate-AFK/issues")]
         public bool DebugMode { get; set; } = false;
 
-        [Description("If you have CustomItems activated and you want the player to be given the CustomItems when replacing the player, activate this.")]
-        public bool CustomItemsSupport { get; set; } = false;
+        [Description("This bool activates the logs that easily spams the console, and normally they are not required, that's why they have this separate configuration :)")]
+        public bool SpamLogs { get; set; } = false;
 
         [Description("If the number of players is less than this the plugin will not work.")]
         public int MinPlayers { get; set; } = 8;
