@@ -11,7 +11,7 @@ This is an updated version of the original Ultimate AFK plugin from https://gith
 - Works with SCP-079 by checking camera angle, and experience interactions
 
 # Permission
-If you give a role the `uafk.ignore` permission it will be ignored by the plugin and will never be set to afk, useful for administrators.
+If you give a group the `uafk.ignore` permission the player will be ignored to replace a player and will also never be detected as AFK. Useful for administrators
 
 # Installation
 **[EXILED](https://github.com/galaxy119/EXILED) must be installed for this to work.**
