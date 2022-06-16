@@ -2,6 +2,7 @@
 using Exiled.API.Features.Roles;
 using Exiled.Events.EventArgs;
 using Exiled.Permissions.Extensions;
+using Exiled.API.Extensions;
 using MEC;
 using System;
 using System.Collections.Generic;
@@ -223,6 +224,8 @@ namespace UltimateAFK.Handlers.Components
                                         return;
                                     }
                                 }
+                                // I do this, to avoid that when changing to spectator the items that the player had are thrown to the ground :)
+                                MyPlayer.ClearInventory();
 
                                 MyPlayer.SetRole(RoleType.Spectator);
                                 MyPlayer.Broadcast(30, UltimateAFK.Instance.Config.MsgFspec, Broadcast.BroadcastFlags.Normal, true);
