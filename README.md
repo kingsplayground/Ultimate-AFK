@@ -20,4 +20,4 @@ Place the "UltimateAFK.dll" file in your Plugins folder.
 
 # IMPORTANT
 
-If you have CustomItem and want replacement players to have the customitems of the afk players consider using ``Ultimate-AFK-CustomItemSupport.dll``
+If you have CustomItem and want replacement players to have the customitems of the afk players consider using ``UltimateAFK-CustomItemSupport.dll``
