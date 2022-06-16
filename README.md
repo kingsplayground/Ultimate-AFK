@@ -20,8 +20,4 @@ Place the "UltimateAFK.dll" file in your Plugins folder.
 
 # IMPORTANT
 
-For technical and Lazy reasons you need to have ``Exiled.CustomItems.dll`` in your plugins folder, this file is included in any current version of Exiled, and it doesn't matter if you have the CustomItemsSupport setting to false, you need ``Exiled.CustomItems``
-
-![image](https://user-images.githubusercontent.com/36207738/173796583-8f1a3287-3ab9-4d36-9aad-efbf142cb1e0.png)
-
-``Exiled.CustomItems.dll`` does not contain any CustomItems and is only an API used for spawning and creating CustomItems, if you want CustomItems you need to download this plugin https://github.com/Exiled-Team/CustomItems
+If you have CustomItem and want replacement players to have the customitems of the afk players consider using ``Ultimate-AFK-CustomItemSupport.dll``
