@@ -23,7 +23,7 @@ namespace UltimateAFK
 
         public override string Prefix => "Ultimate_Afk";
 
-        public override Version RequiredExiledVersion => new Version(5, 2, 2);
+        public override Version RequiredExiledVersion => new Version(5, 2, 3);
 
         public override Version Version => new Version(5, 0, 2);
 
