@@ -19,5 +19,4 @@ If you give a role the `uafk.ignore` permission it will be ignored by the plugin
 Place the "UltimateAFK.dll" file in your Plugins folder.
 
 # IMPORTANT
-
-If you have CustomItem and want replacement players to have the customitems of the afk players consider using ``UltimateAFK-CustomItemSupport.dll``
+``UltimateAFK-CustomItemSupport.dll`` It is a separate plugin that makes replacing a player search the afk inventory for customitems and give it to the person replacing him, you only have to have 1 of the two versions enabled at the same time (``UltimateAFK-CustomItemSupport.dll`` or ``UltimateAFK.dll``).
