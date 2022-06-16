@@ -162,9 +162,6 @@ namespace UltimateAFK.Handlers.Components
                             var ammo = MyPlayer.Ammo;
                             var customitems = new List<string>();
 
-                            customitems = null;
-
-
                             var list = Player.List.Where(p => p.IsDead && p.UserId != MyPlayer.UserId && !p.IsOverwatchEnabled && !p.CheckPermission("uafk.ignore") && !p.SessionVariables.ContainsKey("IsNPC"));
                             ReplacementPlayer = list.FirstOrDefault();
 
@@ -221,12 +218,9 @@ namespace UltimateAFK.Handlers.Components
                                         MyPlayer.SendConsoleMessage(UltimateAFK.Instance.Config.MsgKick, "white");
 
                                         MyPlayer.Kick(UltimateAFK.Instance.Config.MsgKick, "[UltimateAFK]");
-
                                         return;
                                     }
                                 }
-
-                                
 
                                 MyPlayer.SetRole(RoleType.Spectator);
                                 MyPlayer.Broadcast(30, UltimateAFK.Instance.Config.MsgFspec, Broadcast.BroadcastFlags.Normal, true);
