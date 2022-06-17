@@ -262,6 +262,46 @@ namespace UltimateAFK.Handlers.Components
         {
             if (ev.Player == MyPlayer)
             {
+
+                if (Round.IsStarted && !Round.IsEnded && UltimateAFK.Instance.Config.RepleacePlayersOnLeave && !UltimateAFK.Instance.Config.DisableReplacementFor.Contains(ev.Player.Role))
+                {
+                    Log.Debug("OnDestroying | My Player leave the server, trying to repleace", UltimateAFK.Instance.Config.DebugMode);
+                    var list = Player.List.Where(p => p.IsDead && p.UserId != MyPlayer.UserId && !p.IsOverwatchEnabled && !p.CheckPermission("uafk.ignore") && !p.SessionVariables.ContainsKey("IsNPC"));
+                    ReplacementPlayer = list.FirstOrDefault();
+
+                    // I don't think it will work, but I don't lose anything by trying.
+                    if (ReplacementPlayer is not null)
+                    {
+                        Scp079Role scp079role = MyPlayer.Role as Scp079Role;
+
+                        var customitems = new List<string>();
+                        var items = MyPlayer.Items.ToList();
+                        var role = MyPlayer.Role;
+                        MyPlayer.ClearInventory();
+
+                        MainHandler.ReplacingPlayers.Add(ReplacementPlayer, new AFKData
+                        {
+                            Position = MyPlayer.Position,
+                            Role = role,
+                            Ammo = MyPlayer.Ammo,
+                            Health = MyPlayer.Health,
+                            Items = items,
+                            CustomItems = customitems,
+                            SCP079Role = scp079role
+
+                        });
+
+                        Log.Debug("OnDestroy| Moving replacement player to the previous player's role", UltimateAFK.Instance.Config.DebugMode);
+
+                        this.ReplacementPlayer.SetRole(role);
+                    }
+                    else
+                    {
+                        Log.Debug("OnDestroying | A replacement player could not be found.", UltimateAFK.Instance.Config.DebugMode);
+                    }
+
+                }
+
                 Log.Debug($"OnDestroying | My player was destroyed by DestroyingEventArg, destroying component", UltimateAFK.Instance.Config.DebugMode);
                 Destroy();
             }

@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Interfaces;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace UltimateAFK
@@ -12,6 +13,12 @@ namespace UltimateAFK
 
         [Description("This bool activates the logs that easily spams the console, and normally they are not required, that's why they have this separate configuration :)")]
         public bool SpamLogs { get; set; } = false;
+
+        [Description("Should players who leave the server be replaced by spectators?")]
+        public bool RepleacePlayersOnLeave { get; set; } = false;
+
+        [Description("Here is a list of the Roletypes that will not be replaced when leave the server")]
+        public List<RoleType> DisableReplacementFor { get; set; } = new List<RoleType>() { RoleType.Scp0492 };
 
         [Description("If the number of players is less than this the plugin will not work.")]
         public int MinPlayers { get; set; } = 8;
