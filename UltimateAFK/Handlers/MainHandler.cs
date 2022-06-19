@@ -117,7 +117,7 @@ namespace UltimateAFK.Handlers
                             ev.Items.Add(item.Type);
                         }
 
-                        Timing.CallDelayed(0.8f, () =>
+                        Timing.CallDelayed(Plugin.Config.ReplaceDelay, () =>
                         {
                             Log.Debug("Changing player position and HP", Plugin.Config.DebugMode);
 

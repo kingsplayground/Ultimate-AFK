@@ -20,6 +20,9 @@ namespace UltimateAFK
         [Description("Here is a list of the Roletypes that will not be replaced when leave the server")]
         public List<RoleType> DisableReplacementFor { get; set; } = new List<RoleType>() { RoleType.Scp0492 };
 
+        [Description("When a player is replaced it is called a delay, if when replacing the player the position is not updated correctly, increase this value but it must not exceed 2.5 since it would be too long.")]
+        public float ReplaceDelay { get; set; } = 1.4f;
+
         [Description("If the number of players is less than this the plugin will not work.")]
         public int MinPlayers { get; set; } = 8;
 

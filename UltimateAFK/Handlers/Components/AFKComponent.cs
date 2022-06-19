@@ -266,7 +266,7 @@ namespace UltimateAFK.Handlers.Components
                 if (Round.IsStarted && !Round.IsEnded && UltimateAFK.Instance.Config.RepleacePlayersOnLeave && !UltimateAFK.Instance.Config.DisableReplacementFor.Contains(ev.Player.Role))
                 {
                     Log.Debug("OnDestroying | My Player leave the server, trying to repleace", UltimateAFK.Instance.Config.DebugMode);
-                    var list = Player.List.Where(p => p.IsDead && p.UserId != MyPlayer.UserId && !p.IsOverwatchEnabled && !p.CheckPermission("uafk.ignore") && !p.SessionVariables.ContainsKey("IsNPC"));
+                    var list = Player.List.Where(p => p.IsDead && p.UserId != MyPlayer.UserId && !p.IsOverwatchEnabled && !p.CheckPermission("uafk.ignore") && !p.SessionVariables.ContainsKey("IsNPC") && !MainHandler.ReplacingPlayers.ContainsKey(p));
                     ReplacementPlayer = list.FirstOrDefault();
 
                     // I don't think it will work, but I don't lose anything by trying.
