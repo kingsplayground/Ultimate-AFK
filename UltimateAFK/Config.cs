@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using PlayerRoles;
 
 namespace UltimateAFK
 {
@@ -21,6 +23,9 @@ namespace UltimateAFK
 
         [Description("Tutorials should be ignored ?")]
         public bool IgnoreTut { get; set; } = true;
+
+        [Description("RoleTypes on this list will not be replaced by other players")]
+        public List<RoleTypeId> RoleTypeBlacklist { get; set; } = new List<RoleTypeId>() { RoleTypeId.Scp0492 };
 
         [Description("The time it takes for a player to stand still before he is detected as AFK")]
         public int AfkTime { get; set; } = 80;

@@ -77,6 +77,7 @@ namespace UltimateAFK.Handlers
         [PluginEvent(ServerEventType.PlayerDeath)]
         private void OnPlayerDeath(Player player, Player attacker, DamageHandlerBase damageHandler)
         {
+            // This works both in case the player is killed in the middle of the AFK detection, as well as if the player is disconnected, since when disconnected he goes through the PlayerDeath event.
             if (player != null && ReplacingPlayers.TryGetValue(player, out var data))
             {
                 ReplacingPlayers.Remove(player);
@@ -106,22 +107,23 @@ namespace UltimateAFK.Handlers
                 ReplacingPlayers.Remove(ply);
                 return;
             }
-
-            Log.Debug($"Changing player {ply.Nickname} ({ply.UserId})  position and HP", Plugin.Config.DebugMode);
+            
             ply.AfkClearInventory(true);
-            
             Log.Debug($"Adding Ammo to {ply.Nickname} ({ply.UserId})", UltimateAFK.Singleton.Config.DebugMode);
-            
+            // I add the ammunition first since it is the slowest thing to be done.
             ply.SendAmmo(data.Ammo);
-
+            
+            // This call delayed is necessary
             Timing.CallDelayed(0.3f, () =>
             {
+                Log.Debug($"Changing player {ply.Nickname} ({ply.UserId})  position and HP", Plugin.Config.DebugMode);
                 ply.Position = data.Position;
                 ply.SendBroadcast(string.Format(UltimateAFK.Singleton.Config.MsgReplace, data.NickName), 16, shouldClearPrevious: true);
                 ply.SendConsoleMessage(string.Format(UltimateAFK.Singleton.Config.MsgReplace, data.NickName), "white");
                 ply.Health = data.Health;
                 Log.Debug($"Adding items to {ply.Nickname} ({ply.UserId})", UltimateAFK.Singleton.Config.DebugMode);
                 ply.SendItems(data.Items);
+                // I apply the modifications of the replacement player not the afk, I could do it but I sincerely prefer this method.
                 ply.ApplyAttachments();
             });
             

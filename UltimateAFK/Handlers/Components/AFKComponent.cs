@@ -108,7 +108,9 @@ namespace UltimateAFK.Handlers.Components
             if (!Continue(Owner))
                 return;
 
+            
             var position = Owner.Position;
+            // Yes.. Player.Camera does not change if you are playing a SCP that moves with the cameras :))))))))
             var cameraPosition = Owner.ReferenceHub.roleManager.CurrentRole is Scp079Role scp079 ? scp079.CurrentCamera.CameraPosition : Owner.Position;
             var cameraRotation = Owner.ReferenceHub.roleManager.CurrentRole is Scp079Role scp0792 ? new Quaternion(scp0792.CurrentCamera.HorizontalRotation, scp0792.CurrentCamera.VerticalRotation, scp0792.CurrentCamera.RollRotation, 0f ) : Owner.Camera.rotation;
             
@@ -120,6 +122,7 @@ namespace UltimateAFK.Handlers.Components
                 _ownerPosition = position;
                 _afkTime = 0f;
             }
+            // The player is not moving and is not SCP-096 with his TryToNotCry ability.
             else if (!(Owner.Role == RoleTypeId.Scp096 && (Owner.ReferenceHub.roleManager.CurrentRole as Scp096Role).IsAbilityState(Scp096AbilityState.TryingNotToCry)))
             {
                 Log.Debug($"{Owner.Nickname} is in not moving, AFKTime: {_afkTime}", UltimateAFK.Singleton.Config.DebugMode);
@@ -151,8 +154,35 @@ namespace UltimateAFK.Handlers.Components
         /// <param name="ondisconnect">This replacement happens when the player is disconnected from the server ?</param>
         public void Replace(Player player, RoleTypeId role)
         {
+            // Check if role is blacklisted
+            if (UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(role))
+            {
+                Log.Debug($"player {player.Nickname} ({player.UserId}) has a role that is blacklisted so he will not be searched for a replacement player", UltimateAFK.Singleton.Config.DebugMode);
+                
+                player.AfkClearInventory();
+                player.SetRole(RoleTypeId.Spectator);
+                
+                if (UltimateAFK.Singleton.Config.AfkCount != -1)
+                {
+                    AfkCount++;
+
+                    if (AfkCount >= UltimateAFK.Singleton.Config.AfkCount)
+                    {
+                        player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
+                        player.Kick(UltimateAFK.Singleton.Config.MsgKick);
+                        return;
+                    }
+                }
+                
+                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
+                return;
+            }
+            
+            // Get player replacement
             Player replacement = GetReplacement();
 
+            // If replacement is null
             if (replacement == null)
             {
                 Log.Debug("Unable to find replacement player, moving to spectator...", UltimateAFK.Singleton.Config.DebugMode);
@@ -179,18 +209,23 @@ namespace UltimateAFK.Handlers.Components
                 return;
             }
 
+            // is not
             Log.Debug($"Replacement Player found Nickname: {replacement.Nickname} UserID: {replacement.UserId}", UltimateAFK.Singleton.Config.DebugMode);
-            
+
+            // Check if role is SCP-079 to be able to pass the level and energy
             if (role == RoleTypeId.Scp079)
             {
+                //Adds the replacement player to the dictionary with all the necessary information
                 AddData(player, replacement, true);
-                player.AfkClearInventory();
+                
+                // Self-explanatory
                 player.SetRole(RoleTypeId.Spectator);
-
+                
                 if (UltimateAFK.Singleton.Config.AfkCount != -1)
                 {
                     AfkCount++;
 
+                    // Check if the player should be removed from the server for being too many times afk
                     if (AfkCount >= UltimateAFK.Singleton.Config.AfkCount)
                     {
                         player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
@@ -202,20 +237,26 @@ namespace UltimateAFK.Handlers.Components
                     }
                 }
 
+                //Send player a broadcast for being too long afk
                 player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
                 player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
+                
+                // Sends replacement to the role that had the afk
                 replacement.SetRole(role);
             }
             else
             {
+                // Adds the replacement player to the dictionary with all the necessary information
                 AddData(player, replacement, false);
 
+                // If you are wondering why I change it to SCP0492 and then to spectator, it is because when I change it to 0492 I clean the inventory.
                 player.SetRole(RoleTypeId.Scp0492);
                 
                 if (UltimateAFK.Singleton.Config.AfkCount != -1)
                 {
                     AfkCount++;
-
+                    
+                    // Check if the player should be removed from the server for being too many times afk
                     if (AfkCount >= UltimateAFK.Singleton.Config.AfkCount)
                     {
                         player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
@@ -226,10 +267,12 @@ namespace UltimateAFK.Handlers.Components
                         return;
                     }
                 }
-                
+                //Send player a broadcast for being too long afk
                 player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
                 player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
+                // Sends player to spectator
                 player.SetRole(RoleTypeId.Spectator);
+                // Sends replacement to the role that had the afk
                 replacement.SetRole(role);
             }
         }
@@ -242,6 +285,7 @@ namespace UltimateAFK.Handlers.Components
             if (is079)
             {
                 Scp079Role scp079Role;
+                // This if is horrendous but I must get the subroutines from the player afk.
                 if ((scp079Role = player.ReferenceHub.roleManager.CurrentRole as Scp079Role) != null &&
                     scp079Role.SubroutineModule.TryGetSubroutine(out Scp079TierManager scp079TierManager) &&
                     scp079Role.SubroutineModule.TryGetSubroutine(out Scp079AuxManager scp079AuxManager))
@@ -251,6 +295,7 @@ namespace UltimateAFK.Handlers.Components
                         NickName = player.Nickname,
                         Position = player.Position,
                         Role = player.Role,
+                        // same has do ammo = null xd
                         Ammo = player.ReferenceHub.inventory.UserInventory.ReserveAmmo,
                         Health = player.Health,
                         Items = player.GetItems(),
@@ -265,6 +310,8 @@ namespace UltimateAFK.Handlers.Components
                 return;
             }
             
+            // If I make Ammo = player.ReferenceHub.inventory.UserInventory.ReserveAmmo for some reason it gets buggy and ammo becomes null when changing the player to spectator.
+            // So I create a temporary dictionary stored in cache (ram) and then clean the information by deleting it from the ReplacingPlayers.
             var ammo = GetAmmo(player);
             MainHandler.ReplacingPlayers.Add(replacement, new AFKData
             {
@@ -288,7 +335,6 @@ namespace UltimateAFK.Handlers.Components
         /// <summary>
         /// NORTHWOOD FIX AMMO INVENTORY NOW!
         /// </summary>
-        /// <returns></returns>
         private Dictionary<ItemType, ushort> GetAmmo(Player player)
         {
             var result = new Dictionary<ItemType, ushort>();
@@ -317,6 +363,10 @@ namespace UltimateAFK.Handlers.Components
             return null;
         }
 
+        /// <summary>
+        /// Check if the player is alive, if the round has started, if the players on the server meet the requirements for check afk to work, if the player is tutorial and the configuration allows the tutorial to be detected as afk.
+        /// </summary>
+        /// <returns>True if all requirements are met</returns>
         private bool Continue(Player ply)
         {
             return ply.IsAlive && Round.IsRoundStarted && Player.Count >= UltimateAFK.Singleton.Config.MinPlayers &&
