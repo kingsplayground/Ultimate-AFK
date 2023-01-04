@@ -14,7 +14,9 @@
 If you give a group the `uafk.ignore` permission the player will be ignored to replace a player and will also never be detected as AFK. Useful for administrators
 
 # Installation
-**[NwPluginAPI](https://github.com/northwood-studios/NwPluginAPI) must be installed for this to work.**
+**This plugin only works in [NwPluginAPI](https://github.com/northwood-studios/NwPluginAPI)**
+
+**You need [NWAPIPermissionSystem](https://github.com/CedModV2/NWAPIPermissionSystem) for this plugin to work.**
 
 You can install this plugin using the command ``p install SrLicht/Ultimate-AFK`` on the console or by downloading the .dll file and placing it in ``SCP Secret Laboratory/PluginAPI/plugins/global or your port``
 
