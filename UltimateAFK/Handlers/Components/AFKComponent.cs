@@ -1,38 +1,47 @@
-﻿using Exiled.API.Features;
-using Exiled.API.Features.Roles;
-using Exiled.Events.EventArgs;
-using Exiled.Permissions.Extensions;
-using Exiled.API.Extensions;
-using MEC;
+﻿using MEC;
+using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NWAPIPermissionSystem;
+using PlayerRoles;
+using PlayerRoles.PlayableScps.Scp079;
+using PlayerRoles.PlayableScps.Scp096;
 using UltimateAFK.Resources;
 using UnityEngine;
 
 namespace UltimateAFK.Handlers.Components
 {
-    public class AFKComponent : MonoBehaviour
+    /// <summary>
+    /// Component that performs a constant afk check.
+    /// </summary>
+    public class AfkComponent : MonoBehaviour
     {
-        #region Variables
-        public Player MyPlayer;
-        public Player ReplacementPlayer = null;
+        /// <summary>
+        /// The player who owns this component.
+        /// </summary>
+        public Player Owner { get; private set; }
+
+        // Position in the world
+        private Vector3 _ownerPosition;
+
+        // Rotation of your head/camera
+        private Vector3 _cameraPosition;
+
+        private Quaternion _cameraRotation;
+
+        private float _graceTime = UltimateAFK.Singleton.Config.GraceTime;
+
+        // The time the player was afk
+        private float _afkTime;
 
         /// <summary>
-        /// If True, the component will ignore this player, but will not be destroyed.
+        /// Number of times a player was detected as AFK
         /// </summary>
-        public bool IsDisable = false;
-        // ------------->>>>> Sex <<<<------------
-        public Vector3 LastPosition;
-        public Vector3 LastRotation;
-        // -------------- Gwa gwa ---------------
-        public int AFKTime = 0;
-        public int AFKCount = 0;
+        public int AfkCount { get; private set; }
 
-        // Coroutine handle
         // Using a MEC Coroutine is more optimized than using Unity methods.
-        private CoroutineHandle CountHandler;
-        #endregion
+        private CoroutineHandle _checkHandle;
 
         private void Awake()
         {
@@ -44,277 +53,247 @@ namespace UltimateAFK.Handlers.Components
                 return;
             }
 
-            MyPlayer = ply;
-
-            Exiled.Events.Handlers.Player.Destroying += OnDestroying;
-            Exiled.Events.Handlers.Player.Jumping += OnJumping;
+            Owner = ply;
 
             // Coroutine dies when the component or the ReferenceHub (Player) is destroyed.
-
-            CountHandler = Timing.RunCoroutine(CheckAfkPerSecond().CancelWith(this).CancelWith(gameObject));
-
-            if (MyPlayer.CheckPermission("uafk.ignore"))
-            {
-                Log.Debug($"The player {MyPlayer.Nickname} has the permission \"uafk.ignore\" disabling component");
-                IsDisable = true;
-            }
-
-            Log.Debug($"{MyPlayer.Nickname} component fully loaded", UltimateAFK.Instance.Config.DebugMode);
+            _checkHandle = Timing.RunCoroutine(CheckAfkPerSecond().CancelWith(this).CancelWith(gameObject));
+            Log.Debug($"Component full loaded Owner: {Owner.Nickname} ({Owner.UserId})", UltimateAFK.Singleton.Config.DebugMode);
         }
 
+        /// <summary>
+        /// Destroys the component and clears the variables and events recorded in Exiled.
+        /// </summary>
         public void Destroy()
         {
             try
             {
-                Log.Debug($"Calling Destroy", UltimateAFK.Instance.Config.DebugMode);
+                Log.Debug($"Calling Destroy", UltimateAFK.Singleton.Config.DebugMode);
 
-                if (MyPlayer is null)
-                    Log.Debug("Player is null in Destroy()");
+                if (Owner is null)
+                    Log.Debug("When trying to destroy the component, owner is null", UltimateAFK.Singleton.Config.DebugMode);
 
-                MyPlayer = null;
-                ReplacementPlayer = null;
-
-                Exiled.Events.Handlers.Player.Destroying -= OnDestroying;
-                Exiled.Events.Handlers.Player.Jumping -= OnJumping;
+                Timing.KillCoroutines(_checkHandle);
 
                 Destroy(this);
             }
             catch (Exception e)
             {
-                Log.Error($"{this} " + e);
+                Log.Error($"Error while trying to destroy {this} {e}");
                 throw;
-            }
-        }
-
-        public void CheckAFK()
-        {
-            Log.Debug("CheckAFK before the if call", UltimateAFK.Instance.Config.DebugMode && UltimateAFK.Instance.Config.SpamLogs);
-
-            var cantcontinue = MyPlayer.IsDead || Player.List.Count() <= UltimateAFK.Instance.Config.MinPlayers || (UltimateAFK.Instance.Config.IgnoreTut && MyPlayer.IsTutorial) || Round.IsLobby;
-
-            if (!cantcontinue)
-            {
-                Log.Debug("CheckAFK inside the if called", UltimateAFK.Instance.Config.DebugMode && UltimateAFK.Instance.Config.SpamLogs);
-
-                bool isSCP079 = MyPlayer.Role is Scp079Role;
-                bool isSCP096 = MyPlayer.Role is Scp096Role;
-                bool isNotCrying = false;
-                Scp079Role scp079role = null;
-
-                if (isSCP096 || isSCP079)
-                {
-                    if (isSCP096)
-                    {
-                        var role = MyPlayer.Role as Scp096Role;
-                        isNotCrying = role.TryingNotToCry;
-                    }
-                    else if (isSCP079)
-                    {
-                        scp079role = MyPlayer.Role as Scp079Role;
-                    }
-                }
-
-                Vector3 position = MyPlayer.Position;
-                Vector3 vector = isSCP079 ? scp079role.Camera.HeadPosition : (Vector3)MyPlayer.Rotation;
-
-                bool isMoving = position != LastPosition || vector != LastRotation || isNotCrying;
-
-                if (isMoving)
-                {
-                    Log.Debug("CheckAFK() player is moving, changing position variables", UltimateAFK.Instance.Config.DebugMode);
-
-                    this.LastPosition = position;
-                    this.LastRotation = vector;
-                    this.AFKTime = 0;
-
-                    if (ReplacementPlayer != null)
-                        this.ReplacementPlayer = null;
-                }
-                else
-                {
-
-                    var isAfk = AFKTime++ >= UltimateAFK.Instance.Config.AfkTime;
-
-                    Log.Debug($"{MyPlayer.Nickname} is in not moving, AFKTime: {AFKTime}", UltimateAFK.Instance.Config.DebugMode);
-
-                    if (isAfk)
-                    {
-                        var graceNumb = UltimateAFK.Instance.Config.AfkTime + UltimateAFK.Instance.Config.GraceTime - this.AFKTime;
-
-                        var inGraceTime = graceNumb > 0;
-
-                        if (inGraceTime)
-                        {
-                            var message = string.Format(UltimateAFK.Instance.Config.MsgGrace, graceNumb);
-
-                            MyPlayer.Broadcast(2, message, Broadcast.BroadcastFlags.Normal, true);
-                        }
-                        else
-                        {
-                            Log.Info($"{MyPlayer.Nickname} ({MyPlayer.UserId}) Detected as AFK");
-
-                            //--- I am going to save the variables that I will need later
-
-                            var items = MyPlayer.Items.ToList();
-                            var role = MyPlayer.Role;
-                            var plyposition = MyPlayer.Position;
-                            var health = MyPlayer.Health;
-                            var ammo = MyPlayer.Ammo;
-                            var customitems = new List<string>();
-
-                            var list = Player.List.Where(p => p.IsDead && p.UserId != MyPlayer.UserId && !p.IsOverwatchEnabled && !p.CheckPermission("uafk.ignore") && !p.SessionVariables.ContainsKey("IsNPC"));
-                            ReplacementPlayer = list.FirstOrDefault();
-
-                            if (ReplacementPlayer == null)
-                            {
-                                Log.Debug("Unable to find replacement player, moving to spectator...", UltimateAFK.Instance.Config.DebugMode);
-
-                                if (UltimateAFK.Instance.Config.AfkCount != -1)
-                                {
-                                    AFKCount++;
-
-                                    if (AFKCount >= UltimateAFK.Instance.Config.AfkCount)
-                                    {
-                                        MyPlayer.SendConsoleMessage(UltimateAFK.Instance.Config.MsgKick, "white");
-
-                                        MyPlayer.Kick(UltimateAFK.Instance.Config.MsgKick, "[UltimateAFK]");
-
-                                        return;
-                                    }
-                                }
-
-                                MyPlayer.SetRole(RoleType.Spectator);
-                                MyPlayer.Broadcast(30, UltimateAFK.Instance.Config.MsgFspec, Broadcast.BroadcastFlags.Normal, true);
-                                MyPlayer.SendConsoleMessage(UltimateAFK.Instance.Config.MsgFspec, "white");
-                            }
-                            else
-                            {
-                                Log.Debug($"Replacement Player found\nNickname: {ReplacementPlayer.Nickname}\nUserID: {ReplacementPlayer.UserId}\n Role: {ReplacementPlayer.Role.Type}", UltimateAFK.Instance.Config.DebugMode);
-
-                                MainHandler.ReplacingPlayers.Add(ReplacementPlayer, new AFKData
-                                {
-                                    Position = plyposition,
-                                    Role = role,
-                                    Ammo = ammo,
-                                    Health = health,
-                                    Items = items,
-                                    CustomItems = customitems,
-                                    SCP079Role = scp079role
-
-                                });
-
-                                Log.Debug("Moving replacement player to the previous player's role", UltimateAFK.Instance.Config.DebugMode);
-
-                                this.ReplacementPlayer.SetRole(role);
-                                // I do this, to avoid that when changing to spectator the items that the player had are thrown to the ground :)
-                                MyPlayer.ClearInventory();
-
-                                if (UltimateAFK.Instance.Config.AfkCount != -1)
-                                {
-                                    AFKCount++;
-
-                                    if (AFKCount >= UltimateAFK.Instance.Config.AfkCount)
-                                    {
-                                        MyPlayer.SendConsoleMessage(UltimateAFK.Instance.Config.MsgKick, "white");
-
-                                        MyPlayer.Kick(UltimateAFK.Instance.Config.MsgKick, "[UltimateAFK]");
-                                        return;
-                                    }
-                                }
-
-                                MyPlayer.SetRole(RoleType.Spectator);
-                                MyPlayer.Broadcast(30, UltimateAFK.Instance.Config.MsgFspec, Broadcast.BroadcastFlags.Normal, true);
-                                MyPlayer.SendConsoleMessage(UltimateAFK.Instance.Config.MsgFspec, "white");
-                            }
-                        }
-                    }
-                }
             }
         }
 
         private IEnumerator<float> CheckAfkPerSecond()
         {
-            while (true)
+            for (;;)
             {
-                Log.Debug("Calling CheckAfkPerSecond() before If", UltimateAFK.Instance.Config.DebugMode && UltimateAFK.Instance.Config.SpamLogs);
-
-                if (!IsDisable && Round.IsStarted)
-                {
-                    try
-                    {
-                        Log.Debug("Call of CheckAfkPerSecond() inside If", UltimateAFK.Instance.Config.DebugMode && UltimateAFK.Instance.Config.SpamLogs);
-
-                        CheckAFK();
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error($"{this} Error on CheckAFK(): {e} || {e.StackTrace}");
-                    }
-
-                }
-
                 yield return Timing.WaitForSeconds(1.2f);
+
+                Log.Debug("Calling CheckAFK", UltimateAFK.Singleton.Config.DebugMode && UltimateAFK.Singleton.Config.SpamLogs);
+
+                try
+                {
+                    CheckAfk();
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"{this} error on CheckAFK: {e} || {e.StackTrace}");
+                }
             }
         }
 
-        // Technically this is not necessary since the component is destroyed when the player is destroyed but for fear of leaving a ghost component I better do this.
-        public void OnDestroying(DestroyingEventArgs ev)
+        private void CheckAfk()
         {
-            if (ev.Player == MyPlayer)
+            if (!Continue(Owner))
+                return;
+
+            var position = Owner.Position;
+            var cameraPosition = Owner.ReferenceHub.roleManager.CurrentRole is Scp079Role scp079 ? scp079.CurrentCamera.CameraPosition : Owner.Position;
+            var cameraRotation = Owner.ReferenceHub.roleManager.CurrentRole is Scp079Role scp0792 ? new Quaternion(scp0792.CurrentCamera.HorizontalRotation, scp0792.CurrentCamera.VerticalRotation, scp0792.CurrentCamera.RollRotation, 0f ) : Owner.Camera.rotation;
+            
+            // Player is moving
+            if (cameraPosition != _cameraPosition || position != _ownerPosition || _cameraRotation != cameraRotation)
             {
+                _cameraPosition = cameraPosition;
+                _cameraRotation = cameraRotation;
+                _ownerPosition = position;
+                _afkTime = 0f;
+            }
+            else if (!(Owner.Role == RoleTypeId.Scp096 && (Owner.ReferenceHub.roleManager.CurrentRole as Scp096Role).IsAbilityState(Scp096AbilityState.TryingNotToCry)))
+            {
+                Log.Debug($"{Owner.Nickname} is in not moving, AFKTime: {_afkTime}", UltimateAFK.Singleton.Config.DebugMode);
 
-                if (Round.IsStarted && !Round.IsEnded && UltimateAFK.Instance.Config.RepleacePlayersOnLeave && !UltimateAFK.Instance.Config.DisableReplacementFor.Contains(ev.Player.Role))
+                if(_afkTime++ < UltimateAFK.Singleton.Config.AfkTime) return;
+
+                var graceNumb = UltimateAFK.Singleton.Config.GraceTime - (_afkTime - UltimateAFK.Singleton.Config.AfkTime);
+                
+                if (graceNumb > 0)
                 {
-                    Log.Debug("OnDestroying | My Player leave the server, trying to repleace", UltimateAFK.Instance.Config.DebugMode);
-                    var list = Player.List.Where(p => p.IsDead && p.UserId != MyPlayer.UserId && !p.IsOverwatchEnabled && !p.CheckPermission("uafk.ignore") && !p.SessionVariables.ContainsKey("IsNPC") && !MainHandler.ReplacingPlayers.ContainsKey(p));
-                    ReplacementPlayer = list.FirstOrDefault();
+                    // The player is in grace time, so let's warn him that he has been afk for too long.
+                    Owner.SendBroadcast(string.Format(UltimateAFK.Singleton.Config.MsgGrace, graceNumb), 1,
+                        shouldClearPrevious: true);
+                }
+                else
+                {
+                    Log.Info($"{Owner.Nickname} ({Owner.UserId}) Detected as AFK");
 
-                    // I don't think it will work, but I don't lose anything by trying.
-                    if (ReplacementPlayer is not null)
+                    Replace(Owner, Owner.Role);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Performs player replacement.
+        /// </summary>
+        /// <param name="player">Player to be replaced</param>
+        /// <param name="ondisconnect">This replacement happens when the player is disconnected from the server ?</param>
+        public void Replace(Player player, RoleTypeId role)
+        {
+            Player replacement = GetReplacement();
+
+            if (replacement == null)
+            {
+                Log.Debug("Unable to find replacement player, moving to spectator...",
+                    UltimateAFK.Singleton.Config.DebugMode);
+
+                player.SetRole(RoleTypeId.Spectator);
+
+                if (UltimateAFK.Singleton.Config.AfkCount != -1)
+                {
+                    AfkCount++;
+
+                    if (AfkCount >= UltimateAFK.Singleton.Config.AfkCount)
                     {
-                        Scp079Role scp079role = MyPlayer.Role as Scp079Role;
+                        player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
 
-                        var customitems = new List<string>();
-                        var items = MyPlayer.Items.ToList();
-                        var role = MyPlayer.Role;
-                        MyPlayer.ClearInventory();
+                        player.Kick(UltimateAFK.Singleton.Config.MsgKick);
 
-                        MainHandler.ReplacingPlayers.Add(ReplacementPlayer, new AFKData
-                        {
-                            Position = MyPlayer.Position,
-                            Role = role,
-                            Ammo = MyPlayer.Ammo,
-                            Health = MyPlayer.Health,
-                            Items = items,
-                            CustomItems = customitems,
-                            SCP079Role = scp079role
-
-                        });
-
-                        Log.Debug("OnDestroy| Moving replacement player to the previous player's role", UltimateAFK.Instance.Config.DebugMode);
-
-                        this.ReplacementPlayer.SetRole(role);
+                        return;
                     }
-                    else
-                    {
-                        Log.Debug("OnDestroying | A replacement player could not be found.", UltimateAFK.Instance.Config.DebugMode);
-                    }
-
                 }
 
-                Log.Debug($"OnDestroying | My player was destroyed by DestroyingEventArg, destroying component", UltimateAFK.Instance.Config.DebugMode);
-                Destroy();
+                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
+
+                return;
+            }
+
+            Log.Debug($"Replacement Player found\nNickname: {replacement.Nickname}\nUserID: {replacement.UserId}",
+                UltimateAFK.Singleton.Config.DebugMode);
+
+            Scp079Role scp079Role;
+            if (role == RoleTypeId.Scp079 &&
+                (scp079Role = player.ReferenceHub.roleManager.CurrentRole as Scp079Role) != null &&
+                scp079Role.SubroutineModule.TryGetSubroutine(out Scp079TierManager scp079TierManager) &&
+                scp079Role.SubroutineModule.TryGetSubroutine(out Scp079AuxManager scp079AuxManager))
+            {
+                MainHandler.ReplacingPlayers.Add(replacement, new AFKData
+                {
+                    NickName = player.Nickname,
+                    Position = player.Position,
+                    Role = player.Role,
+                    Ammo = player.ReferenceHub.inventory.UserInventory.ReserveAmmo,
+                    Health = player.Health,
+                    Items = player.GetItems(),
+                    SCP079 = new Scp079Data
+                    {
+                        Role = scp079Role,
+                        Energy = scp079AuxManager.CurrentAux,
+                        Experience = scp079TierManager.TotalExp,
+                    }
+                });
+
+                player.ClearInventory();
+                player.SetRole(RoleTypeId.Spectator);
+
+                if (UltimateAFK.Singleton.Config.AfkCount != -1)
+                {
+                    AfkCount++;
+
+                    if (AfkCount >= UltimateAFK.Singleton.Config.AfkCount)
+                    {
+                        player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
+
+                        player.Kick(UltimateAFK.Singleton.Config.MsgKick);
+
+                        replacement.SetRole(player.Role);
+                        return;
+                    }
+                }
+
+                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
+
+                replacement.SetRole(player.Role);
+            }
+            else
+            {
+                MainHandler.ReplacingPlayers.Add(replacement, new AFKData
+                {
+                    NickName = player.Nickname,
+                    Position = player.Position,
+                    Role = player.Role,
+                    Ammo = player.ReferenceHub.inventory.UserInventory.ReserveAmmo,
+                    Health = player.Health,
+                    Items = player.GetItems(),
+                    SCP079 = new Scp079Data
+                    {
+                        Role = null,
+                        Energy = 0f,
+                        Experience = 0,
+                    }
+                });
+
+                player.ClearInventory();
+                player.SetRole(RoleTypeId.Spectator);
+
+                if (UltimateAFK.Singleton.Config.AfkCount != -1)
+                {
+                    AfkCount++;
+
+                    if (AfkCount >= UltimateAFK.Singleton.Config.AfkCount)
+                    {
+                        player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
+
+                        player.Kick(UltimateAFK.Singleton.Config.MsgKick);
+
+                        replacement.SetRole(player.Role);
+                        return;
+                    }
+                }
+
+                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
+
+                replacement.SetRole(player.Role);
             }
         }
 
-        // It is better to do it here than in MainHandler. For those who do not understand when jumping the player restarts his AFK time, since if he jumps technically he is not afk.
-        public void OnJumping(JumpingEventArgs ev)
+        /// <summary>
+        /// Obtains a player who qualifies for replacement.
+        /// </summary>
+        private Player GetReplacement()
         {
-            if (ev.Player != null && ev.Player == MyPlayer && !IsDisable)
+            foreach (var player in Player.GetPlayers())
             {
-                Log.Debug($"OnJumping | My player is jumping, resetting AFK counter", UltimateAFK.Instance.Config.DebugMode);
-                AFKTime = 0;
+                if (player.IsAlive || player == Owner || player.CheckPermission("uafk.ignore") || player.IsServer)
+                    continue;
+
+                return player;
             }
+
+            return null;
+        }
+
+        private bool Continue(Player ply)
+        {
+            var value = ply.IsAlive && Round.IsRoundStarted && Player.GetPlayers().Count >= UltimateAFK.Singleton.Config.MinPlayers &&
+                        (Owner.Role != RoleTypeId.Tutorial || !UltimateAFK.Singleton.Config.IgnoreTut);
+            
+            Log.Info($"Continue value is {value}");
+            
+            return ply.IsAlive && Round.IsRoundStarted && Player.Count >= UltimateAFK.Singleton.Config.MinPlayers &&
+                   (Owner.Role != RoleTypeId.Tutorial || !UltimateAFK.Singleton.Config.IgnoreTut);
         }
     }
 }

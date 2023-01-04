@@ -23,11 +23,12 @@
  </ItemGroup>
 
  <ItemGroup>
-    <PackageReference Include="EXILED" Version="5.2.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
-  <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
-    <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
+    <PackageReference Include="Northwood.PluginAPI" Version="12.0.0-rc.6" />
+    <PackageReference Include="Northwood.PluginAPI.Analyzers" Version="12.0.0-rc.6" />
+  <PackageReference Include="YamlDotNet" Version="12.3.1" />
+    <PackageReference Include="Lib.Harmony" Version="2.2.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +39,8 @@
     <Reference Include="System.Core" HintPath="$(EXILED_References)\System.Core.dll" Private="false" />
     <Reference Include="UnityEngine" HintPath="$(EXILED_References)\UnityEngine.dll" Private="false" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_References)\UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_References)\UnityEngine.PhysicsModule.dll" Private="false" />
+    <Reference Include="NWAPIPermissionSystem" HintPath="$(EXILED_References)\NWAPIPermissionSystem.dll" Private="false" />
     <Reference Include="UnityEngine.UnityWebRequestModule" HintPath="$(EXILED_References)\UnityEngine.UnityWebRequestModule.dll" Private="false" />
   </ItemGroup>
 </Project>

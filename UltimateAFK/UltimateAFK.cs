@@ -1,54 +1,23 @@
-﻿using Exiled.API.Features;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using PluginAPI.Core.Attributes;
 
 namespace UltimateAFK
 {
     /// <summary>
     /// Main class where all the handlers are loaded.
     /// </summary>
-    public class UltimateAFK : Plugin<Config>
+    public class UltimateAFK
     {
-        //  This is my programming style and if you don't like it, good for you.
+        public static UltimateAFK Singleton;
 
-        #region Variables
-        public static UltimateAFK Instance;
-
-        public List<API.Base.Handler> Handlers;
-        #endregion
-
-        public override string Author => "SrLicht";
-
-        public override string Name => "Ultimate-AFK";
-
-        public override string Prefix => "Ultimate_Afk";
-
-        public override Version RequiredExiledVersion => new Version(5, 2, 3);
-
-        public override Version Version => new Version(5, 0, 2);
-
-        public override void OnEnabled()
+        [PluginConfig] public Config Config;
+        
+        [PluginEntryPoint("UltimateAFK", "1.0.0", "Checks if a player is afk for too long and if detected as afk will be replaced by a spectator.", "SrLicht")]
+        void OnEnabled()
         {
-            Instance = this;
-
-            Handlers = new List<API.Base.Handler>()
-            {
-                new Handlers.MainHandler()
-            };
-
-            Handlers.ForEach(h => h.Start());
-            base.OnEnabled();
+            Singleton = this;
+            PluginAPI.Events.EventManager.RegisterEvents(this, new Handlers.MainHandler(Singleton));
         }
-
-        public override void OnDisabled()
-        {
-            Handlers.ForEach((h) => h.Stop());
-            Handlers.Clear();
-            Handlers = null;
-            Instance = null;
-            base.OnDisabled();
-        }
-
-
     }
 }
