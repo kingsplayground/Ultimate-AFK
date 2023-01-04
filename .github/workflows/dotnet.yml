@@ -15,11 +15,9 @@ env:
   SL_BRANCH: pluginapi-beta
 
 jobs:
-
   build:
 
     runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v3
 
@@ -42,7 +40,7 @@ jobs:
         New-Item -ItemType Directory -Force -Path D:\a\UltimateAfk\SCPSL_REFERENCES
         Start-Process -NoNewWindow -Wait -FilePath "D:\a\UltimateAfk\DepotDownloader\DepotDownloader.exe" -WorkingDirectory "D:\a\UltimateAfk\DepotDownloader" -ArgumentList '-app 996560','-beta nightly','-betapassword ${{ env.SL_BRANCH }}','-dir D:\a\UltimateAfk\SCPSL_REFERENCES','-filelist "${{ github.workspace }}\download-files.txt"'
 
-     name: Download NWAPIPermissionSystem.dll
+    - name: Download NWAPIPermissionSystem.dll
       shell: pwsh
       run: |
         Invoke-WebRequest -Uri "https://github.com/CedModV2/NWAPIPermissionSystem/releases/download/0.0.3/NWAPIPermissionSystem.dll" -OutFile ${{ env.SL_REFERENCES }}/NWAPIPermissionSystem.dll
