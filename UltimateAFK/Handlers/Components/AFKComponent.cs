@@ -180,8 +180,7 @@ namespace UltimateAFK.Handlers.Components
             }
 
             Log.Debug($"Replacement Player found Nickname: {replacement.Nickname} UserID: {replacement.UserId}", UltimateAFK.Singleton.Config.DebugMode);
-
-            Scp079Role scp079Role;
+            
             if (role == RoleTypeId.Scp079)
             {
                 AddData(player, replacement, true);
