@@ -7,7 +7,6 @@ using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using UltimateAFK.Handlers.Components;
 using UltimateAFK.Resources;
-using UnityEngine;
 
 namespace UltimateAFK.Handlers
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using PluginAPI.Core.Attributes;
+﻿using PluginAPI.Core.Attributes;
 
 namespace UltimateAFK
 {
