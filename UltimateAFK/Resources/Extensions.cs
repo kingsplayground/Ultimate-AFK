@@ -21,17 +21,10 @@ namespace UltimateAFK.Resources
 
         public static void SendAmmo(this Player ply, Dictionary<ItemType, ushort> ammo)
         {
-            Log.Info($"Cosa inicio  | ammo is empty ? {ammo.IsEmpty()}");
-            
             foreach (var ammoItem in ammo)
             {
-                Log.Info($"Che pasando la municion {ammoItem.Key} que son {ammoItem.Value}");
-                
                 ply.SetAmmo(ammoItem.Key, ammoItem.Value);
             }
-            
-            Log.Info("Cosa final");
-            
         }
         
         public static List<ItemType> GetItems(this Player ply)
