@@ -7,6 +7,7 @@ using NWAPIPermissionSystem;
 using PlayerRoles;
 using PlayerRoles.PlayableScps.Scp079;
 using PlayerRoles.PlayableScps.Scp096;
+using PluginAPI.Core.Items;
 using UltimateAFK.Resources;
 using UnityEngine;
 
@@ -87,7 +88,7 @@ namespace UltimateAFK.Handlers.Components
         {
             for (;;)
             {
-                yield return Timing.WaitForSeconds(1.2f);
+                yield return Timing.WaitForSeconds(1.3f);
 
                 Log.Debug("Calling CheckAFK", UltimateAFK.Singleton.Config.DebugMode && UltimateAFK.Singleton.Config.SpamLogs);
 
@@ -130,13 +131,14 @@ namespace UltimateAFK.Handlers.Components
                 if (graceNumb > 0)
                 {
                     // The player is in grace time, so let's warn him that he has been afk for too long.
-                    Owner.SendBroadcast(string.Format(UltimateAFK.Singleton.Config.MsgGrace, graceNumb), 1,
+                    Owner.SendBroadcast(string.Format(UltimateAFK.Singleton.Config.MsgGrace, graceNumb), 2,
                         shouldClearPrevious: true);
                 }
                 else
                 {
                     Log.Info($"{Owner.Nickname} ({Owner.UserId}) Detected as AFK");
 
+                    _afkTime = 0f;
                     Replace(Owner, Owner.Role);
                 }
             }
@@ -153,8 +155,7 @@ namespace UltimateAFK.Handlers.Components
 
             if (replacement == null)
             {
-                Log.Debug("Unable to find replacement player, moving to spectator...",
-                    UltimateAFK.Singleton.Config.DebugMode);
+                Log.Debug("Unable to find replacement player, moving to spectator...", UltimateAFK.Singleton.Config.DebugMode);
 
                 player.SetRole(RoleTypeId.Spectator);
 
@@ -178,32 +179,13 @@ namespace UltimateAFK.Handlers.Components
                 return;
             }
 
-            Log.Debug($"Replacement Player found\nNickname: {replacement.Nickname}\nUserID: {replacement.UserId}",
-                UltimateAFK.Singleton.Config.DebugMode);
+            Log.Debug($"Replacement Player found Nickname: {replacement.Nickname} UserID: {replacement.UserId}", UltimateAFK.Singleton.Config.DebugMode);
 
             Scp079Role scp079Role;
-            if (role == RoleTypeId.Scp079 &&
-                (scp079Role = player.ReferenceHub.roleManager.CurrentRole as Scp079Role) != null &&
-                scp079Role.SubroutineModule.TryGetSubroutine(out Scp079TierManager scp079TierManager) &&
-                scp079Role.SubroutineModule.TryGetSubroutine(out Scp079AuxManager scp079AuxManager))
+            if (role == RoleTypeId.Scp079)
             {
-                MainHandler.ReplacingPlayers.Add(replacement, new AFKData
-                {
-                    NickName = player.Nickname,
-                    Position = player.Position,
-                    Role = player.Role,
-                    Ammo = player.ReferenceHub.inventory.UserInventory.ReserveAmmo,
-                    Health = player.Health,
-                    Items = player.GetItems(),
-                    SCP079 = new Scp079Data
-                    {
-                        Role = scp079Role,
-                        Energy = scp079AuxManager.CurrentAux,
-                        Experience = scp079TierManager.TotalExp,
-                    }
-                });
-
-                player.ClearInventory();
+                AddData(player, replacement, true);
+                player.AfkClearInventory();
                 player.SetRole(RoleTypeId.Spectator);
 
                 if (UltimateAFK.Singleton.Config.AfkCount != -1)
@@ -223,30 +205,14 @@ namespace UltimateAFK.Handlers.Components
 
                 player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
                 player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
-
-                replacement.SetRole(player.Role);
+                replacement.SetRole(role);
             }
             else
             {
-                MainHandler.ReplacingPlayers.Add(replacement, new AFKData
-                {
-                    NickName = player.Nickname,
-                    Position = player.Position,
-                    Role = player.Role,
-                    Ammo = player.ReferenceHub.inventory.UserInventory.ReserveAmmo,
-                    Health = player.Health,
-                    Items = player.GetItems(),
-                    SCP079 = new Scp079Data
-                    {
-                        Role = null,
-                        Energy = 0f,
-                        Experience = 0,
-                    }
-                });
+                AddData(player, replacement, false);
 
-                player.ClearInventory();
-                player.SetRole(RoleTypeId.Spectator);
-
+                player.SetRole(RoleTypeId.Scp0492);
+                
                 if (UltimateAFK.Singleton.Config.AfkCount != -1)
                 {
                     AfkCount++;
@@ -261,12 +227,79 @@ namespace UltimateAFK.Handlers.Components
                         return;
                     }
                 }
-
-                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                
+                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
                 player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
-
-                replacement.SetRole(player.Role);
+                player.SetRole(RoleTypeId.Spectator);
+                replacement.SetRole(role);
             }
+        }
+
+        /// <summary>
+        /// Add player data to ReplacingPlayers dictionary.
+        /// </summary>
+        private void AddData(Player player, Player replacement, bool is079 = false)
+        {
+            if (is079)
+            {
+                Scp079Role scp079Role;
+                if ((scp079Role = player.ReferenceHub.roleManager.CurrentRole as Scp079Role) != null &&
+                    scp079Role.SubroutineModule.TryGetSubroutine(out Scp079TierManager scp079TierManager) &&
+                    scp079Role.SubroutineModule.TryGetSubroutine(out Scp079AuxManager scp079AuxManager))
+                {
+                    MainHandler.ReplacingPlayers.Add(replacement, new AFKData
+                    {
+                        NickName = player.Nickname,
+                        Position = player.Position,
+                        Role = player.Role,
+                        Ammo = player.ReferenceHub.inventory.UserInventory.ReserveAmmo,
+                        Health = player.Health,
+                        Items = player.GetItems(),
+                        SCP079 = new Scp079Data
+                        {
+                            Role = scp079Role,
+                            Energy = scp079AuxManager.CurrentAux,
+                            Experience = scp079TierManager.TotalExp,
+                        }
+                    });
+                }
+                return;
+            }
+            
+            var ammo = GetAmmo(player);
+            MainHandler.ReplacingPlayers.Add(replacement, new AFKData
+            {
+                NickName = player.Nickname,
+                Position = player.Position,
+                Role = player.Role,
+                Ammo = ammo,
+                Health = player.Health,
+                Items = player.GetItems(),
+                SCP079 = new Scp079Data
+                {
+                    Role = null,
+                    Energy = 0f,
+                    Experience = 0
+                }
+            });
+            
+        }
+
+        
+        /// <summary>
+        /// NORTHWOOD FIX AMMO INVENTORY NOW!
+        /// </summary>
+        /// <returns></returns>
+        private Dictionary<ItemType, ushort> GetAmmo(Player player)
+        {
+            var result = new Dictionary<ItemType, ushort>();
+
+            foreach (var ammo in player.ReferenceHub.inventory.UserInventory.ReserveAmmo)
+            {
+                result.Add(ammo.Key, ammo.Value);
+            }
+
+            return result;
         }
 
         /// <summary>

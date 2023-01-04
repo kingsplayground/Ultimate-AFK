@@ -1,4 +1,8 @@
-﻿using PluginAPI.Core.Attributes;
+﻿using System.Collections.Generic;
+using PluginAPI.Core;
+using PluginAPI.Core.Attributes;
+using UltimateAFK.Handlers;
+using UltimateAFK.Resources;
 
 namespace UltimateAFK
 {
@@ -16,6 +20,14 @@ namespace UltimateAFK
         {
             Singleton = this;
             PluginAPI.Events.EventManager.RegisterEvents(this, new Handlers.MainHandler(Singleton));
+            //PluginAPI.Events.EventManager.RegisterEvents<Handlers.Components.AfkComponent>(this);
+        }
+
+        [PluginUnload]
+        void OnDisable()
+        {
+            MainHandler.ReplacingPlayers.Clear();
+            MainHandler.ReplacingPlayers = null;
         }
     }
 }
