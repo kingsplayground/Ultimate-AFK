@@ -287,11 +287,6 @@ namespace UltimateAFK.Handlers.Components
 
         private bool Continue(Player ply)
         {
-            var value = ply.IsAlive && Round.IsRoundStarted && Player.GetPlayers().Count >= UltimateAFK.Singleton.Config.MinPlayers &&
-                        (Owner.Role != RoleTypeId.Tutorial || !UltimateAFK.Singleton.Config.IgnoreTut);
-            
-            Log.Info($"Continue value is {value}");
-            
             return ply.IsAlive && Round.IsRoundStarted && Player.Count >= UltimateAFK.Singleton.Config.MinPlayers &&
                    (Owner.Role != RoleTypeId.Tutorial || !UltimateAFK.Singleton.Config.IgnoreTut);
         }
