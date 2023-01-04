@@ -1,9 +1,8 @@
-name: .Net Core Master
+name: Build Plugin NWAPI
 
 on:
   push:
     branches: [ master ]
-  workflow_dispatch:
 
 env:
   # Para la version 10.2 el link de referencias tiene que ser este https://www.exiled.host/build_deps/Master.zip 
