@@ -111,7 +111,7 @@ namespace UltimateAFK.Handlers.Components
             
             var position = Owner.Position;
             // Yes.. Player.Camera does not change if you are playing a SCP that moves with the cameras :))))))))
-            var cameraPosition = Owner.ReferenceHub.roleManager.CurrentRole is Scp079Role scp079 ? scp079.CurrentCamera.CameraPosition : Owner.Position;
+            var cameraPosition = Owner.ReferenceHub.roleManager.CurrentRole is Scp079Role scp079 ? scp079.CurrentCamera.CameraPosition : Owner.Camera.position;
             var cameraRotation = Owner.ReferenceHub.roleManager.CurrentRole is Scp079Role scp0792 ? new Quaternion(scp0792.CurrentCamera.HorizontalRotation, scp0792.CurrentCamera.VerticalRotation, scp0792.CurrentCamera.RollRotation, 0f ) : Owner.Camera.rotation;
             
             // Player is moving
