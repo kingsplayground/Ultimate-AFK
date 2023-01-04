@@ -36,7 +36,6 @@ jobs:
         Expand-Archive -Path References.zip -DestinationPath ${{ env.SL_REFERENCES }}
 
     - name: Build
-      env:
       shell: pwsh
       run: |
         ./build.ps1
