@@ -26,12 +26,11 @@ namespace UltimateAFK.Handlers.Components
         // Position in the world
         private Vector3 _ownerPosition;
 
-        // Rotation of your head/camera
+        // Player camera position
         private Vector3 _cameraPosition;
 
+        // Player camera rotation
         private Quaternion _cameraRotation;
-
-        private float _graceTime = UltimateAFK.Singleton.Config.GraceTime;
 
         // The time the player was afk
         private float _afkTime;
@@ -62,7 +61,7 @@ namespace UltimateAFK.Handlers.Components
         }
 
         /// <summary>
-        /// Destroys the component and clears the variables and events recorded in Exiled.
+        /// Destroys the component and clears the variables
         /// </summary>
         public void Destroy()
         {
