@@ -157,8 +157,7 @@ namespace UltimateAFK.Handlers.Components
             if (UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(role))
             {
                 Log.Debug($"player {player.Nickname} ({player.UserId}) has a role that is blacklisted so he will not be searched for a replacement player", UltimateAFK.Singleton.Config.DebugMode);
-                
-                player.AfkClearInventory();
+                player.ClearPlayerInventory();
                 player.SetRole(RoleTypeId.Spectator);
                 
                 if (UltimateAFK.Singleton.Config.AfkCount != -1)
@@ -248,9 +247,6 @@ namespace UltimateAFK.Handlers.Components
                 // Adds the replacement player to the dictionary with all the necessary information
                 AddData(player, replacement, false);
 
-                // If you are wondering why I change it to SCP0492 and then to spectator, it is because when I change it to 0492 I clean the inventory.
-                player.SetRole(RoleTypeId.Scp0492);
-                
                 if (UltimateAFK.Singleton.Config.AfkCount != -1)
                 {
                     AfkCount++;
@@ -266,13 +262,23 @@ namespace UltimateAFK.Handlers.Components
                         return;
                     }
                 }
-                //Send player a broadcast for being too long afk
-                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
-                player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
-                // Sends player to spectator
-                player.SetRole(RoleTypeId.Spectator);
-                // Sends replacement to the role that had the afk
-                replacement.SetRole(role);
+
+                try
+                {
+                    // Clear player inventory
+                    player.ClearPlayerInventory();
+                    //Send player a broadcast for being too long afk
+                    player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
+                    player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
+                    // Sends player to spectator
+                    player.SetRole(RoleTypeId.Spectator);
+                    // Sends replacement to the role that had the afk
+                    replacement.SetRole(role);
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Error on {nameof(Replace)}:  {e} -- {e.StackTrace} || player is null? {player is null}", "Ultimate-AFK");
+                }
             }
         }
 

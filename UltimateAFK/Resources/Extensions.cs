@@ -58,6 +58,22 @@ namespace UltimateAFK.Resources
 
         }
 
+        public static void ClearPlayerInventory(this Player ply, bool clearAmmo = true, bool clearItems = true)
+        {
+            if (clearAmmo)
+            {
+                ply.ReferenceHub.inventory.UserInventory.ReserveAmmo.Clear();
+            }
+            if (clearItems)
+            {
+                var inventory = ply.ReferenceHub.inventory.UserInventory;
+                while (inventory.Items.Count > 0)
+                {
+                    ply.ReferenceHub.inventory.ServerRemoveItem(inventory.Items.ElementAt(0).Key, null);
+                }
+            }
+        }
+
         public static void ApplyAttachments(this Player ply)
         {
             var item = ply.Items.Where(i => i is Firearm);

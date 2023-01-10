@@ -108,7 +108,7 @@ namespace UltimateAFK.Handlers
                 return;
             }
             
-            ply.AfkClearInventory(true);
+            ply.ClearPlayerInventory();
             Log.Debug($"Adding Ammo to {ply.Nickname} ({ply.UserId})", UltimateAFK.Singleton.Config.DebugMode);
             // I add the ammunition first since it is the slowest thing to be done.
             ply.SendAmmo(data.Ammo);
