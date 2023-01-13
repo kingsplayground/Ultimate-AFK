@@ -107,6 +107,13 @@ namespace UltimateAFK.Handlers.Components
             if (!Continue(Owner))
                 return;
 
+            if (Owner == null)
+            {
+                Log.Error($"{nameof(CheckAfk)}: Player is null");
+                Destroy();
+                return;
+            }
+
             
             var position = Owner.Position;
             // Yes.. Player.Camera does not change if you are playing a SCP that moves with the cameras :))))))))
@@ -133,7 +140,7 @@ namespace UltimateAFK.Handlers.Components
                 if (graceNumb > 0)
                 {
                     // The player is in grace time, so let's warn him that he has been afk for too long.
-                    Owner.SendBroadcast(string.Format(UltimateAFK.Singleton.Config.MsgGrace, graceNumb), 2,
+                    Owner.SendBroadcastToPlayer(string.Format(UltimateAFK.Singleton.Config.MsgGrace, graceNumb), 2,
                         shouldClearPrevious: true);
                 }
                 else
@@ -236,7 +243,7 @@ namespace UltimateAFK.Handlers.Components
                 }
 
                 //Send player a broadcast for being too long afk
-                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                player.SendBroadcastToPlayer(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
                 player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
                 
                 // Sends replacement to the role that had the afk
@@ -268,7 +275,7 @@ namespace UltimateAFK.Handlers.Components
                     // Clear player inventory
                     player.ClearPlayerInventory();
                     //Send player a broadcast for being too long afk
-                    player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
+                    player.SendBroadcastToPlayer(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
                     player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
                     // Sends player to spectator
                     player.SetRole(RoleTypeId.Spectator);

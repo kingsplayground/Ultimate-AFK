@@ -99,7 +99,7 @@ namespace UltimateAFK.Handlers
             {
                 Log.Debug("The new role is a SCP079, transferring energy and experience.", UltimateAFK.Singleton.Config.DebugMode);
 
-                ply.SendBroadcast(string.Format(UltimateAFK.Singleton.Config.MsgReplace, data.NickName), 16, shouldClearPrevious: true);
+                ply.SendBroadcastToPlayer(string.Format(UltimateAFK.Singleton.Config.MsgReplace, data.NickName), 16, shouldClearPrevious: true);
                 ply.SendConsoleMessage(string.Format(UltimateAFK.Singleton.Config.MsgReplace, data.NickName), "white");
 
                 scp079TierManager.TotalExp = data.SCP079.Experience;
@@ -118,12 +118,12 @@ namespace UltimateAFK.Handlers
             {
                 Log.Debug($"Changing player {ply.Nickname} ({ply.UserId})  position and HP", Plugin.Config.DebugMode);
                 ply.Position = data.Position;
-                ply.SendBroadcast(string.Format(UltimateAFK.Singleton.Config.MsgReplace, data.NickName), 16, shouldClearPrevious: true);
+                ply.SendBroadcastToPlayer(string.Format(UltimateAFK.Singleton.Config.MsgReplace, data.NickName), 16, shouldClearPrevious: true);
                 ply.SendConsoleMessage(string.Format(UltimateAFK.Singleton.Config.MsgReplace, data.NickName), "white");
                 ply.Health = data.Health;
                 Log.Debug($"Adding items to {ply.Nickname} ({ply.UserId})", UltimateAFK.Singleton.Config.DebugMode);
                 ply.SendItems(data.Items);
-                // I apply the modifications of the replacement player not the afk, I could do it but I sincerely prefer this method.
+                // I apply the modifications of the replacement player not of the afk, I could do it but I sincerely prefer this method.
                 ply.ApplyAttachments();
             });
             

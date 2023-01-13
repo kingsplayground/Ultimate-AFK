@@ -42,22 +42,33 @@ namespace UltimateAFK.Resources
             return returnitems;
         }
 
-        public static void AfkClearInventory(this Player ply, bool clearammo = false)
+        /// <summary>
+        /// Until NW Fix SendBroadcast.
+        /// </summary>
+        /// <param name="ply"></param>
+        /// <param name="message"></param>
+        /// <param name="duration"></param>
+        /// <param name="type"></param>
+        /// <param name="shouldClearPrevious"></param>
+        public static void SendBroadcastToPlayer(this Player ply, string message, ushort duration,
+            Broadcast.BroadcastFlags type = Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
         {
-            if (clearammo)
-            {
-                ply.ReferenceHub.inventory.UserInventory.ReserveAmmo.Clear();
-                ply.ReferenceHub.inventory.SendAmmoNextFrame = true;
-            }
+            if (shouldClearPrevious) ClearBroadcasts(ply);
             
-            while (ply.ReferenceHub.inventory.UserInventory.Items.Count > 0)
-            {
-                ply.ReferenceHub.inventory.ServerRemoveItem(ply.ReferenceHub.inventory.UserInventory.Items.ElementAt(0).Key, null);
-            }
-
-
+            Broadcast.Singleton.TargetAddElement(ply.Connection, message, duration, type);
         }
 
+        private static void ClearBroadcasts(Player ply)
+        {
+            Broadcast.Singleton.TargetClearElements(ply.Connection);
+        }
+
+        /// <summary>
+        /// Until NW fix clear inventory.
+        /// </summary>
+        /// <param name="ply"></param>
+        /// <param name="clearAmmo"></param>
+        /// <param name="clearItems"></param>
         public static void ClearPlayerInventory(this Player ply, bool clearAmmo = true, bool clearItems = true)
         {
             if (clearAmmo)
@@ -74,6 +85,10 @@ namespace UltimateAFK.Resources
             }
         }
 
+        /// <summary>
+        /// Applies player attachments.
+        /// </summary>
+        /// <param name="ply"></param>
         public static void ApplyAttachments(this Player ply)
         {
             var item = ply.Items.Where(i => i is Firearm);
@@ -89,6 +104,20 @@ namespace UltimateAFK.Resources
                         firearmStatusFlags |= FirearmStatusFlags.FlashlightEnabled;
 
                     fireArm.Status = new FirearmStatus(fireArm.AmmoManagerModule.MaxAmmo, firearmStatusFlags, fireArm.GetCurrentAttachmentsCode());
+                }
+            }
+        }
+
+        public static void ReloadAllWeapons(this Player ply)
+        {
+            var item = ply.Items.Where(i => i is Firearm);
+
+            foreach (var weapon  in item)
+            {
+                if (weapon is Firearm firearm)
+                {
+                    firearm.Status = new FirearmStatus(firearm.AmmoManagerModule.MaxAmmo, firearm.Status.Flags,
+                        firearm.GetCurrentAttachmentsCode());
                 }
             }
         }
