@@ -45,20 +45,6 @@ namespace UltimateAFK.Handlers
             Log.Debug($"Adding the Component to  {player.Nickname} | Player already have component: {player.GameObject.TryGetComponent<AfkComponent>(out _)}", UltimateAFK.Singleton.Config.DebugMode);
 
             player.GameObject.AddComponent<AfkComponent>();
-            return;
-            if (player.GameObject.TryGetComponent<AfkComponent>(out var com))
-            {
-                com.Destroy();
-
-                Log.Debug($"Adding the Component to  {player.Nickname}", UltimateAFK.Singleton.Config.DebugMode);
-                player.GameObject.AddComponent<AfkComponent>();
-            }
-            else
-            {
-                Log.Debug($"Adding the Component to  {player.Nickname}", UltimateAFK.Singleton.Config.DebugMode);
-
-                player.GameObject.AddComponent<AfkComponent>();
-            }
         }
 
         /// <summary>

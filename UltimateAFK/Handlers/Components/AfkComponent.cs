@@ -15,7 +15,7 @@ namespace UltimateAFK.Handlers.Components
     /// Component that performs a constant afk check.
     /// </summary>
     [RequireComponent(typeof(ReferenceHub))]
-    public class NewAfkComponent : MonoBehaviour
+    public class AfkComponent : MonoBehaviour
     {
         private void Awake()
         {
