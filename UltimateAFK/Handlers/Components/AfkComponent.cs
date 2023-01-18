@@ -172,7 +172,7 @@ namespace UltimateAFK.Handlers.Components
             try
             {
                 // Check if role is blacklisted
-                if (!UltimateAFK.Singleton.Config.RoleTypeBlacklist.IsEmpty() && UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(roleType))
+                if (UltimateAFK.Singleton.Config.RoleTypeBlacklist?.Count > 0 && UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(roleType))
                 {
                     Log.Debug($"player {ply.Nickname} ({ply.UserId}) has a role that is blacklisted so he will not be searched for a replacement player", UltimateAFK.Singleton.Config.DebugMode);
                     

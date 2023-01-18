@@ -22,6 +22,7 @@ namespace UltimateAFK
         {
             Singleton = this;
             PluginAPI.Events.EventManager.RegisterEvents(this, new Handlers.MainHandler(Singleton));
+            
             if (ConfigFile.ServerConfig.GetInt("afk_time") > 0)
             {
                 Log.Warning($"You have enabled the AFK detector of the base game, please disable it by setting &6afk_time = 0&r in &4config_gameplay.txt&r");
