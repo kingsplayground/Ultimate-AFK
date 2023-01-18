@@ -22,6 +22,7 @@ namespace UltimateAFK.Handlers.Components
                 Destroy(this);
                 return;
             }
+            
 
             Owner = ply;
             // Coroutine dies when the component or the ReferenceHub (Player) is destroyed.
@@ -164,7 +165,7 @@ namespace UltimateAFK.Handlers.Components
                     ply.ClearInventory();
                     ply.SetRole(RoleTypeId.Spectator);
                 
-                    if (UltimateAFK.Singleton.Config.AfkCount != -1)
+                    if (IsKickEnabled)
                     {
                         AfkTimes++;
 
@@ -192,7 +193,7 @@ namespace UltimateAFK.Handlers.Components
                     ply.ClearInventory();
                     ply.SetRole(RoleTypeId.Spectator);
 
-                    if (UltimateAFK.Singleton.Config.AfkCount != -1)
+                    if (IsKickEnabled)
                     {
                         AfkTimes++;
 
@@ -212,7 +213,7 @@ namespace UltimateAFK.Handlers.Components
                 else
                 {
                     // if not
-                    Log.Debug($"Replacement Player found Nickname: {replacement.Nickname} UserID: {replacement.UserId}", UltimateAFK.Singleton.Config.DebugMode);
+                    Log.Debug($"Replacement Player found: {replacement.Nickname} ({replacement.UserId})", UltimateAFK.Singleton.Config.DebugMode);
 
                     // Check if AFK role is SCP-079 
                     if (roleType is RoleTypeId.Scp079)
@@ -223,7 +224,7 @@ namespace UltimateAFK.Handlers.Components
                         // Self-explanatory
                         ply.SetRole(RoleTypeId.Spectator);
                 
-                        if (UltimateAFK.Singleton.Config.AfkCount != -1)
+                        if (IsKickEnabled)
                         {
                             AfkTimes++;
 
@@ -251,7 +252,7 @@ namespace UltimateAFK.Handlers.Components
                         // Adds the replacement player to the dictionary with all the necessary information
                         AddData(ply, replacement, false);
 
-                        if (UltimateAFK.Singleton.Config.AfkCount != -1)
+                        if (IsKickEnabled)
                         {
                             AfkTimes++;
                     
