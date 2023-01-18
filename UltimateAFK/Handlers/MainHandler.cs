@@ -32,7 +32,7 @@ namespace UltimateAFK.Handlers
         [PluginEvent(ServerEventType.PlayerJoined)]
         private void OnPlayerJoin(Player player)
         {
-            if(!Plugin.Config.IsEnabled) return;
+            if(!Plugin.Config.IsEnabled || player.UserId.Contains("@server")) return;
             
             if (player.GameObject.TryGetComponent<AfkComponent>(out var com))
             {

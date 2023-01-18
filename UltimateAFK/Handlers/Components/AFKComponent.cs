@@ -366,7 +366,7 @@ namespace UltimateAFK.Handlers.Components
         {
             foreach (var player in Player.GetPlayers())
             {
-                if (player.IsAlive || player == Owner || player.CheckPermission("uafk.ignore") || player.IsServer)
+                if (player.IsAlive || player == Owner || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server"))
                     continue;
 
                 return player;
