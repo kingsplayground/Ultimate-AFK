@@ -16,7 +16,7 @@ namespace UltimateAFK.Handlers.Components
     /// <summary>
     /// Component that performs a constant afk check.
     /// </summary>
-    public class OldAfkComponent : MonoBehaviour
+    public class AfkComponent : MonoBehaviour
     {
         /// <summary>
         /// The player who owns this component.
