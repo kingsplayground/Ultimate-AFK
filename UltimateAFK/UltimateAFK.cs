@@ -27,7 +27,7 @@ namespace UltimateAFK
             
             if (ConfigFile.ServerConfig.GetFloat("afk_time", 90f) > 0)
             {
-                Log.Warning($"You have enabled the AFK detector of the base game, please disable it by setting &6afk_time = 0&r in &4config_gameplay.txt&r");
+                Log.Warning($"You have enabled the AFK detector of the base game, please disable it by config &6afk_time = 0&r in &4config_gameplay.txt&r");
             }
             //PluginAPI.Events.EventManager.RegisterEvents<Handlers.Components.AfkComponent>(this);
         }
