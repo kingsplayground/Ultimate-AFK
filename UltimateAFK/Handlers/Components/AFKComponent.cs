@@ -342,7 +342,6 @@ namespace UltimateAFK.Handlers.Components
             });
             
         }
-
         
         /// <summary>
         /// NORTHWOOD FIX AMMO INVENTORY NOW!
