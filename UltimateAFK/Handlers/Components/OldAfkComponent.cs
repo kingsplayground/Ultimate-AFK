@@ -2,10 +2,12 @@
 using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NWAPIPermissionSystem;
 using PlayerRoles;
 using PlayerRoles.PlayableScps.Scp079;
 using PlayerRoles.PlayableScps.Scp096;
+using PluginAPI.Core.Items;
 using UltimateAFK.Resources;
 using UnityEngine;
 
@@ -14,7 +16,7 @@ namespace UltimateAFK.Handlers.Components
     /// <summary>
     /// Component that performs a constant afk check.
     /// </summary>
-    public class AfkComponent : MonoBehaviour
+    public class OldAfkComponent : MonoBehaviour
     {
         /// <summary>
         /// The player who owns this component.
@@ -138,7 +140,7 @@ namespace UltimateAFK.Handlers.Components
                 if (graceNumb > 0)
                 {
                     // The player is in grace time, so let's warn him that he has been afk for too long.
-                    Owner.SendBroadcastToPlayer(string.Format(UltimateAFK.Singleton.Config.MsgGrace, graceNumb), 2,
+                    Owner.SendBroadcast(string.Format(UltimateAFK.Singleton.Config.MsgGrace, graceNumb), 2,
                         shouldClearPrevious: true);
                 }
                 else
@@ -159,30 +161,27 @@ namespace UltimateAFK.Handlers.Components
         public void Replace(Player player, RoleTypeId role)
         {
             // Check if role is blacklisted
-            if (UltimateAFK.Singleton.Config.RoleTypeBlacklist?.Count > 0)
+            if (UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(role))
             {
-                if (UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(role))
+                Log.Debug($"player {player.Nickname} ({player.UserId}) has a role that is blacklisted so he will not be searched for a replacement player", UltimateAFK.Singleton.Config.DebugMode);
+                player.ClearInventory();
+                player.SetRole(RoleTypeId.Spectator);
+                
+                if (UltimateAFK.Singleton.Config.AfkCount != -1)
                 {
-                    Log.Debug($"player {player.Nickname} ({player.UserId}) has a role that is blacklisted so he will not be searched for a replacement player", UltimateAFK.Singleton.Config.DebugMode);
-                    player.ClearPlayerInventory();
-                    player.SetRole(RoleTypeId.Spectator);
+                    AfkCount++;
 
-                    if (UltimateAFK.Singleton.Config.AfkCount != -1)
+                    if (AfkCount >= UltimateAFK.Singleton.Config.AfkCount)
                     {
-                        AfkCount++;
-
-                        if (AfkCount >= UltimateAFK.Singleton.Config.AfkCount)
-                        {
-                            player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
-                            player.Kick(UltimateAFK.Singleton.Config.MsgKick);
-                            return;
-                        }
+                        player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
+                        player.Kick(UltimateAFK.Singleton.Config.MsgKick);
+                        return;
                     }
-
-                    player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
-                    player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
-                    return;
                 }
+                
+                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
+                return;
             }
             
             // Get player replacement
@@ -244,7 +243,7 @@ namespace UltimateAFK.Handlers.Components
                 }
 
                 //Send player a broadcast for being too long afk
-                player.SendBroadcastToPlayer(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
                 player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
                 
                 // Sends replacement to the role that had the afk
@@ -274,9 +273,9 @@ namespace UltimateAFK.Handlers.Components
                 try
                 {
                     // Clear player inventory
-                    player.ClearPlayerInventory();
+                    player.ClearInventory();
                     //Send player a broadcast for being too long afk
-                    player.SendBroadcastToPlayer(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
+                    player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
                     player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
                     // Sends player to spectator
                     player.SetRole(RoleTypeId.Spectator);
@@ -343,7 +342,6 @@ namespace UltimateAFK.Handlers.Components
             });
             
         }
-
         
         /// <summary>
         /// NORTHWOOD FIX AMMO INVENTORY NOW!

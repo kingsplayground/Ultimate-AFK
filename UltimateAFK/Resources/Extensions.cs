@@ -11,6 +11,9 @@ namespace UltimateAFK.Resources
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Adds several items at the same time to a player.
+        /// </summary>
         public static void SendItems(this Player player, List<ItemType> types)
         {
             foreach (var item in types)
@@ -19,6 +22,9 @@ namespace UltimateAFK.Resources
             }
         }
 
+        /// <summary>
+        /// Gives the ammunition you want a player to have.
+        /// </summary>
         public static void SendAmmo(this Player ply, Dictionary<ItemType, ushort> ammo)
         {
             foreach (var ammoItem in ammo)
@@ -41,50 +47,7 @@ namespace UltimateAFK.Resources
 
             return returnitems;
         }
-
-        /// <summary>
-        /// Until NW Fix SendBroadcast.
-        /// </summary>
-        /// <param name="ply"></param>
-        /// <param name="message"></param>
-        /// <param name="duration"></param>
-        /// <param name="type"></param>
-        /// <param name="shouldClearPrevious"></param>
-        public static void SendBroadcastToPlayer(this Player ply, string message, ushort duration,
-            Broadcast.BroadcastFlags type = Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
-        {
-            if (shouldClearPrevious) ClearBroadcasts(ply);
-            
-            Broadcast.Singleton.TargetAddElement(ply.Connection, message, duration, type);
-        }
-
-        private static void ClearBroadcasts(Player ply)
-        {
-            Broadcast.Singleton.TargetClearElements(ply.Connection);
-        }
-
-        /// <summary>
-        /// Until NW fix clear inventory.
-        /// </summary>
-        /// <param name="ply"></param>
-        /// <param name="clearAmmo"></param>
-        /// <param name="clearItems"></param>
-        public static void ClearPlayerInventory(this Player ply, bool clearAmmo = true, bool clearItems = true)
-        {
-            if (clearAmmo)
-            {
-                ply.ReferenceHub.inventory.UserInventory.ReserveAmmo.Clear();
-            }
-            if (clearItems)
-            {
-                var inventory = ply.ReferenceHub.inventory.UserInventory;
-                while (inventory.Items.Count > 0)
-                {
-                    ply.ReferenceHub.inventory.ServerRemoveItem(inventory.Items.ElementAt(0).Key, null);
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Applies player attachments.
         /// </summary>

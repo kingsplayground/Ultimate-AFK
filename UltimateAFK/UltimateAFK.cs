@@ -2,6 +2,7 @@
 using GameCore;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
+using PluginAPI.Enums;
 using UltimateAFK.Handlers;
 using UltimateAFK.Resources;
 using Log = PluginAPI.Core.Log;
@@ -17,7 +18,8 @@ namespace UltimateAFK
 
         [PluginConfig] public Config Config;
         
-        [PluginEntryPoint("UltimateAFK", "6.0.3", "Checks if a player is afk for too long and if detected as afk will be replaced by a spectator.", "SrLicht")]
+        [PluginPriority(LoadPriority.High)]
+        [PluginEntryPoint("UltimateAFK", "6.1.0", "Checks if a player is afk for too long and if detected as afk will be replaced by a spectator.", "SrLicht")]
         void OnEnabled()
         {
             Singleton = this;
