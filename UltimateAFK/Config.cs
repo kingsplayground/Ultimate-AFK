@@ -33,7 +33,7 @@ namespace UltimateAFK
         [Description("After being detected as AFK a message will appear on his face and he will be given this time to move or he will be Kicked/Moved to spectator.")]
         public int GraceTime { get; set; } = 30;
 
-        [Description("The number of times a player must be moved to spectator for a player to be kicked from the server.")]
+        [Description("The number of times a player must be moved to spectator for a player to be kicked from the server. Use -1 to disable it")]
         public int AfkCount { get; set; } = -1;
 
         [Description("When the player is detected as AFK and is in grace period this message will appear on his face. {0} represents the seconds the player has to move or be moved to spectator.")]
