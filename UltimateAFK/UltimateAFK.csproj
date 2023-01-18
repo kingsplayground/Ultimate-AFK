@@ -5,7 +5,6 @@
     <OutputType>Library</OutputType>
     <AssemblyName>UltimateAFK</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Version></Version>
   </PropertyGroup>
 
  <Import Project="../Cerberus.props" />

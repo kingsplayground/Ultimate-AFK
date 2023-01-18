@@ -84,6 +84,8 @@ namespace UltimateAFK.Handlers.Components
             var cameraPosition = Owner.ReferenceHub.roleManager.CurrentRole is Scp079Role scp079 ? scp079.CurrentCamera.CameraPosition : Owner.Camera.position;
             var cameraRotation = Owner.ReferenceHub.roleManager.CurrentRole is Scp079Role scp0792 ? new Quaternion(scp0792.CurrentCamera.HorizontalRotation, scp0792.CurrentCamera.VerticalRotation, scp0792.CurrentCamera.RollRotation, 0f ) : Owner.Camera.rotation;
             
+            // Set OwnerRoleType 
+            OwnerRoleType = Owner.Role;
             // Player is moving
             if (cameraPosition != _cameraPosition || ownerPosition != _ownerPosition || _cameraRotation != cameraRotation)
             {
@@ -91,6 +93,7 @@ namespace UltimateAFK.Handlers.Components
                 _cameraRotation = cameraRotation;
                 _ownerPosition = ownerPosition;
                 _afkTime = 0f;
+                OwnerLastPosition = ownerPosition;
             }
             // The player is not moving and is not SCP-096 with his TryToNotCry ability.
             else if (!(Owner.Role == RoleTypeId.Scp096 && (Owner.ReferenceHub.roleManager.CurrentRole as Scp096Role).IsAbilityState(Scp096AbilityState.TryingNotToCry)))
@@ -118,21 +121,21 @@ namespace UltimateAFK.Handlers.Components
         }
 
         #region API
-        public static Player Owner { get; private set; }
+        public Player Owner { get; private set; }
 
-        public RoleTypeId OwnerRoleType { get; } = Owner.Role;
+        public RoleTypeId OwnerRoleType;
 
-        public Vector3 OwnerLastPosition { get; } = _ownerPosition;
+        public Vector3 OwnerLastPosition;
+        
         public int AfkTimes { get; set; }
-
+        
         public bool IsKickEnabled { get; set; } = UltimateAFK.Singleton.Config.AfkCount > -1;
-
         #endregion
 
         #region Private variables
 
         // Position in the world
-        private static Vector3 _ownerPosition;
+        private Vector3 _ownerPosition;
 
         // Player camera position
         private Vector3 _cameraPosition;

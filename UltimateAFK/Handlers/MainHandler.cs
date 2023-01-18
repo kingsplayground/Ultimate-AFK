@@ -42,6 +42,10 @@ namespace UltimateAFK.Handlers
         {
             if(!Plugin.Config.IsEnabled || player.UserId.Contains("@server")) return;
             
+            Log.Debug($"Adding the Component to  {player.Nickname} | Player already have component: {player.GameObject.TryGetComponent<AfkComponent>(out _)}", UltimateAFK.Singleton.Config.DebugMode);
+
+            player.GameObject.AddComponent<AfkComponent>();
+            return;
             if (player.GameObject.TryGetComponent<AfkComponent>(out var com))
             {
                 com.Destroy();
