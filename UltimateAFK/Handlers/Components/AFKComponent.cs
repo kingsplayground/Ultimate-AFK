@@ -2,12 +2,10 @@
 using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NWAPIPermissionSystem;
 using PlayerRoles;
 using PlayerRoles.PlayableScps.Scp079;
 using PlayerRoles.PlayableScps.Scp096;
-using PluginAPI.Core.Items;
 using UltimateAFK.Resources;
 using UnityEngine;
 
@@ -161,27 +159,30 @@ namespace UltimateAFK.Handlers.Components
         public void Replace(Player player, RoleTypeId role)
         {
             // Check if role is blacklisted
-            if (UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(role))
+            if (UltimateAFK.Singleton.Config.RoleTypeBlacklist?.Count > 0)
             {
-                Log.Debug($"player {player.Nickname} ({player.UserId}) has a role that is blacklisted so he will not be searched for a replacement player", UltimateAFK.Singleton.Config.DebugMode);
-                player.ClearPlayerInventory();
-                player.SetRole(RoleTypeId.Spectator);
-                
-                if (UltimateAFK.Singleton.Config.AfkCount != -1)
+                if (UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(role))
                 {
-                    AfkCount++;
+                    Log.Debug($"player {player.Nickname} ({player.UserId}) has a role that is blacklisted so he will not be searched for a replacement player", UltimateAFK.Singleton.Config.DebugMode);
+                    player.ClearPlayerInventory();
+                    player.SetRole(RoleTypeId.Spectator);
 
-                    if (AfkCount >= UltimateAFK.Singleton.Config.AfkCount)
+                    if (UltimateAFK.Singleton.Config.AfkCount != -1)
                     {
-                        player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
-                        player.Kick(UltimateAFK.Singleton.Config.MsgKick);
-                        return;
+                        AfkCount++;
+
+                        if (AfkCount >= UltimateAFK.Singleton.Config.AfkCount)
+                        {
+                            player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
+                            player.Kick(UltimateAFK.Singleton.Config.MsgKick);
+                            return;
+                        }
                     }
+
+                    player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                    player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
+                    return;
                 }
-                
-                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
-                player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
-                return;
             }
             
             // Get player replacement
