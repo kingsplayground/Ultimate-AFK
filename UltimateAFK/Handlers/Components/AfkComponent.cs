@@ -11,8 +11,11 @@ using UnityEngine;
 
 namespace UltimateAFK.Handlers.Components
 {
+    /// <summary>
+    /// Component that performs a constant afk check.
+    /// </summary>
     [RequireComponent(typeof(ReferenceHub))]
-    public class NewAFKComponent : MonoBehaviour
+    public class AfkComponent : MonoBehaviour
     {
         private void Awake()
         {
@@ -38,6 +41,14 @@ namespace UltimateAFK.Handlers.Components
                 Log.Debug("Owner was null at the time of destroying the component", UltimateAFK.Singleton.Config.DebugMode);
 
             Timing.KillCoroutines(_checkHandle);
+        }
+
+        /// <summary>
+        /// Public method to destroy the component from the outside.
+        /// </summary>
+        public void Destroy()
+        {
+            Destroy(this);
         }
 
         private IEnumerator<float> Check()
@@ -93,7 +104,7 @@ namespace UltimateAFK.Handlers.Components
                 if (graceNumb > 0)
                 {
                     // The player is in grace time, so let's warn him that he has been afk for too long.
-                    Owner.SendBroadcastToPlayer(string.Format(UltimateAFK.Singleton.Config.MsgGrace, graceNumb), 2,
+                    Owner.SendBroadcast(string.Format(UltimateAFK.Singleton.Config.MsgGrace, graceNumb), 2,
                         shouldClearPrevious: true);
                 }
                 else
@@ -241,7 +252,7 @@ namespace UltimateAFK.Handlers.Components
                         }
 
                         //Send player a broadcast for being too long afk
-                        ply.SendBroadcastToPlayer(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                        ply.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
                         ply.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
                 
                         // Sends replacement to the role that had the afk
@@ -269,9 +280,9 @@ namespace UltimateAFK.Handlers.Components
                         }
                         
                         // Clear player inventory
-                        ply.ClearPlayerInventory();
+                        ply.ClearInventory();
                         //Send player a broadcast for being too long afk
-                        ply.SendBroadcastToPlayer(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
+                        ply.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
                         ply.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
                         // Sends player to spectator
                         ply.SetRole(RoleTypeId.Spectator);
