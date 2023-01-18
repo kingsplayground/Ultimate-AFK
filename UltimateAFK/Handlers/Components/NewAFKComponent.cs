@@ -146,12 +146,18 @@ namespace UltimateAFK.Handlers.Components
             return ply.IsAlive && Round.IsRoundStarted && Player.Count >= UltimateAFK.Singleton.Config.MinPlayers &&
                    (Owner.Role != RoleTypeId.Tutorial || !UltimateAFK.Singleton.Config.IgnoreTut);
         }
+        
+        /// <summary>
+        /// Perform player replacement.
+        /// </summary>
+        /// <param name="ply">player to replace</param>
+        /// <param name="roleType"><see cref="RoleTypeId"/> of the player afk</param>
         private void Replace(Player ply, RoleTypeId roleType)
         {
             try
             {
                 // Check if role is blacklisted
-                if (UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(roleType))
+                if (!UltimateAFK.Singleton.Config.RoleTypeBlacklist.IsEmpty() && UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(roleType))
                 {
                     Log.Debug($"player {ply.Nickname} ({ply.UserId}) has a role that is blacklisted so he will not be searched for a replacement player", UltimateAFK.Singleton.Config.DebugMode);
                     
