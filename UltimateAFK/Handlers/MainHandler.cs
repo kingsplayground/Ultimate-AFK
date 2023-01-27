@@ -84,8 +84,8 @@ namespace UltimateAFK.Handlers
                 {
                     ply.SendBroadcast(string.Format(UltimateAFK.Singleton.Config.MsgReplace, data.NickName), 16, shouldClearPrevious: true);
                     ply.SendConsoleMessage(string.Format(UltimateAFK.Singleton.Config.MsgReplace, data.NickName), "white");
-
-                    tierManager.TotalExp = data.SCP079.Experience;
+                    
+                    tierManager.ServerGrantExperience(data.SCP079.Experience, Scp079HudTranslation.Experience);
                     energyManager.CurrentAux = data.SCP079.Energy;
                     ReplacingPlayers.Remove(ply);
                     
