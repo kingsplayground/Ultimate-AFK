@@ -47,5 +47,32 @@ namespace UltimateAFK
 
         [Description("When a player replaces another player, this message will appear on the player's face and on the player console. | {0} it is the name of the player who was afk")]
         public string MsgReplace { get; set; } = "<color=red> You replaced {0} who was afk.</color>";
+
+        [Description("All configuration related with the command")]
+        public CommandConfig CommandConfig { get; set; } = new();
+    }
+
+    public class CommandConfig
+    {
+        [Description("Is the command enabled on this server ?")]
+        public bool IsEnabled { get; set; } = false;
+
+        // Maybe one day... Commands load before singleton is created so i can get config
+        /*[Description("the prefix to be used by the players .afk or whatever you like")]
+        public string Command { get; set; } = "afk";
+
+        [Description("I recommend you not to leave this empty since a bug crashes the server if you register commands with empty aliases.")]
+        public string[] Aliases { get; set; } = new[] { "uafk" };
+
+        [Description("The command description")]
+        public string Description { get; set; } = "By using this command you will be moved to spectator and if the server allows it a player will replace you.";
+        */
+        
+        [Description("Players who use this command will be replaced by players who are in spectator")]
+        public bool Replace { get; set; } = true;
+
+        public string TextOnDisable = "This command is disabled";
+
+        public string TextOnSucces = "You were moved to spectator because you considered yourself AFK.";
     }
 }
