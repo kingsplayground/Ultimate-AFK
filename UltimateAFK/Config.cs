@@ -71,8 +71,10 @@ namespace UltimateAFK
         [Description("Players who use this command will be replaced by players who are in spectator")]
         public bool Replace { get; set; } = true;
 
-        public string TextOnDisable = "This command is disabled";
+        [Description("The message given to the player attempting to use the command when it is disabled.")]
+        public string TextOnDisable {get; set;} = "This command is disabled";
 
-        public string TextOnSucces = "You were moved to spectator because you considered yourself AFK.";
+        [Description("The message that will be sent to the player when they are moved to spectator")]
+        public string TextOnSuccess { get; set; }  = "You were moved to spectator because you considered yourself AFK.";
     }
 }

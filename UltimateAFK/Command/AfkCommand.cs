@@ -31,7 +31,7 @@ namespace UltimateAFK.Command
                 var ply = Player.Get(sender);
                 
                 GoAfk(ply, ply.Role);
-                response = UltimateAFK.Singleton.Config.CommandConfig.TextOnSucces;
+                response = UltimateAFK.Singleton.Config.CommandConfig.TextOnSuccess;
                 return true;
             }
             catch (Exception e)
