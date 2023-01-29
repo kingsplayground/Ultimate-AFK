@@ -71,10 +71,22 @@ namespace UltimateAFK
         [Description("Players who use this command will be replaced by players who are in spectator")]
         public bool Replace { get; set; } = true;
 
+        [Description("The coldown of the command when using it")]
+        public float Cooldown { get; set; } = 40f;
+
         [Description("The message given to the player attempting to use the command when it is disabled.")]
         public string TextOnDisable {get; set;} = "This command is disabled";
 
         [Description("The message that will be sent to the player when they are moved to spectator")]
         public string TextOnSuccess { get; set; }  = "You were moved to spectator because you considered yourself AFK.";
+
+        [Description("The message that will be given to the player when trying to use the command when it has the effect of taking more than 2 candies.")]
+        public string TextOnSevereHands { get; set; } = $"You cannot use this command if you have no hands";
+
+        [Description("When a player attempts to use the command when it has the effect given by SCP-049")]
+        public string TextOnHearthAttack { get; set; } = $"You cannot use this command if you have a heart attack.";
+
+        [Description("When a player tries to use the command when he still has cooldown, {0} is the number of seconds the player has to wait.")]
+        public string TextOnCooldown { get; set; } = "You cannot use the command yet, you have to wait {0} seconds.";
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CommandSystem;
+using CustomPlayerEffects;
 using NWAPIPermissionSystem;
 using PlayerRoles;
 using PlayerRoles.PlayableScps.Scp079;
@@ -9,6 +10,7 @@ using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using UltimateAFK.Handlers;
 using UltimateAFK.Resources;
+using UnityEngine;
 
 namespace UltimateAFK.Command
 {
@@ -18,6 +20,7 @@ namespace UltimateAFK.Command
         public string Command { get; } = "afk";
         public string[] Aliases { get; }
         public string Description { get; } = "By using this command you will be moved to spectator and if the server allows it a player will replace you."; 
+        public Dictionary<string, float> InCooldown = new();
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -27,10 +30,38 @@ namespace UltimateAFK.Command
                 {
                     response = UltimateAFK.Singleton.Config.CommandConfig.TextOnDisable;
                 }
-                
                 var ply = Player.Get(sender);
                 
+                if (ply.EffectsManager.TryGetEffect<SeveredHands>(out _))
+                {
+                    response = UltimateAFK.Singleton.Config.CommandConfig.TextOnSevereHands;
+                    return false;
+                }
+                if (ply.EffectsManager.TryGetEffect<CardiacArrest>(out _))
+                {
+                    response = UltimateAFK.Singleton.Config.CommandConfig.TextOnHearthAttack;
+                    return false;
+                }
+                if (InCooldown.TryGetValue(ply.UserId, out var cooldown))
+                {
+                    // In cooldown
+                    if (cooldown >= Time.time)
+                    {
+                        var cooldownTimer = (int)(cooldown - Time.time);
+
+                        response = string.Format(UltimateAFK.Singleton.Config.CommandConfig.TextOnCooldown,
+                            cooldownTimer);
+                        return false;
+                    }
+                    else
+                    {
+                        // Not in cooldown
+                        InCooldown.Remove(ply.UserId);
+                    }
+                }
+                
                 GoAfk(ply, ply.Role);
+                InCooldown.Add(ply.UserId, Time.time + UltimateAFK.Singleton.Config.CommandConfig.Cooldown);
                 response = UltimateAFK.Singleton.Config.CommandConfig.TextOnSuccess;
                 return true;
             }
