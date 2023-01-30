@@ -57,7 +57,7 @@ namespace UltimateAFK
         [Description("Is the command enabled on this server ?")]
         public bool IsEnabled { get; set; } = false;
 
-        // Maybe one day... Commands load before singleton is created so i can get config
+        // Maybe one day... Commands load before singleton is created so i cant get config
         /*[Description("the prefix to be used by the players .afk or whatever you like")]
         public string Command { get; set; } = "afk";
 
@@ -73,20 +73,58 @@ namespace UltimateAFK
 
         [Description("The coldown of the command when using it")]
         public float Cooldown { get; set; } = 40f;
+        
+        [Description("The command can only be used by players who have a group that is on the list ?")]
+        public bool ExclusiveForGroups { get; set; } = false;
 
-        [Description("The message given to the player attempting to use the command when it is disabled.")]
-        public string TextOnDisable {get; set;} = "This command is disabled";
+        [Description("List of groups.")]
+        public List<string> UserGroupsAllowed { get; set; } = new()
+        {
+            "someGroup",
+        };
+        
+        [Description("The command is disabled for certain RoleTypes?")]
+        public bool DisableForCertainRole { get; set; } = false;
 
-        [Description("The message that will be sent to the player when they are moved to spectator")]
-        public string TextOnSuccess { get; set; }  = "You were moved to spectator because you considered yourself AFK.";
+        [Description("List of RoleTypes that cannot use the command")]
+        public List<RoleTypeId> RoleTypeIdBlackList { get; set; } = new()
+        {
+            RoleTypeId.None,
+        };
+        
+        public Responses Responses { get; set; } = new();
+    }
 
-        [Description("The message that will be given to the player when trying to use the command when it has the effect of taking more than 2 candies.")]
-        public string TextOnSevereHands { get; set; } = $"You cannot use this command if you have no hands";
+    public class Responses
+    {
+        [Description("Response given to the player when trying to use the command when it is disabled.")]
+        public string OnDisable { get; set; } = "This command is disabled";
 
-        [Description("When a player attempts to use the command when it has the effect given by SCP-049")]
-        public string TextOnHearthAttack { get; set; } = $"You cannot use this command if you have a heart attack.";
+        [Description("Response given to the player when successfully executing the command.")]
+        public string OnSuccess { get; set; } = "You were moved to spectator because you considered yourself AFK.";
+        
+        [Description("Response given to the player when he has no hands")]
+        public string OnSevereHands { get; set; } =  "You cannot use this command if you have no hands";
 
-        [Description("When a player tries to use the command when he still has cooldown, {0} is the number of seconds the player has to wait.")]
-        public string TextOnCooldown { get; set; } = "You cannot use the command yet, you have to wait {0} seconds.";
+        [Description("Response given to the player when affected by Cardiact Arrest (Effect of SCP-049)")]
+        public string OnHearthAttack { get; set; } = "You cannot use this command if you have a heart attack.";
+        
+        [Description("Response given to the player when trying to use the command when in the pocket dimension.")]
+        public string OnPocketDimension { get; set; } = "There is no easy escape from the pocket dimension.";
+        
+        [Description("Response given to the player when he still has cooldown to use the command. {0} is the number of seconds the player has to wait.")]
+        public string OnCooldown { get; set; } =  "You cannot use the command yet, you have to wait {0} seconds.";
+        
+        [Description("Response given when a player tries to use the command with a role in the blacklist")]
+        public string OnBlackListedRole { get; set; } = "You cannot use this command when you are {0}";
+        
+        [Description("Response given to the player when not in the group list")]
+        public string OnGroupExclusive { get; set; } = "Your current group is not in the list of allowed groups.";
+        
+        [Description("Response given to the player when he tries to use the command when the round has not started.")]
+        public string OnRoundIsNotStarted { get; set; } = "The round has not started yet, you cannot use the command.";
+        
+        [Description("Response given to the player when trying to use the command while is dead.")]
+        public string OnPlayerIsDead { get; set; } = "You cannot use the command if you are dead.";
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CommandSystem;
 using CustomPlayerEffects;
+using MapGeneration;
 using NWAPIPermissionSystem;
 using PlayerRoles;
 using PlayerRoles.PlayableScps.Scp079;
@@ -28,18 +29,46 @@ namespace UltimateAFK.Command
             {
                 if (!UltimateAFK.Singleton.Config.CommandConfig.IsEnabled)
                 {
-                    response = UltimateAFK.Singleton.Config.CommandConfig.TextOnDisable;
+                    response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnDisable;
+                    return false;
                 }
-                var ply = Player.Get(sender);
+                if (!Round.IsRoundStarted)
+                {
+                    response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnRoundIsNotStarted;
+                    return false;
+                }
                 
+                var ply = Player.Get(sender);
+                if (!ply.IsAlive)
+                {
+                    response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnPlayerIsDead;
+                    return false;
+                }
+                if (ply.Zone == FacilityZone.Other)
+                {
+                    response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnPocketDimension;
+                    return false;
+                }
+                if (UltimateAFK.Singleton.Config.CommandConfig.DisableForCertainRole && UltimateAFK.Singleton.Config.CommandConfig.RoleTypeIdBlackList.Contains(ply.Role))
+                {
+                    response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnBlackListedRole;
+                    return false;
+                }
+
+                if (UltimateAFK.Singleton.Config.CommandConfig.ExclusiveForGroups &&
+                    !UltimateAFK.Singleton.Config.CommandConfig.UserGroupsAllowed.Contains(ply.RoleName))
+                {
+                    response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnGroupExclusive;
+                    return false;
+                }
                 if (ply.EffectsManager.TryGetEffect<SeveredHands>(out _))
                 {
-                    response = UltimateAFK.Singleton.Config.CommandConfig.TextOnSevereHands;
+                    response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnSevereHands;
                     return false;
                 }
                 if (ply.EffectsManager.TryGetEffect<CardiacArrest>(out _))
                 {
-                    response = UltimateAFK.Singleton.Config.CommandConfig.TextOnHearthAttack;
+                    response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnHearthAttack;
                     return false;
                 }
                 if (InCooldown.TryGetValue(ply.UserId, out var cooldown))
@@ -49,7 +78,7 @@ namespace UltimateAFK.Command
                     {
                         var cooldownTimer = (int)(cooldown - Time.time);
 
-                        response = string.Format(UltimateAFK.Singleton.Config.CommandConfig.TextOnCooldown,
+                        response = string.Format(UltimateAFK.Singleton.Config.CommandConfig.Responses.OnCooldown,
                             cooldownTimer);
                         return false;
                     }
@@ -62,12 +91,12 @@ namespace UltimateAFK.Command
                 
                 GoAfk(ply, ply.Role);
                 InCooldown.Add(ply.UserId, Time.time + UltimateAFK.Singleton.Config.CommandConfig.Cooldown);
-                response = UltimateAFK.Singleton.Config.CommandConfig.TextOnSuccess;
+                response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnSuccess;
                 return true;
             }
             catch (Exception e)
             {
-                response = $"Error: {e.Data} -- {e}";
+                response = $"Error: {e} -- {e.Message}";
                 return false;
             }
         }
