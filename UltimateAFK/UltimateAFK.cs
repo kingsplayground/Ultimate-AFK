@@ -31,8 +31,6 @@ namespace UltimateAFK
             {
                 Log.Warning($"You have enabled the AFK detector of the base game, please disable it by config &6afk_time = 0&r in &4config_gameplay.txt&r");
             }
-            
-            //PluginAPI.Events.EventManager.RegisterEvents<Handlers.Components.AfkComponent>(this);
         }
 
         [PluginUnload]

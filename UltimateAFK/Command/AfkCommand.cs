@@ -51,7 +51,8 @@ namespace UltimateAFK.Command
                 }
                 if (UltimateAFK.Singleton.Config.CommandConfig.DisableForCertainRole && UltimateAFK.Singleton.Config.CommandConfig.RoleTypeIdBlackList.Contains(ply.Role))
                 {
-                    response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnBlackListedRole;
+                    response = string.Format(UltimateAFK.Singleton.Config.CommandConfig.Responses.OnBlackListedRole,
+                        ply.Role);
                     return false;
                 }
 
