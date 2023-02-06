@@ -62,12 +62,12 @@ namespace UltimateAFK.Command
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnGroupExclusive;
                     return false;
                 }
-                if (ply.EffectsManager.TryGetEffect<SeveredHands>(out _))
+                if (ply.EffectsManager.TryGetEffect<SeveredHands>(out var severedHands) && severedHands.IsEnabled)
                 {
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnSevereHands;
                     return false;
                 }
-                if (ply.EffectsManager.TryGetEffect<CardiacArrest>(out _))
+                if (ply.EffectsManager.TryGetEffect<CardiacArrest>(out var cardiacArrest) && cardiacArrest.IsEnabled)
                 {
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnHearthAttack;
                     return false;
