@@ -92,6 +92,9 @@ namespace UltimateAFK
             RoleTypeId.None,
         };
         
+        [Description("Players who are in overwatch mode will not be considered replacements for AFKs.")]
+        public bool IgnoreOverwatch { get; set; } = true;
+        
         public Responses Responses { get; set; } = new();
     }
 

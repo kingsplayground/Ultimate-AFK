@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CommandSystem;
 using CustomPlayerEffects;
 using MapGeneration;
@@ -12,6 +13,8 @@ using PluginAPI.Core.Attributes;
 using UltimateAFK.Handlers;
 using UltimateAFK.Resources;
 using UnityEngine;
+using Utils.NonAllocLINQ;
+using Random = UnityEngine.Random;
 
 namespace UltimateAFK.Command
 {
@@ -175,15 +178,17 @@ namespace UltimateAFK.Command
 
         private Player FindReplacement(Player afk)
         {
+            var players = new List<Player>();
             foreach (var player in Player.GetPlayers())
             {
-                if (player.IsAlive || player == afk || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server"))
+                if (player.IsAlive || player == afk || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
+                    || (UltimateAFK.Singleton.Config.CommandConfig.IgnoreOverwatch && player.IsOverwatchEnabled))
                     continue;
-
-                return player;
+                
+                players.Add(player);
             }
-
-            return null;
+            
+            return players.Any() ? players.ElementAtOrDefault(Random.Range(0, players.Count)) : null;
         }
         
         /// <summary>
