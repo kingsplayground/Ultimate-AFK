@@ -23,6 +23,9 @@ namespace UltimateAFK
 
         [Description("Tutorials should be ignored ?")]
         public bool IgnoreTut { get; set; } = true;
+        
+        [Description("Players in overwatch mode will be ignored for replace a afk player")]
+        public bool IgnoreOverwatch { get; set; } = true;
 
         [Description("RoleTypes on this list will not be replaced by other players")]
         public List<RoleTypeId> RoleTypeBlacklist { get; set; } = new() { RoleTypeId.Scp0492 };
@@ -57,17 +60,6 @@ namespace UltimateAFK
         [Description("Is the command enabled on this server ?")]
         public bool IsEnabled { get; set; } = false;
 
-        // Maybe one day... Commands load before singleton is created so i cant get config
-        /*[Description("the prefix to be used by the players .afk or whatever you like")]
-        public string Command { get; set; } = "afk";
-
-        [Description("I recommend you not to leave this empty since a bug crashes the server if you register commands with empty aliases.")]
-        public string[] Aliases { get; set; } = new[] { "uafk" };
-
-        [Description("The command description")]
-        public string Description { get; set; } = "By using this command you will be moved to spectator and if the server allows it a player will replace you.";
-        */
-        
         [Description("Players who use this command will be replaced by players who are in spectator")]
         public bool Replace { get; set; } = true;
 
@@ -91,9 +83,6 @@ namespace UltimateAFK
         {
             RoleTypeId.None,
         };
-        
-        [Description("Players who are in overwatch mode will not be considered replacements for AFKs.")]
-        public bool IgnoreOverwatch { get; set; } = true;
         
         public Responses Responses { get; set; } = new();
     }

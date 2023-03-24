@@ -294,7 +294,7 @@ namespace UltimateAFK.Handlers.Components
             foreach (var player in Player.GetPlayers())
             {
                 if (player.IsAlive || player == Owner || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
-                    || (UltimateAFK.Singleton.Config.CommandConfig.IgnoreOverwatch && player.IsOverwatchEnabled))
+                    || (UltimateAFK.Singleton.Config.IgnoreOverwatch && player.IsOverwatchEnabled))
                     continue;
                 
                 players.Add(player);
