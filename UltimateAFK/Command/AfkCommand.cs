@@ -100,7 +100,8 @@ namespace UltimateAFK.Command
             }
             catch (Exception e)
             {
-                response = $"Error: {e} -- {e.Message}";
+                Log.Error($"Error on {nameof(AfkCommand)}: {e}");
+                response = $"Error: {e}";
                 return false;
             }
         }
@@ -182,7 +183,7 @@ namespace UltimateAFK.Command
             foreach (var player in Player.GetPlayers())
             {
                 if (player.IsAlive || player == afk || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
-                    || (UltimateAFK.Singleton.Config.CommandConfig.IgnoreOverwatch && player.IsOverwatchEnabled))
+                    || (UltimateAFK.Singleton.Config.CommandConfig.IgnoreOverwatch && player.IsOverwatchEnabled) || player is null)
                     continue;
                 
                 players.Add(player);

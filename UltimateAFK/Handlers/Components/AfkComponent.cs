@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MEC;
 using NWAPIPermissionSystem;
 using PlayerRoles;
@@ -8,6 +9,7 @@ using PlayerRoles.PlayableScps.Scp096;
 using PluginAPI.Core;
 using UltimateAFK.Resources;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace UltimateAFK.Handlers.Components
 {
@@ -96,7 +98,7 @@ namespace UltimateAFK.Handlers.Components
                 OwnerLastPosition = ownerPosition;
             }
             // The player is not moving and is not SCP-096 with his TryToNotCry ability.
-            else if (!(Owner.Role == RoleTypeId.Scp096 && (Owner.ReferenceHub.roleManager.CurrentRole as Scp096Role).IsAbilityState(Scp096AbilityState.TryingNotToCry)))
+            else if (!(Owner.Role == RoleTypeId.Scp096 && (Owner.RoleBase as Scp096Role).IsAbilityState(Scp096AbilityState.TryingNotToCry)))
             {
                 Log.Debug($"{Owner.Nickname} is in not moving, AFKTime: {_afkTime}", UltimateAFK.Singleton.Config.DebugMode);
 
@@ -119,37 +121,7 @@ namespace UltimateAFK.Handlers.Components
             }
             
         }
-
-        #region API
-        public Player Owner { get; private set; }
-
-        public RoleTypeId OwnerRoleType;
-
-        public Vector3 OwnerLastPosition;
         
-        public int AfkTimes { get; set; }
-        
-        public bool IsKickEnabled { get; set; } = UltimateAFK.Singleton.Config.AfkCount > -1;
-        #endregion
-
-        #region Private variables
-
-        // Position in the world
-        private Vector3 _ownerPosition;
-
-        // Player camera position
-        private Vector3 _cameraPosition;
-
-        // Player camera rotation
-        private Quaternion _cameraRotation;
-
-        // The time the player was afk
-        private float _afkTime;
-        
-        // Using a MEC Coroutine is more optimized than using Unity methods.
-        private CoroutineHandle _checkHandle;
-        #endregion
-
         #region Private Methods
         
         /// <summary>
@@ -232,19 +204,23 @@ namespace UltimateAFK.Handlers.Components
                     // Check if AFK role is SCP-079 
                     if (roleType is RoleTypeId.Scp079)
                     {
+                        Log.Debug($"Player {ply.Nickname} is Scp079, adding data to dictionary",UltimateAFK.Singleton.Config.DebugMode);
                         //Adds the replacement player to the dictionary with all the necessary information
                         AddData(ply, replacement, true);
                 
+                        Log.Debug($"Changing player {ply.Nickname} role to spectator", UltimateAFK.Singleton.Config.DebugMode);
                         // Self-explanatory
                         ply.SetRole(RoleTypeId.Spectator);
                 
                         if (IsKickEnabled)
                         {
+                            Log.Debug($"Kick is enabled, adding afk times to player {ply.Nickname}", UltimateAFK.Singleton.Config.DebugMode);
                             AfkTimes++;
-
                             // Check if the player should be removed from the server for being too many times afk
                             if (AfkTimes >= UltimateAFK.Singleton.Config.AfkCount)
                             {
+                                Log.Debug($"The player {ply.Nickname} reached the maximum number of times he can be AFK, kicking from the server.", UltimateAFK.Singleton.Config.DebugMode);
+
                                 ply.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
 
                                 ply.Kick(UltimateAFK.Singleton.Config.MsgKick);
@@ -258,21 +234,25 @@ namespace UltimateAFK.Handlers.Components
                         ply.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
                         ply.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
                 
+                        Log.Debug($"Changing  replacement player {replacement.Nickname} role to {roleType}", UltimateAFK.Singleton.Config.DebugMode);
                         // Sends replacement to the role that had the afk
                         replacement.SetRole(roleType);
                     }
                     else
                     {
+                        Log.Debug($"Player is not Scp079, adding data of player {ply.Nickname}", UltimateAFK.Singleton.Config.DebugMode);
                         // Adds the replacement player to the dictionary with all the necessary information
                         AddData(ply, replacement, false);
 
                         if (IsKickEnabled)
                         {
+                            Log.Debug($"Kick is enabled, adding afk times to player {ply.Nickname}", UltimateAFK.Singleton.Config.DebugMode);
                             AfkTimes++;
-                    
                             // Check if the player should be removed from the server for being too many times afk
                             if (AfkTimes >= UltimateAFK.Singleton.Config.AfkCount)
                             {
+                                Log.Debug($"The player {ply.Nickname} reached the maximum number of times he can be AFK, kicking from the server.", UltimateAFK.Singleton.Config.DebugMode);
+                                
                                 ply.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgKick, "white");
 
                                 ply.Kick(UltimateAFK.Singleton.Config.MsgKick);
@@ -282,21 +262,25 @@ namespace UltimateAFK.Handlers.Components
                             }
                         }
                         
+                        Log.Debug($"Cleaning player {ply.Nickname} inventory", UltimateAFK.Singleton.Config.DebugMode);
                         // Clear player inventory
                         ply.ClearInventory();
                         //Send player a broadcast for being too long afk
                         ply.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
                         ply.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
+                        
+                        Log.Debug($"Changing player {ply.Nickname} to spectator", UltimateAFK.Singleton.Config.DebugMode);
                         // Sends player to spectator
                         ply.SetRole(RoleTypeId.Spectator);
                         // Sends replacement to the role that had the afk
+                        Log.Debug($"Changing replacement player  {replacement.Nickname} role to {roleType}", UltimateAFK.Singleton.Config.DebugMode);
                         replacement.SetRole(roleType);
                     }
                 }
             }
             catch (Exception e)
             {
-                Log.Error($"Error on {nameof(Replace)}: IsOwnerNull: {Owner is null} || {e.Data} -- {e.StackTrace}");
+                Log.Error($"Error on {nameof(Replace)}: IsOwnerNull: {Owner is null} || {e}");
             }
         }
         
@@ -305,15 +289,18 @@ namespace UltimateAFK.Handlers.Components
         /// </summary>
         private Player GetReplacement()
         {
+            var players = new List<Player>();
+            
             foreach (var player in Player.GetPlayers())
             {
-                if (player.IsAlive || player == Owner || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server"))
+                if (player.IsAlive || player == Owner || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
+                    || (UltimateAFK.Singleton.Config.CommandConfig.IgnoreOverwatch && player.IsOverwatchEnabled))
                     continue;
-
-                return player;
+                
+                players.Add(player);
             }
 
-            return null;
+            return players.Any() ? players.ElementAtOrDefault(Random.Range(0, players.Count)) : null;
         }
         
         /// <summary>
@@ -323,10 +310,16 @@ namespace UltimateAFK.Handlers.Components
         {
             try
             {
+                if (player is null || replacement is null)
+                {
+                    Log.Error($"Error on {nameof(AddData)}: player or replacement is null");
+                    return;
+                }
+
                 if (is079)
                 {
                     if (player.RoleBase is Scp079Role scp079Role && scp079Role.SubroutineModule.TryGetComponent(out Scp079TierManager tierManager)
-                                                                 && scp079Role.SubroutineModule.TryGetSubroutine(out Scp079AuxManager energyManager))
+                       && scp079Role.SubroutineModule.TryGetSubroutine(out Scp079AuxManager energyManager))
                     {
                         MainHandler.ReplacingPlayers.Add(replacement, new AFKData
                         {
@@ -369,15 +362,13 @@ namespace UltimateAFK.Handlers.Components
             }
             catch (Exception e)
             {
-                Log.Error($"Error on {nameof(AddData)}: {e.Data} -- {e.StackTrace}");
+                Log.Error($"Error on {nameof(AddData)}: {e}");
             }
         }
         
         /// <summary>
         /// Cache player's ammunition
         /// </summary>
-        /// <param name="player"></param>
-        /// <returns></returns>
         private Dictionary<ItemType, ushort> GetAmmo(Player player)
         {
             var result = new Dictionary<ItemType, ushort>();
@@ -392,5 +383,34 @@ namespace UltimateAFK.Handlers.Components
 
         #endregion
         
+        #region API
+        public Player Owner { get; private set; }
+
+        public RoleTypeId OwnerRoleType;
+
+        public Vector3 OwnerLastPosition;
+        
+        public int AfkTimes { get; set; }
+        
+        public bool IsKickEnabled { get; set; } = UltimateAFK.Singleton.Config.AfkCount > -1;
+        #endregion
+
+        #region Private variables
+
+        // Position in the world
+        private Vector3 _ownerPosition;
+
+        // Player camera position
+        private Vector3 _cameraPosition;
+
+        // Player camera rotation
+        private Quaternion _cameraRotation;
+
+        // The time the player was afk
+        private float _afkTime;
+        
+        // Using a MEC Coroutine is more optimized than using Unity methods.
+        private CoroutineHandle _checkHandle;
+        #endregion
     }
 }
