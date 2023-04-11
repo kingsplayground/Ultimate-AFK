@@ -47,7 +47,7 @@ namespace UltimateAFK.Command
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnPlayerIsDead;
                     return false;
                 }
-                if (ply.Zone == FacilityZone.Other)
+                if (ply.Zone == FacilityZone.Other || ply.EffectsManager.GetEffect<Corroding>().IsEnabled)
                 {
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnPocketDimension;
                     return false;
