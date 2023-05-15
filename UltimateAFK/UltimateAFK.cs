@@ -21,23 +21,18 @@ namespace UltimateAFK
         [PluginConfig] public Config Config;
         
         [PluginPriority(LoadPriority.High)]
-        [PluginEntryPoint("UltimateAFK", "6.1.9", "Checks if a player is afk for too long and if detected as afk will be replaced by a spectator.", "SrLicht")]
+        [PluginEntryPoint("UltimateAFK", "6.2.0", "Checks if a player is afk for too long and if detected as afk will be replaced by a spectator.", "SrLicht")]
         void OnEnabled()
         {
             Singleton = this;
-            PluginAPI.Events.EventManager.RegisterEvents(this, new Handlers.MainHandler(Singleton));
-            
-            if (ConfigFile.ServerConfig.GetFloat("afk_time") > 1)
-            {
-                Log.Warning($"You have enabled the AFK detector of the base game, please disable it by config &6afk_time = 0&r in &4config_gameplay.txt&r");
-            }
+            PluginAPI.Events.EventManager.RegisterEvents(this, new MainHandler(Singleton));
         }
 
         [PluginUnload]
         void OnDisable()
         {
-            MainHandler.ReplacingPlayers.Clear();
-            MainHandler.ReplacingPlayers = null;
+            MainHandler.ReplacingPlayersData.Clear();
+            MainHandler.ReplacingPlayersData = null;
         }
     }
 }

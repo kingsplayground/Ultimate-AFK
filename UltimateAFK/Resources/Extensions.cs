@@ -33,6 +33,7 @@ namespace UltimateAFK.Resources
             }
         }
         
+
         public static List<ItemType> GetItems(this Player ply)
         {
             var items = ply.ReferenceHub.inventory.UserInventory.Items;
@@ -47,7 +48,19 @@ namespace UltimateAFK.Resources
 
             return returnitems;
         }
-        
+
+        public static Dictionary<ItemType, ushort> GetAmmo(Player player)
+        {
+            var result = new Dictionary<ItemType, ushort>();
+
+            foreach (var ammo in player.ReferenceHub.inventory.UserInventory.ReserveAmmo)
+            {
+                result.Add(ammo.Key, ammo.Value);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Applies player attachments.
         /// </summary>
