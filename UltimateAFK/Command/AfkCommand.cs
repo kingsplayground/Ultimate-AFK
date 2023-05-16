@@ -108,8 +108,6 @@ namespace UltimateAFK.Command
 
         private void Replace(Player player, RoleTypeId roleType)
         {
-            Log.Info($"Player is null: {player is null}");
-            Log.Info($"Plugin is null: {UltimateAFK.Singleton is null}");
             // Check if role is blacklisted
             if (UltimateAFK.Singleton.Config.RoleTypeBlacklist?.Count > 0 && UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(roleType))
             {
@@ -123,7 +121,6 @@ namespace UltimateAFK.Command
                 return;
             }
 
-            Log.Info("Getting replacement");
             // Get player replacement
             Player replacement = GetReplacement(player.UserId);
 
