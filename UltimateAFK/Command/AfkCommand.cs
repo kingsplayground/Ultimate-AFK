@@ -41,6 +41,12 @@ namespace UltimateAFK.Command
                 }
 
                 var ply = Player.Get(sender);
+
+                if(ply == null)
+                {
+                    response = "Player is null";
+                    return false;
+                }
                 if (!ply.IsAlive)
                 {
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnPlayerIsDead;
