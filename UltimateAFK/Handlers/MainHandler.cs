@@ -1,11 +1,11 @@
 ﻿using MEC;
-using PluginAPI.Core;
-using System.Collections.Generic;
 using PlayerRoles;
 using PlayerRoles.PlayableScps.Scp079;
 using PlayerStatsSystem;
+using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
+using System.Collections.Generic;
 using UltimateAFK.Resources;
 using UltimateAFK.Resources.Component;
 
@@ -26,7 +26,7 @@ namespace UltimateAFK.Handlers
         }
 
         #endregion
-        
+
         /// <summary>
         /// A dictionary where replacement players are stored to give them the stats and items of the original player.
         /// </summary>
@@ -39,8 +39,8 @@ namespace UltimateAFK.Handlers
         [PluginEvent(ServerEventType.PlayerJoined)]
         private void OnPlayerJoin(Player player)
         {
-            if(!Plugin.Config.IsEnabled || player.UserId.Contains("@server")) return;
-            
+            if (!Plugin.Config.IsEnabled || player is null || player.UserId.Contains("@server")) return;
+
             Log.Debug($"Adding the Component to  {player.Nickname}", Plugin.Config.DebugMode);
 
             player.GameObject.AddComponent<AFKComponent>();
@@ -58,7 +58,7 @@ namespace UltimateAFK.Handlers
                     return;
 
                 Log.Debug($"Detecting player {player.Nickname} ({player.UserId}) who replaced a player {data.NickName} who was afk", UltimateAFK.Singleton.Config.DebugMode);
-                
+
                 Timing.CallDelayed(Plugin.Config.ReplaceDelay, () => GiveData(player, data, newRole));
             }
             catch (System.Exception e)
@@ -127,7 +127,7 @@ namespace UltimateAFK.Handlers
                 Log.Error($"{nameof(GiveData)}: {e}");
             }
         }
-        
+
 
         [PluginEvent(ServerEventType.MapGenerated)]
         private void OnMapGenerated()

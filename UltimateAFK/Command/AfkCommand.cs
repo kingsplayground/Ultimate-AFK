@@ -1,20 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using CommandSystem;
 using CustomPlayerEffects;
 using MapGeneration;
 using NWAPIPermissionSystem;
 using PlayerRoles;
 using PlayerRoles.PlayableScps.Scp079;
-using PluginAPI.Commands;
 using PluginAPI.Core;
-using PluginAPI.Core.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UltimateAFK.Handlers;
 using UltimateAFK.Resources;
 using UnityEngine;
 using Utils.NonAllocLINQ;
-using Random = UnityEngine.Random;
 
 namespace UltimateAFK.Command
 {
@@ -26,7 +23,7 @@ namespace UltimateAFK.Command
         public string Description { get; } = "By using this command you will be moved to spectator and if the server allows it a player will replace you.";
 
         public Dictionary<string, float> InCooldown = new();
-        private readonly UltimateAFK Plugin = UltimateAFK.Singleton;
+        private UltimateAFK Plugin = UltimateAFK.Singleton;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -42,7 +39,7 @@ namespace UltimateAFK.Command
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnRoundIsNotStarted;
                     return false;
                 }
-                
+
                 var ply = Player.Get(sender);
                 if (!ply.IsAlive)
                 {
@@ -111,21 +108,24 @@ namespace UltimateAFK.Command
 
         private void Replace(Player player, RoleTypeId roleType)
         {
+            Log.Info($"Player is null: {player is null}");
+            Log.Info($"Plugin is null: {UltimateAFK.Singleton is null}");
             // Check if role is blacklisted
-            if (Plugin.Config.RoleTypeBlacklist?.Count > 0 && Plugin.Config.RoleTypeBlacklist.Contains(roleType))
+            if (UltimateAFK.Singleton.Config.RoleTypeBlacklist?.Count > 0 && UltimateAFK.Singleton.Config.RoleTypeBlacklist.Contains(roleType))
             {
-                Log.Debug($"player {player.Nickname} ({player.UserId}) has a role that is blacklisted so he will not be searched for a replacement player", Plugin.Config.DebugMode);
+                Log.Debug($"player {player.Nickname} ({player.UserId}) has a role that is blacklisted so he will not be searched for a replacement player", UltimateAFK.Singleton.Config.DebugMode);
 
                 player.ClearInventory();
                 player.SetRole(RoleTypeId.Spectator);
 
-                player.SendBroadcast(Plugin.Config.MsgFspec, 30, shouldClearPrevious: true);
-                player.SendConsoleMessage(Plugin.Config.MsgFspec, "white");
+                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
                 return;
             }
 
+            Log.Info("Getting replacement");
             // Get player replacement
-            Player replacement = FindReplacement(player.UserId);
+            Player replacement = GetReplacement(player.UserId);
 
             // If no replacement player is found, I change the player's role to spectator
             if (replacement == null)
@@ -135,46 +135,47 @@ namespace UltimateAFK.Command
                 player.ClearInventory();
                 player.SetRole(RoleTypeId.Spectator);
 
-                player.SendBroadcast(Plugin.Config.MsgFspec, 30, shouldClearPrevious: true);
-                player.SendConsoleMessage(Plugin.Config.MsgFspec, "white");
+                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
+                player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
             }
             else
             {
-                Log.Debug($"Replacement Player found: {replacement.Nickname} ({replacement.UserId})", Plugin.Config.DebugMode);
-                Log.Debug($"Saving data of player {player.Nickname} in the dictionary.", Plugin.Config.DebugMode);
+                Log.Debug($"Replacement Player found: {replacement.Nickname} ({replacement.UserId})", UltimateAFK.Singleton.Config.DebugMode);
+                Log.Debug($"Saving data of player {player.Nickname} in the dictionary.", UltimateAFK.Singleton.Config.DebugMode);
 
-                SaveData(player, replacement.UserId, roleType == RoleTypeId.Scp079);
+                SaveData(player, replacement.UserId, roleType is RoleTypeId.Scp079);
 
-                Log.Debug($"Cleaning player {player.Nickname} inventory", Plugin.Config.DebugMode);
+                Log.Debug($"Cleaning player {player.Nickname} inventory", UltimateAFK.Singleton.Config.DebugMode);
                 // Clear player inventory
                 player.ClearInventory();
                 //Send player a broadcast for being too long afk
-                player.SendBroadcast(Plugin.Config.MsgFspec, 25, shouldClearPrevious: true);
-                player.SendConsoleMessage(Plugin.Config.MsgFspec, "white");
+                player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 25, shouldClearPrevious: true);
+                player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
 
-                Log.Debug($"Changing player {player.Nickname} to spectator", Plugin.Config.DebugMode);
+                Log.Debug($"Changing player {player.Nickname} to spectator", UltimateAFK.Singleton.Config.DebugMode);
                 // Sends player to spectator
                 player.SetRole(RoleTypeId.Spectator);
                 // Sends replacement to the role that had the afk
-                Log.Debug($"Changing replacement player  {replacement.Nickname} role to {roleType}", Plugin.Config.DebugMode);
+                Log.Debug($"Changing replacement player  {replacement.Nickname} role to {roleType}", UltimateAFK.Singleton.Config.DebugMode);
                 replacement.SetRole(roleType);
 
             }
         }
 
-        private Player FindReplacement(string afkUserId)
+        private Player GetReplacement(string afkUserId)
         {
             var players = new List<Player>();
+
             foreach (var player in Player.GetPlayers())
             {
                 if (player.IsAlive || player.UserId == afkUserId || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
                     || UltimateAFK.Singleton.Config.IgnoreOverwatch && player.IsOverwatchEnabled || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
                     continue;
-                
+
                 players.Add(player);
             }
-            
-            return players.Any() ? players.ElementAtOrDefault(Random.Range(0, players.Count)) : null;
+
+            return players.Any() ? players.ElementAtOrDefault(UnityEngine.Random.Range(0, players.Count)) : null;
         }
 
         private void SaveData(Player player, string replacementUserId, bool isScp079 = false)
@@ -226,23 +227,6 @@ namespace UltimateAFK.Command
             };
 
             MainHandler.ReplacingPlayersData.Add(replacementUserId, data);
-        }
-        
-        /// <summary>
-        /// Cache player's ammunition
-        /// </summary>
-        /// <param name="player"></param>
-        /// <returns></returns>
-        private Dictionary<ItemType, ushort> GetAmmo(Player player)
-        {
-            var result = new Dictionary<ItemType, ushort>();
-
-            foreach (var ammo in player.ReferenceHub.inventory.UserInventory.ReserveAmmo)
-            {
-                result.Add(ammo.Key, ammo.Value);
-            }
-
-            return result;
         }
     }
 }

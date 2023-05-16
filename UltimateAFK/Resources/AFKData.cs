@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using PlayerRoles;
+﻿using PlayerRoles;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UltimateAFK.Resources

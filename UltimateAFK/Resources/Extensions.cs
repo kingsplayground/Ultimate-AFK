@@ -1,11 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
-using InventorySystem;
-using InventorySystem.Items;
 using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Attachments;
 using PluginAPI.Core;
-using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UltimateAFK.Resources
 {
@@ -32,17 +29,17 @@ namespace UltimateAFK.Resources
                 ply.SetAmmo(ammoItem.Key, ammoItem.Value);
             }
         }
-        
+
 
         public static List<ItemType> GetItems(this Player ply)
         {
             var items = ply.ReferenceHub.inventory.UserInventory.Items;
             var returnitems = new List<ItemType>();
-            
-            foreach(var i in items.Values)
+
+            foreach (var i in items.Values)
             {
-                if(i.ItemTypeId is ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39) continue;
-                
+                if (i.ItemTypeId is ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39) continue;
+
                 returnitems.Add(i.ItemTypeId);
             }
 
@@ -88,7 +85,7 @@ namespace UltimateAFK.Resources
         {
             var item = ply.Items.Where(i => i is Firearm);
 
-            foreach (var weapon  in item)
+            foreach (var weapon in item)
             {
                 if (weapon is Firearm firearm)
                 {

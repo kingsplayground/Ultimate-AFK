@@ -7,10 +7,7 @@ using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UltimateAFK.Handlers;
-using UltimateAFK.Resources;
 using UnityEngine;
 
 namespace UltimateAFK.Resources.Component
@@ -43,7 +40,7 @@ namespace UltimateAFK.Resources.Component
 
         private IEnumerator<float> Check()
         {
-            for (; ;)
+            for (; ; )
             {
                 yield return Timing.WaitForSeconds(1.3f);
 

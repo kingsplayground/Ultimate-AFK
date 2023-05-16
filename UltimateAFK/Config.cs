@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using PlayerRoles;
+using System.Collections.Generic;
 using System.ComponentModel;
-using PlayerRoles;
 
 namespace UltimateAFK
 {
@@ -23,7 +23,7 @@ namespace UltimateAFK
 
         [Description("Tutorials should be ignored ?")]
         public bool IgnoreTut { get; set; } = true;
-        
+
         [Description("Players in overwatch mode will be ignored for replace a afk player")]
         public bool IgnoreOverwatch { get; set; } = true;
 
@@ -65,7 +65,7 @@ namespace UltimateAFK
 
         [Description("The coldown of the command when using it")]
         public float Cooldown { get; set; } = 40f;
-        
+
         [Description("The command can only be used by players who have a group that is on the list ?")]
         public bool ExclusiveForGroups { get; set; } = false;
 
@@ -74,7 +74,7 @@ namespace UltimateAFK
         {
             "someGroup",
         };
-        
+
         [Description("The command is disabled for certain RoleTypes?")]
         public bool DisableForCertainRole { get; set; } = false;
 
@@ -83,7 +83,7 @@ namespace UltimateAFK
         {
             RoleTypeId.None,
         };
-        
+
         public Responses Responses { get; set; } = new();
     }
 
@@ -94,28 +94,28 @@ namespace UltimateAFK
 
         [Description("Response given to the player when successfully executing the command.")]
         public string OnSuccess { get; set; } = "You were moved to spectator because you considered yourself AFK.";
-        
+
         [Description("Response given to the player when he has no hands")]
-        public string OnSevereHands { get; set; } =  "You cannot use this command if you have no hands";
+        public string OnSevereHands { get; set; } = "You cannot use this command if you have no hands";
 
         [Description("Response given to the player when affected by Cardiact Arrest (Effect of SCP-049)")]
         public string OnHearthAttack { get; set; } = "You cannot use this command if you have a heart attack.";
-        
+
         [Description("Response given to the player when trying to use the command when in the pocket dimension.")]
         public string OnPocketDimension { get; set; } = "There is no easy escape from the pocket dimension.";
-        
+
         [Description("Response given to the player when he still has cooldown to use the command. {0} is the number of seconds the player has to wait.")]
-        public string OnCooldown { get; set; } =  "You cannot use the command yet, you have to wait {0} seconds.";
-        
+        public string OnCooldown { get; set; } = "You cannot use the command yet, you have to wait {0} seconds.";
+
         [Description("Response given when a player tries to use the command with a role in the blacklist")]
         public string OnBlackListedRole { get; set; } = "You cannot use this command when you are {0}";
-        
+
         [Description("Response given to the player when not in the group list")]
         public string OnGroupExclusive { get; set; } = "Your current group is not in the list of allowed groups.";
-        
+
         [Description("Response given to the player when he tries to use the command when the round has not started.")]
         public string OnRoundIsNotStarted { get; set; } = "The round has not started yet, you cannot use the command.";
-        
+
         [Description("Response given to the player when trying to use the command while is dead.")]
         public string OnPlayerIsDead { get; set; } = "You cannot use the command if you are dead.";
     }
