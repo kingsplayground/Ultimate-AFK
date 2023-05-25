@@ -146,14 +146,5 @@ namespace UltimateAFK.Handlers
                 ReplacingPlayersData.Remove(player.UserId);
             }
         }
-
-        [PluginEvent(ServerEventType.PlayerLeft)]
-        private void OnDisconnect(Player player)
-        {
-            if (player != null && ReplacingPlayersData.TryGetValue(player.UserId, out _))
-            {
-                ReplacingPlayersData.Remove(player.UserId);
-            }
-        }
     }
 }

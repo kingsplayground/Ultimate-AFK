@@ -52,7 +52,7 @@ namespace UltimateAFK.Command
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnPlayerIsDead;
                     return false;
                 }
-                if (ply.Zone == FacilityZone.Other || ply.EffectsManager.TryGetEffect<Corroding>(out var corriding) && corriding.IsEnabled)
+                if (ply.Zone == FacilityZone.Other || ply.EffectsManager.TryGetEffect<Corroding>(out var corroding) && corroding.IsEnabled)
                 {
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnPocketDimension;
                     return false;
@@ -105,8 +105,8 @@ namespace UltimateAFK.Command
             }
             catch (Exception e)
             {
-                Log.Error($"Error on {nameof(AfkCommand)}: {e}");
-                response = $"Error: {e}";
+                Log.Error($"Error on {GetType().Name}.{nameof(Execute)}: {e}");
+                response = $"Error on {nameof(Execute)}: {e}";
                 return false;
             }
         }
@@ -126,18 +126,16 @@ namespace UltimateAFK.Command
                 player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
                 return;
             }
-
+            
             // Get player replacement
             Player replacement = GetReplacement(player.UserId);
-
+            
             // If no replacement player is found, I change the player's role to spectator
             if (replacement == null)
             {
                 Log.Debug("Unable to find replacement player, moving to spectator...", UltimateAFK.Singleton.Config.DebugMode);
-
                 player.ClearInventory();
                 player.SetRole(RoleTypeId.Spectator);
-
                 player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
                 player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
             }
@@ -147,7 +145,6 @@ namespace UltimateAFK.Command
                 Log.Debug($"Saving data of player {player.Nickname} in the dictionary.", UltimateAFK.Singleton.Config.DebugMode);
 
                 SaveData(player, replacement.UserId, roleType is RoleTypeId.Scp079);
-
                 Log.Debug($"Cleaning player {player.Nickname} inventory", UltimateAFK.Singleton.Config.DebugMode);
                 // Clear player inventory
                 player.ClearInventory();
@@ -161,7 +158,6 @@ namespace UltimateAFK.Command
                 // Sends replacement to the role that had the afk
                 Log.Debug($"Changing replacement player  {replacement.Nickname} role to {roleType}", UltimateAFK.Singleton.Config.DebugMode);
                 replacement.SetRole(roleType);
-
             }
         }
 
@@ -171,7 +167,7 @@ namespace UltimateAFK.Command
 
             foreach (var player in Player.GetPlayers())
             {
-                if (player.IsAlive || player.UserId == afkUserId || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
+                if (player is null || player.IsAlive || player.UserId == afkUserId || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
                     || UltimateAFK.Singleton.Config.IgnoreOverwatch && player.IsOverwatchEnabled || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
                     continue;
 
@@ -185,10 +181,8 @@ namespace UltimateAFK.Command
         {
             if (isScp079)
             {
-                if (player.RoleBase is Scp079Role scp079Role && scp079Role.SubroutineModule.TryGetSubroutine(out Scp079TierManager tierManager)
-                       && scp079Role.SubroutineModule.TryGetSubroutine(out Scp079AuxManager energyManager))
+                if (player.RoleBase is Scp079Role scp079Role && scp079Role.SubroutineModule.TryGetSubroutine(out Scp079TierManager tierManager) && scp079Role.SubroutineModule.TryGetSubroutine(out Scp079AuxManager energyManager))
                 {
-
                     var afkData = new AFKData()
                     {
                         NickName = player.Nickname,
