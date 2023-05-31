@@ -188,12 +188,12 @@ namespace UltimateAFK.Resources.Component
                 player.SendBroadcast(Plugin.Config.MsgFspec, 25, shouldClearPrevious: true);
                 player.SendConsoleMessage(Plugin.Config.MsgFspec, "white");
 
-                Log.Debug($"Changing player {player.Nickname} to spectator", Plugin.Config.DebugMode);
-                // Sends player to spectator
-                player.SetRole(RoleTypeId.Spectator);
                 // Sends replacement to the role that had the afk
                 Log.Debug($"Changing replacement player  {replacement.Nickname} role to {roleType}", Plugin.Config.DebugMode);
                 replacement.SetRole(roleType);
+                // Sends player to spectator
+                Log.Debug($"Changing player {player.Nickname} to spectator", Plugin.Config.DebugMode);
+                player.SetRole(RoleTypeId.Spectator);
 
             }
         }
