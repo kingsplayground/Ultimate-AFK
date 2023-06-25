@@ -194,7 +194,7 @@ namespace UltimateAFK.Resources.Component
                 // Sends player to spectator
                 Log.Debug($"Changing player {player.Nickname} to spectator", Plugin.Config.DebugMode);
                 player.SetRole(RoleTypeId.Spectator);
-
+                player.SendConsoleMessage(string.Format(UltimateAFK.Singleton.Config.MsgReplaced, replacement.Nickname), "white");
             }
         }
 

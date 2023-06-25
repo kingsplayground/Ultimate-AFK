@@ -158,6 +158,7 @@ namespace UltimateAFK.Command
                 // Sends replacement to the role that had the afk
                 Log.Debug($"Changing replacement player  {replacement.Nickname} role to {roleType}", UltimateAFK.Singleton.Config.DebugMode);
                 replacement.SetRole(roleType);
+                player.SendConsoleMessage(string.Format(UltimateAFK.Singleton.Config.MsgReplaced, replacement.Nickname), "white");
             }
         }
 

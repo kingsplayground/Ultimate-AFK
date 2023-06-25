@@ -45,6 +45,9 @@ namespace UltimateAFK
         [Description("This message will be sent to the player who has been moved to spectator when he is detected as AFK, it is also sent to the player's console.")]
         public string MsgFspec { get; set; } = "<color=red>You were detected as AFK and were moved to spectator</color>";
 
+        [Description("When a player is replaced by another player, this message will be sent to his console.")]
+        public string MsgReplaced { get; set; } = "\n<color=yellow>you were replaced by {0}</color>";
+
         [Description("This will be the reason for the Kick, due to the VSR it is obligatory to clarify that it is a plugin with flags like [UltimateAFK] or something similar.")]
         public string MsgKick { get; set; } = "[Ultimate-AFK] You were removed from the server for being AFK for too long.!";
 
