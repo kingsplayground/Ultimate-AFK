@@ -1,4 +1,4 @@
-| ![Github All Releases](https://img.shields.io/github/downloads/SrLicht/Ultimate-AFK/total.svg) | <a href="https://github.com/SrLicht/Ultimate-AFK/releases"><img src="https://img.shields.io/github/v/release/SrLicht/Ultimate-AFK?include_prereleases&label=Last Release" alt="Releases"></a> 
+![Github All Releases](https://img.shields.io/github/downloads/SrLicht/Ultimate-AFK/total.svg) <a href="https://github.com/SrLicht/Ultimate-AFK/releases"><img src="https://img.shields.io/github/v/release/SrLicht/Ultimate-AFK?include_prereleases&label=Last Release" alt="Releases"></a> 
 
 # Ultimate-AFK
 This plugin allows AFK players to be replaced by players who are in spectator, they can also be kicked from the server after a certain number of being detected as AFK (configurable).
