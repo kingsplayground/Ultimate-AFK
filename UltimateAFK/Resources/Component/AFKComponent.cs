@@ -253,18 +253,28 @@ namespace UltimateAFK.Resources.Component
         /// </summary>
         private Player GetReplacement()
         {
-            var players = new List<Player>();
-
-            foreach (var player in Player.GetPlayers())
+            try
             {
-                if (player.IsAlive || player == Owner || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
-                    || Plugin.Config.IgnoreOverwatch && player.IsOverwatchEnabled || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
-                    continue;
+                var players = new List<Player>();
 
-                players.Add(player);
+                foreach (var player in Player.GetPlayers())
+                {
+                    if(player is null) continue;
+
+                    if (player.IsAlive || player == Owner || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
+                        || Plugin.Config.IgnoreOverwatch && player.IsOverwatchEnabled || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
+                        continue;
+
+                    players.Add(player);
+                }
+
+                return players.Any() ? players.ElementAtOrDefault(UnityEngine.Random.Range(0, players.Count)) : null;
             }
-
-            return players.Any() ? players.ElementAtOrDefault(UnityEngine.Random.Range(0, players.Count)) : null;
+            catch (Exception e)
+            {
+                Log.Error($"Error in {nameof(GetReplacement)} of type {e.GetType()}: {e} ");
+                return null;
+            }
         }
 
         private bool UglyCheck()
