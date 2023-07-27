@@ -63,9 +63,8 @@ namespace UltimateAFK.Command
                         ply.Role);
                     return false;
                 }
-
                 if (UltimateAFK.Singleton.Config.CommandConfig.ExclusiveForGroups &&
-                    !UltimateAFK.Singleton.Config.CommandConfig.UserGroupsAllowed.Contains(ply.RoleName))
+                    !UltimateAFK.Singleton.Config.CommandConfig.UserGroupsAllowed.Contains(ply.ReferenceHub.serverRoles.Group?.BadgeText))
                 {
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnGroupExclusive;
                     return false;
@@ -78,6 +77,11 @@ namespace UltimateAFK.Command
                 if (ply.EffectsManager.TryGetEffect<CardiacArrest>(out var cardiacArrest) && cardiacArrest.IsEnabled)
                 {
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnHearthAttack;
+                    return false;
+                }
+                if(ply.TemporaryData.StoredData.ContainsKey("uafk_disable"))
+                {
+                    response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnUafkDisable;
                     return false;
                 }
                 if (InCooldown.TryGetValue(ply.UserId, out var cooldown))
@@ -131,10 +135,10 @@ namespace UltimateAFK.Command
             Player replacement = GetReplacement(player.UserId);
             
             // If no replacement player is found, I change the player's role to spectator
-            if (replacement == null)
+            if (replacement is null)
             {
                 Log.Debug("Unable to find replacement player, moving to spectator...", UltimateAFK.Singleton.Config.DebugMode);
-                player.ClearInventory();
+                //player.ClearInventory();
                 player.SetRole(RoleTypeId.Spectator);
                 player.SendBroadcast(UltimateAFK.Singleton.Config.MsgFspec, 30, shouldClearPrevious: true);
                 player.SendConsoleMessage(UltimateAFK.Singleton.Config.MsgFspec, "white");
@@ -168,8 +172,8 @@ namespace UltimateAFK.Command
 
             foreach (var player in Player.GetPlayers())
             {
-                if (player is null || player.IsAlive || player.UserId == afkUserId || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
-                    || UltimateAFK.Singleton.Config.IgnoreOverwatch && player.IsOverwatchEnabled || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
+                if (player is null || !player.IsReady || player.IsAlive || player.UserId == afkUserId || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
+                    || UltimateAFK.Singleton.Config.IgnoreOverwatch && player.IsOverwatchEnabled || player.TemporaryData.StoredData.ContainsKey("uafk_disable") || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
                     continue;
 
                 players.Add(player);

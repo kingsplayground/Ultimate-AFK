@@ -64,6 +64,10 @@ namespace UltimateAFK.Resources.Component
             if (Owner.Role is RoleTypeId.Tutorial && Plugin.Config.IgnoreTut)
                 return;
 
+            // With this you can temporarily deactivate a player's check.
+            if (Owner.TemporaryData.StoredData.ContainsKey("uafk_disable_check"))
+                return;
+
             // save current player position
             var worldPosition = Owner.Position;
             var cameraPosition = Owner.ReferenceHub.roleManager.CurrentRole is Scp079Role scp079 ? scp079.CurrentCamera.CameraPosition : Owner.Camera.position;
@@ -261,8 +265,8 @@ namespace UltimateAFK.Resources.Component
                 {
                     if(player is null) continue;
 
-                    if (player.IsAlive || player == Owner || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
-                        || Plugin.Config.IgnoreOverwatch && player.IsOverwatchEnabled || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
+                    if (player.IsAlive || player == Owner || !player.IsReady || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
+                        || Plugin.Config.IgnoreOverwatch && player.IsOverwatchEnabled || player.TemporaryData.StoredData.ContainsKey("uafk_disable") || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
                         continue;
 
                     players.Add(player);

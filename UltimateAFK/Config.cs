@@ -121,5 +121,8 @@ namespace UltimateAFK
 
         [Description("Response given to the player when trying to use the command while is dead.")]
         public string OnPlayerIsDead { get; set; } = "You cannot use the command if you are dead.";
+
+        [Description("If a player has the value \"afk disable\" (bool) set to true in his Temporary Storage, trying to use the command will give him this message")]
+        public string OnUafkDisable { get; set; } = "You can't use this command because you have a subclass or some plugin temporarily removed your access to the command";
     }
 }
