@@ -39,7 +39,7 @@ namespace UltimateAFK.Handlers
         [PluginEvent(ServerEventType.PlayerJoined)]
         private void OnPlayerJoin(Player player)
         {
-            if (!Plugin.Config.IsEnabled || player is null || player.UserId.Contains("@server")) return;
+            if (!Plugin.Config.IsEnabled || player is null || player.UserId.Contains("@server") || !player.IsReady) return;
 
             Log.Debug($"Adding the Component to  {player.Nickname}", Plugin.Config.DebugMode);
 
@@ -54,7 +54,7 @@ namespace UltimateAFK.Handlers
         {
             try
             {
-                if (player == null || newRole == RoleTypeId.Spectator || !ReplacingPlayersData.TryGetValue(player.UserId, out var data))
+                if (player == null || !player.IsReady || newRole == RoleTypeId.Spectator || !ReplacingPlayersData.TryGetValue(player.UserId, out var data))
                     return;
 
                 Log.Debug($"Detecting player {player.Nickname} ({player.UserId}) who replaced a player {data.NickName} who was afk", UltimateAFK.Singleton.Config.DebugMode);
@@ -141,7 +141,10 @@ namespace UltimateAFK.Handlers
         [PluginEvent(ServerEventType.PlayerDeath)]
         private void OnPlayerDeath(Player player, Player attacker, DamageHandlerBase damageHandler)
         {
-            if (player != null && ReplacingPlayersData.TryGetValue(player.UserId, out _))
+            if (!player.IsReady)
+                return;
+
+            if (ReplacingPlayersData.TryGetValue(player.UserId, out _))
             {
                 ReplacingPlayersData.Remove(player.UserId);
             }
