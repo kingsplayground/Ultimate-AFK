@@ -20,3 +20,14 @@ If you give a group the `uafk.ignore` permission the player will be ignored to r
 
 You can install this plugin using the command ``p install SrLicht/Ultimate-AFK`` on the console or by downloading the .dll file and placing it in ``SCP Secret Laboratory/PluginAPI/plugins/global or your port``
 
+# For devs
+You can disable a player from being detected as afk or using the command by setting ``uafk_disable`` in his TemporaryData.
+```cs
+// Add the temporary data
+player.TemporaryData.StoredData.Add("uafk_disable", true);
+
+// Remove the temporary data
+player.TemporaryData.StoredData.Remove("uafk_disable");
+// It is also cleaned at the end of a round or when a player is disconnected.
+```
+You can also prevent it from being detected as afk by adding the value ``uafk_disable_check``.
