@@ -1,3 +1,4 @@
+using Interactables.Interobjects;
 using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Attachments;
 using PluginAPI.Core;
@@ -8,6 +9,7 @@ namespace UltimateAFK.Resources
 {
     public static class Extensions
     {
+        public static List<ElevatorChamber> AllElevators = new(Map.Elevators);
         /// <summary>
         /// Adds several items at the same time to a player.
         /// </summary>
@@ -94,5 +96,28 @@ namespace UltimateAFK.Resources
                 }
             }
         }
+
+        /// <summary>
+        /// Check if a <see cref="Player"/> is un bounds of a <see cref="ElevatorChamber"/>
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        public static bool InElevator(this Player player)
+        {
+            foreach(var elevator in AllElevators)
+            {
+                if (elevator.WorldspaceBounds.Contains(player.Position) && elevator.IsMoving())
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Check if the current <see cref="ElevatorChamber"/> is moving.
+        /// </summary>
+        /// <param name="elevator"></param>
+        /// <returns></returns>
+        public static bool IsMoving(this ElevatorChamber elevator) => elevator._curSequence is ElevatorChamber.ElevatorSequence.MovingAway or ElevatorChamber.ElevatorSequence.Arriving;
     }
 }

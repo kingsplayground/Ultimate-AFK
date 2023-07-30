@@ -6,6 +6,7 @@ using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using System.Collections.Generic;
+using System.Linq;
 using UltimateAFK.Resources;
 using UltimateAFK.Resources.Component;
 
@@ -133,6 +134,7 @@ namespace UltimateAFK.Handlers
         private void OnMapGenerated()
         {
             ReplacingPlayersData.Clear();
+            Extensions.AllElevators = Map.Elevators.ToList();
         }
 
         /// <summary>

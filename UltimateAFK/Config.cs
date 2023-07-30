@@ -124,5 +124,8 @@ namespace UltimateAFK
 
         [Description("If a player has the value \"afk disable\" (bool) set to true in his Temporary Storage, trying to use the command will give him this message")]
         public string OnUafkDisable { get; set; } = "You can't use this command because you have a subclass or some plugin temporarily removed your access to the command";
+
+        [Description("If a player is inside an elevator he will not be able to use the command because his replacement will fall into the void if the elevator is moving.")]
+        public string OnElevatorMoving { get; set; } = " You cannot use this command while in a moving elevator.";
     }
 }

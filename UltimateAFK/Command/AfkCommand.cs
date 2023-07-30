@@ -79,6 +79,11 @@ namespace UltimateAFK.Command
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnHearthAttack;
                     return false;
                 }
+                if (ply.InElevator())
+                {
+                    response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnElevatorMoving;
+                    return false;
+                }
                 if(ply.TemporaryData.StoredData.ContainsKey("uafk_disable"))
                 {
                     response = UltimateAFK.Singleton.Config.CommandConfig.Responses.OnUafkDisable;
