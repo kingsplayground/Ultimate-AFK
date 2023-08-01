@@ -266,7 +266,7 @@ namespace UltimateAFK.Resources.Component
                     if(player is null) continue;
 
                     if (player.IsAlive || player == Owner || !player.IsReady || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server")
-                        || Plugin.Config.IgnoreOverwatch && player.IsOverwatchEnabled || player.TemporaryData.StoredData.ContainsKey("uafk_disable") || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
+                        || /*Plugin.Config.IgnoreOverwatch && player.IsOverwatchEnabled ||*/ player.TemporaryData.StoredData.ContainsKey("uafk_disable") || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
                         continue;
 
                     players.Add(player);

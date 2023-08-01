@@ -24,13 +24,10 @@ namespace UltimateAFK
         [Description("Tutorials should be ignored ?")]
         public bool IgnoreTut { get; set; } = true;
 
-        [Description("Players in overwatch mode will be ignored for replace a afk player")]
-        public bool IgnoreOverwatch { get; set; } = true;
-
         [Description("RoleTypes on this list will not be replaced by other players")]
         public List<RoleTypeId> RoleTypeBlacklist { get; set; } = new() { RoleTypeId.Scp0492 };
 
-        [Description("The time it takes for a player to stand still before he is detected as AFK")]
+        [Description("How long a player can remain motionless before being detected as AFK")]
         public int AfkTime { get; set; } = 80;
 
         [Description("After being detected as AFK a message will appear on his face and he will be given this time to move or he will be Kicked/Moved to spectator.")]
