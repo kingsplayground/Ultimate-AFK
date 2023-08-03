@@ -12,11 +12,8 @@ namespace UltimateAFK
         [Description("If you have any error in the plugin operation activate this and create an Issue in Github https://github.com/SrLicht/Ultimate-AFK/issues")]
         public bool DebugMode { get; set; } = false;
 
-        [Description("This bool activates the logs that easily spams the console, and normally they are not required, that's why they have this separate configuration :)")]
-        public bool SpamLogs { get; set; } = false;
-
         [Description("When a player is replaced it is called a delay, if when replacing the player the position is not updated correctly, increase this value but it must not exceed 2.5 since it would be too long.")]
-        public float ReplaceDelay { get; set; } = 1.4f;
+        public float ReplaceDelay { get; set; } = 1.3f;
 
         [Description("If the number of players is less than this the plugin will not work.")]
         public int MinPlayers { get; set; } = 8;
@@ -60,8 +57,11 @@ namespace UltimateAFK
         [Description("Is the command enabled on this server ?")]
         public bool IsEnabled { get; set; } = false;
 
-        [Description("Players who use this command will be replaced by players who are in spectator")]
-        public bool Replace { get; set; } = true;
+        [Description("When a player uses the command, he must stand still for this amount of seconds to be moved to spectator.")]
+        public int SecondsStill { get; set; } = 10;
+
+        [Description("The number of times a player can be this command per round")]
+        public int UseLimitsPerRound { get; set; } = 3;
 
         [Description("The coldown of the command when using it")]
         public float Cooldown { get; set; } = 40f;
@@ -93,7 +93,7 @@ namespace UltimateAFK
         public string OnDisable { get; set; } = "This command is disabled";
 
         [Description("Response given to the player when successfully executing the command.")]
-        public string OnSuccess { get; set; } = "You were moved to spectator because you considered yourself AFK.";
+        public string OnSuccess { get; set; } = "You will be moved to spectator in {0} seconds, stand still.";
 
         [Description("Response given to the player when he has no hands")]
         public string OnSevereHands { get; set; } = "You cannot use this command if you have no hands";
@@ -124,5 +124,17 @@ namespace UltimateAFK
 
         [Description("If a player is inside an elevator he will not be able to use the command because his replacement will fall into the void if the elevator is moving.")]
         public string OnElevatorMoving { get; set; } = " You cannot use this command while in a moving elevator.";
+
+        [Description("When a player uses the command he will have to wait X seconds to be spectator.")]
+        public string OnWaitingForAfk { get; set; } = "You will be moved to spectator in {0} seconds.";
+
+        [Description("If a player moves within the time limit this message will be sent to the player's console.")]
+        public string OnMoving { get; set; } = "You moved, you have to be still for {0} seconds to be moved to spectator.";
+
+        [Description("If a player tries to execute the command when he has already reached his limit per round this message will be sent to the console.")]
+        public string OnLimit { get; set; } = "You have reached the limit of uses of the command per round.";
+
+        [Description("If a player tries to execute the command while it is being processed to move to spectator he will get this message")]
+        public string OnTryToExecute { get; set; } = "You are already being processed to move to spectator, you have to stand still for {0} seconds.";
     }
 }

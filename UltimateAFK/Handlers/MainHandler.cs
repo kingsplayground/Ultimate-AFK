@@ -7,6 +7,7 @@ using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using System.Collections.Generic;
 using System.Linq;
+using UltimateAFK.Command;
 using UltimateAFK.Resources;
 using UltimateAFK.Resources.Component;
 
@@ -42,9 +43,9 @@ namespace UltimateAFK.Handlers
         {
             if (!Plugin.Config.IsEnabled || player is null || player.UserId.Contains("@server") || !player.IsReady) return;
 
-            Log.Debug($"Adding the Component to  {player.Nickname}", Plugin.Config.DebugMode);
+            Log.Debug($"Adding the Component to  {player.LogName}", Plugin.Config.DebugMode);
 
-            player.GameObject.AddComponent<AFKComponent>();
+            player.GameObject.AddComponent<AfkComponent>();
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace UltimateAFK.Handlers
                 if (player == null || !player.IsReady || newRole == RoleTypeId.Spectator || !ReplacingPlayersData.TryGetValue(player.UserId, out var data))
                     return;
 
-                Log.Debug($"Detecting player {player.Nickname} ({player.UserId}) who replaced a player {data.NickName} who was afk", UltimateAFK.Singleton.Config.DebugMode);
+                Log.Debug($"Detecting player {player.LogName} who replaced a player {data.NickName} who was afk", UltimateAFK.Singleton.Config.DebugMode);
 
                 Timing.CallDelayed(Plugin.Config.ReplaceDelay, () => GiveData(player, data, newRole));
             }
@@ -129,11 +130,11 @@ namespace UltimateAFK.Handlers
             }
         }
 
-
         [PluginEvent(ServerEventType.MapGenerated)]
         private void OnMapGenerated()
         {
             ReplacingPlayersData.Clear();
+            AfkCommand.ClearAllCachedData();
             Extensions.AllElevators = Map.Elevators.ToList();
         }
 
