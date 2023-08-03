@@ -104,7 +104,7 @@ namespace UltimateAFK.Resources
         /// <returns></returns>
         public static bool InElevator(this Player player)
         {
-            foreach(var elevator in AllElevators)
+            foreach (var elevator in AllElevators)
             {
                 if (elevator.WorldspaceBounds.Contains(player.Position) && elevator.IsMoving())
                     return true;

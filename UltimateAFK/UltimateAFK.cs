@@ -1,8 +1,7 @@
 ﻿using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
-using System.Linq;
-using System.Reflection;
+using UltimateAFK.API;
 using UltimateAFK.Handlers;
 using UltimateAFK.Resources;
 
@@ -18,11 +17,12 @@ namespace UltimateAFK
         [PluginConfig] public Config Config;
 
         [PluginPriority(LoadPriority.High)]
-        [PluginEntryPoint("UltimateAFK", "6.3.7", "Checks if a player is afk for too long and if detected as afk will be replaced by a spectator.", "SrLicht")]
+        [PluginEntryPoint("UltimateAFK", "6.4.0", "Checks if a player is afk for too long and if detected as afk will be replaced by a spectator.", "SrLicht")]
         void OnEnabled()
         {
             Singleton = this;
             PluginAPI.Events.EventManager.RegisterEvents(this, new MainHandler(Singleton));
+            AfkEvents.Instance.PlayerAfkDetectedEvent += OnPlayerIsDetectedAfk;
         }
 
         [PluginUnload]
@@ -31,6 +31,15 @@ namespace UltimateAFK
             MainHandler.ReplacingPlayersData.Clear();
             MainHandler.ReplacingPlayersData = null;
             Extensions.AllElevators.Clear();
+            AfkEvents.Instance.PlayerAfkDetectedEvent -= OnPlayerIsDetectedAfk;
+        }
+
+        public void OnPlayerIsDetectedAfk(Player player, bool isForCommand)
+        {
+            if (isForCommand)
+            {
+                Log.Info($"{player.LogName} use the command to be moved to spectator");
+            }
         }
     }
 }
