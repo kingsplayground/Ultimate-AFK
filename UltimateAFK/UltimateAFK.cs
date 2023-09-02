@@ -21,7 +21,7 @@ namespace UltimateAFK
         void OnEnabled()
         {
             Singleton = this;
-            Log.Warning("This version of the plugin is only compatible with the \"plugin-beta\" branch of NWAPI.");
+            Log.Warning("This version of the plugin is only compatible with the \"pluginapi-beta\" branch of NWAPI.");
             PluginAPI.Events.EventManager.RegisterEvents(this, new MainHandler(Singleton));
             AfkEvents.Instance.PlayerAfkDetectedEvent += OnPlayerIsDetectedAfk;
         }
