@@ -7,6 +7,7 @@ using PlayerRoles.Spectating;
 using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using UltimateAFK.Handlers;
 using UnityEngine;
 
@@ -232,7 +233,11 @@ namespace UltimateAFK.Resources.Component
                 Log.Debug("Unable to find replacement player, moving to spectator...", UltimateAFK.Singleton.Config.DebugMode);
 
                 player.ClearInventory();
-                player.SetRole(RoleTypeId.Spectator);
+
+                if (player.IsSCP)
+                    player.ReferenceHub.roleManager.ServerSetRole(RoleTypeId.Spectator, RoleChangeReason.RemoteAdmin, RoleSpawnFlags.None);
+                else
+                    player.SetRole(RoleTypeId.Spectator);
 
                 if (Plugin.Config.AfkCount > -1)
                 {
@@ -283,7 +288,11 @@ namespace UltimateAFK.Resources.Component
                 replacement.SetRole(roleType);
                 // Sends player to spectator
                 Log.Debug($"Changing player {player.Nickname} to spectator", Plugin.Config.DebugMode);
-                player.SetRole(RoleTypeId.Spectator);
+
+                if (player.IsSCP)
+                    player.ReferenceHub.roleManager.ServerSetRole(RoleTypeId.Spectator, RoleChangeReason.RemoteAdmin, RoleSpawnFlags.None);
+                else
+                    player.SetRole(RoleTypeId.Spectator);
                 player.SendConsoleMessage(string.Format(UltimateAFK.Singleton.Config.MsgReplaced, replacement.Nickname), "white");
             }
         }

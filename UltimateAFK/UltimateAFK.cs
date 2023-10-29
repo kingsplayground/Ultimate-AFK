@@ -1,4 +1,5 @@
-﻿using PluginAPI.Core;
+﻿using PluginAPI;
+using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using UltimateAFK.API;
@@ -17,11 +18,10 @@ namespace UltimateAFK
         [PluginConfig] public Config Config;
 
         [PluginPriority(LoadPriority.High)]
-        [PluginEntryPoint("UltimateAFK", "6.4.2", "Checks if a player is afk for too long and if detected as afk will be replaced by a spectator.", "SrLicht")]
+        [PluginEntryPoint("UltimateAFK", "6.4.3", "Checks if a player is afk for too long and if detected as afk will be replaced by a spectator.", "SrLicht")]
         void OnEnabled()
         {
             Singleton = this;
-            Log.Warning("This version of the plugin is only compatible with the \"pluginapi-beta\" branch of NWAPI.");
             PluginAPI.Events.EventManager.RegisterEvents(this, new MainHandler(Singleton));
             AfkEvents.Instance.PlayerAfkDetectedEvent += OnPlayerIsDetectedAfk;
         }
