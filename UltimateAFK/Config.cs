@@ -48,6 +48,12 @@ namespace UltimateAFK
         [Description("When a player replaces another player, this message will appear on the player's face and on the player console. | {0} it is the name of the player who was afk")]
         public string MsgReplace { get; set; } = "<color=red> You replaced {0} who was afk.</color>";
 
+        [Description("Similar to give the permission of \"uafk.ignore\". This is more focused on Exiled users.")]
+        public List<string> UserIdIgnored { get; set; } = new()
+        {
+            "11111111111@steam"
+        };
+
         [Description("All configuration related with the command")]
         public CommandConfig CommandConfig { get; set; } = new();
     }
