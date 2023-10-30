@@ -85,7 +85,7 @@ namespace UltimateAFK.Resources.Component
         private void CheckAfkStatus()
         {
             if (!Round.IsRoundStarted || Player.Count < Plugin.Config.MinPlayers || Owner.Role == RoleTypeId.Tutorial && Plugin.Config.IgnoreTut
-                || Owner.TemporaryData.StoredData.ContainsKey("uafk_disable_check"))
+                || Plugin.Config.UserIdIgnored.Contains(Owner.UserId) || Owner.TemporaryData.StoredData.ContainsKey("uafk_disable_check"))
                 return;
 
             Vector3 worldPosition = Owner.Position;
@@ -118,7 +118,8 @@ namespace UltimateAFK.Resources.Component
                         Scp079Role ??= Owner.RoleBase as Scp079Role;
 
                         cameraPosition = Scp079Role.CameraPosition;
-                        cameraRotation = new Quaternion(Scp079Role.CurrentCamera.HorizontalRotation, Scp079Role.CurrentCamera.VerticalRotation, Scp079Role.CurrentCamera.RollRotation, 0f);
+                        cameraRotation = Scp079Role.CurrentCamera._cameraAnchor.transform.rotation;
+
                         if (IsMoving(worldPosition, cameraPosition, cameraRotation))
                         {
                             // Do nothing player is moving
@@ -341,7 +342,7 @@ namespace UltimateAFK.Resources.Component
         /// <returns>True if the player should be ignored, otherwise false.</returns>
         private bool IgnorePlayer(Player player)
         {
-            if (!player.IsReady || player.TemporaryData.StoredData.ContainsKey("uafk_disable") || player.UserId == ownerUserId || player.IsAlive || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server") || player.UserId.Contains("@npc") || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
+            if (!player.IsReady || Plugin.Config.UserIdIgnored.Contains(Owner.UserId) || player.TemporaryData.StoredData.ContainsKey("uafk_disable") || player.UserId == ownerUserId || player.IsAlive || player.CheckPermission("uafk.ignore") || player.IsServer || player.UserId.Contains("@server") || player.UserId.Contains("@npc") || MainHandler.ReplacingPlayersData.TryGetValue(player.UserId, out _))
                 return true;
 
             return false;

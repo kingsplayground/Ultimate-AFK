@@ -18,7 +18,7 @@ namespace UltimateAFK
         [PluginConfig] public Config Config;
 
         [PluginPriority(LoadPriority.High)]
-        [PluginEntryPoint("UltimateAFK", "6.4.3", "Checks if a player is afk for too long and if detected as afk will be replaced by a spectator.", "SrLicht")]
+        [PluginEntryPoint("UltimateAFK", "6.4.4", "Checks if a player is afk for too long and if detected as afk will be replaced by a spectator.", "SrLicht")]
         void OnEnabled()
         {
             Singleton = this;
