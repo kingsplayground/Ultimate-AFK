@@ -5,6 +5,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>UltimateAFK</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>Enable</Nullable>
   </PropertyGroup>
 
  <Import Project="../Cerberus.props" />
@@ -17,13 +18,11 @@
 
  <ItemGroup>
    <None Remove="app.config" />
-   <None Remove="FodyWeavers.xml" />
    <None Remove="packages.config" />
  </ItemGroup>
 
  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   <PackageReference Include="YamlDotNet" Version="13.7.1" />
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
   </ItemGroup>
