@@ -113,6 +113,7 @@ namespace UltimateAFK.API.Components
             Vector3 cameraPosition = Owner.Camera.position;
             Quaternion cameraRotation = Owner.Camera.rotation;
 
+            Log.Debug($"{nameof(CheckAfk)}: Owner role is {Owner.Role}", PluginConfig.DebugMode);
             switch (Owner.Role)
             {
                 case RoleTypeId.Scp096:
@@ -364,9 +365,6 @@ namespace UltimateAFK.API.Components
                 Player? longestSpectator = null;
                 float maxActiveTime = 0f;
 
-                Log.Info($"Player user id using PluginAPI is " + Owner.UserId);
-                Log.Info($"Player user id using manual method is " + Owner.ReferenceHub.authManager.UserId);
-
                 // Find the longest-active spectator among non-ignored players
                 foreach (var player in Player.GetPlayers().Where(p => !IgnorePlayer(p)))
                 {
@@ -456,7 +454,7 @@ namespace UltimateAFK.API.Components
         protected bool TryGetOwner(out Player player)
         {
             player = Player.Get(gameObject);
-            return player != null && player.IsReady;
+            return player != null && player.ReferenceHub.authManager.InstanceMode is CentralAuth.ClientInstanceMode.ReadyClient;
         }
         // fields //
 

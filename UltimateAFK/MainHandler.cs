@@ -32,7 +32,7 @@ namespace UltimateAFK
         [PluginEvent]
         private void OnPlayerJoined(PlayerJoinedEvent ev)
         {
-            if (!PluginConfig.IsEnabled || ev.Player is null || ev.Player.UserId.Contains("@server") || !ev.Player.IsReady)
+            if (!PluginConfig.IsEnabled || ev.Player is null || ev.Player.UserId.Contains("@server") || ev.Player.ReferenceHub.authManager.InstanceMode != CentralAuth.ClientInstanceMode.ReadyClient)
                 return;
 
             ev.Player.GameObject.AddComponent<AfkCheckComponent>();
