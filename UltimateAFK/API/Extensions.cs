@@ -383,9 +383,8 @@ namespace UltimateAFK.API
                 }
                 else
                 {
+                    // SCP-079 data cannot be obtained
                     data = new AfkData(Owner.Nickname, Owner.Position, Owner.Role, null, new(), Owner.Health, null);
-                    // Return early if SCP-079 data cannot be obtained
-                    return;
                 }
             }
             else
