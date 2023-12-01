@@ -84,6 +84,11 @@ namespace UltimateAFK
             }
         }
 
+        /// <summary>
+        /// Here i detec if the player who is changing role is any replacement player.
+        /// </summary>
+        /// <param name="ev"></param>
+        [PluginEvent]
         private void OnChangeRole(PlayerChangeRoleEvent ev)
         {
             if (ev.Player is null || !ev.Player.IsReady || ev.NewRole == PlayerRoles.RoleTypeId.Spectator || !ReplacingPlayersData.TryGetValue(ev.Player.UserId, out var data))

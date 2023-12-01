@@ -64,6 +64,8 @@ namespace UltimateAFK.API.Structs
         /// Gets the SCP-079 role data of the AFK player (nullable).
         /// </summary>
         public Scp079RoleData? Scp079Data { get; }
+
+        public override string ToString() => $"{Nickname} | {RoleType} | {Position} | {Health}  | {Items.Count} | {Scp079Data is null} | {Ammo is null} |";
     }
 
 }

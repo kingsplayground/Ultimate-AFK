@@ -141,7 +141,6 @@ namespace UltimateAFK.Command
 
                 if (player == null || !player.IsAlive || !Round.IsRoundStarted)
                 {
-                    Log.Info("Killing coroutine in first if");
                     InProcess.Remove(userid);
                     yield break;
                 }
