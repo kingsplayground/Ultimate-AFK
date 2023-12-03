@@ -35,6 +35,21 @@ namespace UltimateAFK.API.Components
         /// </summary>
         private Config PluginConfig => EntryPoint.Instance.Config;
 
+        /// <summary>
+        /// Checks if the owner have the 'uafk.ignore' permission.
+        /// </summary>
+        private bool IsIgnored = false;
+
+        /// <summary>
+        /// Check if the owner have the 'uafk_disable_check' temporary data.
+        /// </summary>
+        private bool IsTemporaryIgnored => Owner.TemporaryData.StoredData.ContainsKey("uafk_disable_check") || Owner.Role == RoleTypeId.Tutorial && PluginConfig.IgnoreTut;
+
+        /// <summary>
+        /// Checks if the current <see cref="Round"/> is ended.
+        /// </summary>
+        private bool IsRoundEnded => Round.Duration.TotalSeconds > 0 && !Round.IsRoundStarted;
+
         private void Start()
         {
             if (!TryGetOwner(out Owner))
@@ -45,6 +60,9 @@ namespace UltimateAFK.API.Components
             }
 
             OwnerUserId = Owner.UserId;
+
+            IsIgnored = Owner.CheckPermission("uafk.ignore") || PluginConfig.UserIdIgnored.Contains(Owner.UserId);
+
             // Starts the coroutine that checks if the player is moving, the coroutine is cancelled if the gameobject (the player) becomes null or the component is destroyed.
             CoroutineHandle = Timing.RunCoroutine(AfkStatusChecker().CancelWith(gameObject).CancelWith(this));
             Log.Debug($"Component {GetType().Name} fully loaded for {Owner.LogName}", PluginConfig.DebugMode, "UltimateAfk");
@@ -104,8 +122,7 @@ namespace UltimateAFK.API.Components
         /// </summary>
         private void CheckAfk()
         {
-            if (!Round.IsRoundStarted || Player.Count < PluginConfig.MinPlayers || Owner.Role == RoleTypeId.Tutorial && PluginConfig.IgnoreTut
-                || PluginConfig.UserIdIgnored.Contains(Owner.UserId) || Owner.TemporaryData.StoredData.ContainsKey("uafk_disable_check"))
+            if (!Round.IsRoundStarted || IsRoundEnded || Player.Count < PluginConfig.MinPlayers || IsIgnored || IsTemporaryIgnored)
                 return;
 
             // Retrieve player information.
