@@ -50,6 +50,11 @@ namespace UltimateAFK.API.Components
         /// </summary>
         private bool IsRoundEnded => Round.Duration.TotalSeconds > 0 && !Round.IsRoundStarted;
 
+        /// <summary>
+        /// If is disable the player will not be replaced.
+        /// </summary>
+        private bool IsReplacedDisable = false;
+
         private void Start()
         {
             if (!TryGetOwner(out Owner))
@@ -61,7 +66,9 @@ namespace UltimateAFK.API.Components
 
             OwnerUserId = Owner.UserId;
 
-            IsIgnored = Owner.CheckPermission("uafk.ignore") || PluginConfig.UserIdIgnored.Contains(Owner.UserId);
+            IsIgnored = Owner.CheckPermission("uafk.ignore") || Owner.CheckPermission("uafk.detectiondisabled") || PluginConfig.UserIdIgnored.Contains(Owner.UserId);
+
+            IsReplacedDisable = PluginConfig.DisableReplacement;
 
             // Starts the coroutine that checks if the player is moving, the coroutine is cancelled if the gameobject (the player) becomes null or the component is destroyed.
             CoroutineHandle = Timing.RunCoroutine(AfkStatusChecker().CancelWith(gameObject).CancelWith(this));
@@ -238,7 +245,10 @@ namespace UltimateAFK.API.Components
 
             if (replacement == null)
             {
-                Log.Debug("Unable to find replacement player, moving to spectator...", PluginConfig.DebugMode, "UltimateAfk");
+                if(IsReplacedDisable)
+                    Log.Debug("AFK player replacement is disabled by the plugin configuration.", PluginConfig.DebugMode, "UltimateAfk");
+                else
+                    Log.Debug("Unable to find replacement player, moving to spectator...", PluginConfig.DebugMode, "UltimateAfk");
 
                 player.ClearInventory();
 
@@ -379,6 +389,10 @@ namespace UltimateAFK.API.Components
         {
             try
             {
+
+                if (IsReplacedDisable)
+                    return null;
+
                 Player? longestSpectator = null;
                 float maxActiveTime = 0f;
 
