@@ -24,6 +24,13 @@ namespace UltimateAFK
 
         // copy from repository
 
+
+        /// <summary>
+        /// Gets or sets if the replacement of afk player is disabled.
+        /// </summary>
+        [Description("Setting this to true will cause players who are detected afk not to be replaced but only moved to spectator/kicked of the server.")]
+        public bool DisableReplacement { get; set; } = false;
+
         /// <summary>
         /// Gets or sets the deplay for replacing players.
         /// </summary>

@@ -8,6 +8,7 @@ using PlayerRoles;
 using PlayerRoles.PlayableScps.Scp079;
 using PlayerRoles.Spectating;
 using PluginAPI.Core;
+using PluginAPI.Core.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -120,7 +121,10 @@ namespace UltimateAFK.API
 
                 if (replacement == null)
                 {
-                    Log.Debug("Unable to find replacement player, moving to spectator...", EntryPoint.Instance.Config.DebugMode);
+                    if (EntryPoint.Instance.Config.DisableReplacement)
+                        Log.Debug("AFK player replacement is disabled by the plugin configuration.", EntryPoint.Instance.Config.DebugMode);
+                    else
+                        Log.Debug("Unable to find replacement player, moving to spectator...", EntryPoint.Instance.Config.DebugMode);
 
                     player.ClearInventory();
 
@@ -315,6 +319,10 @@ namespace UltimateAFK.API
         {
             try
             {
+                // Return null if replacement is disable
+                if (EntryPoint.Instance.Config.DisableReplacement)
+                    return null;
+
                 Player? longestSpectator = null;
                 float maxActiveTime = 0f;
 
