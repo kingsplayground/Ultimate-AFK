@@ -1,116 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9280B8BA-6290-4FC8-A58F-BC24E43AA486}</ProjectGuid>
+<Project Sdk="Microsoft.NET.Sdk">
+
+ <PropertyGroup>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UltimateAFK</RootNamespace>
     <AssemblyName>UltimateAFK</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>Enable</Nullable>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Config.cs" />
-    <Compile Include="PlayerEvents.cs" />
-    <Compile Include="MainClass.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AFKComponent.cs" />
+
+ <Import Project="../Cerberus.props" />
+
+ <ItemGroup>
+   <Compile Remove="Properties\**" />
+   <EmbeddedResource Remove="Properties\**" />
+   <None Remove="Properties\**" />
+ </ItemGroup>
+
+ <ItemGroup>
+   <None Remove="app.config" />
+   <None Remove="packages.config" />
+ </ItemGroup>
+
+ <ItemGroup>
+    <PackageReference Include="Lib.Harmony" Version="2.2.2" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <Reference Include="PluginAPI" HintPath="$(SL_REFERENCES)\PluginAPI.dll" Private="false" />
+    <Reference Include="Assembly-CSharp" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Publicized.dll" Private="false" />
+    <Reference Include="Assembly-CSharp-firstpass" HintPath="$(SL_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="false" />
+    <Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" Private="false" />
+    <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" Private="false" />
+    <Reference Include="System.Core" HintPath="$(SL_REFERENCES)\System.Core.dll" Private="false" />
+    <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(SL_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.PhysicsModule" HintPath="$(SL_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
+    <Reference Include="NWAPIPermissionSystem" HintPath="$(SL_REFERENCES)\NWAPIPermissionSystem.dll" Private="false" />
+    <Reference Include="Pooling" HintPath="$(EXILED_References)\Pooling.dll" Private="false" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED_REFERENCES\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED_REFERENCES\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-Publicized">
-      <HintPath>..\..\..\EXILED_REFERENCES\Assembly-CSharp-Publicized.dll</HintPath>
-    </Reference>
-    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED_REFERENCES\CommandSystem.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.API, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.2.2.4\lib\net472\Exiled.API.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Bootstrap, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.2.2.4\lib\net472\Exiled.Bootstrap.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Events, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.2.2.4\lib\net472\Exiled.Events.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Loader, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.2.2.4\lib\net472\Exiled.Loader.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Permissions, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.2.2.4\lib\net472\Exiled.Permissions.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Updater, Version=3.1.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\EXILED.2.2.4\lib\net472\Exiled.Updater.dll</HintPath>
-    </Reference>
-    <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED_REFERENCES\Mirror.dll</HintPath>
-    </Reference>
-    <Reference Include="scp035, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED_REFERENCES\scp035.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED_REFERENCES\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED_REFERENCES\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="YamlDotNet, Version=8.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED\bin\Debug\YamlDotNet.dll</HintPath>
-    </Reference>
-    <Reference Include="zxing.unity, Version=0.16.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED_REFERENCES\zxing.unity.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
 </Project>

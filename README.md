@@ -1,33 +1,33 @@
+![Github All Releases](https://img.shields.io/github/downloads/SrLicht/Ultimate-AFK/total.svg) <a href="https://github.com/SrLicht/Ultimate-AFK/releases"><img src="https://img.shields.io/github/v/release/SrLicht/Ultimate-AFK?include_prereleases&label=Last Release" alt="Releases"></a> 
+
 # Ultimate-AFK
-Handles AFK Checking in SCP:SL for King's Playground Servers. 
+This plugin allows AFK players to be replaced by players who are in spectator, they can also be kicked from the server after a certain number of being detected as AFK (configurable).
 
 # Features
-- Detects AFK Players via in-game movement, camera movement, and in-game interactions
+- Detects AFK Players via in-game movement, camera movement
 - Moves players to spectator after a determined AFK Time and grace period
-- (Optional) Try to replace the player with a random spectator using code from [DCReplace](https://github.com/Cyanox62/DCReplace) 
 - (Optional) Kick players from the server after repeated AFK detections!
 - Custom broadcasts to AFK Players to indicate to them if they are AFK. 
-- Works with SCP-079 by checking camera angle, and experience interactions
+- Works with SCP-079
 
-# Default config:
-```yaml
-uafk_enable: true
-# The time is the time in seconds of non-movement before the player is detected as AFK.
-uafk_time: 30
-# The grace period is the time in seconds that the player has after the AFK Time where a message is displayed via broadcast.
-uafk_grace_period: 15
-uafk_prefix: <color=white>[</color><color=green>uAFK</color><color=white>]</color>
-uafk_grace_period_message: <color=red>You will be moved to spec in</color> <color=white>%timeleft% seconds</color><color=red> if you do not move!</color>
-uafk_fspec_message: You were detected as AFK and automatically moved to spectator!
-uafk_try_replace: true
-uafk_replace_message: You have replaced a player who was AFK
-# Fspec count before player is kicked. (Set to -1 to disable kicking)
-uafk_kick_count: 2
-# Maximum replace time, if the round time is past this value it will not replace the player (Set to -1 to disable)
-uafk_max_replace_time: -1
-```
+# Permission
+If you give a group the `uafk.ignore` permission the player will be ignored to replace a player and will also never be detected as AFK. Useful for administrators
+
 # Installation
+**This plugin only works in [NwPluginAPI](https://github.com/northwood-studios/NwPluginAPI)**
 
-**[EXILED](https://github.com/galaxy119/EXILED) must be installed for this to work.**
+**You need [NWAPIPermissionSystem](https://github.com/CedModV2/NWAPIPermissionSystem) for this plugin to work.**
 
-Place the "UltimateAFK.dll" file in your Plugins folder.
+You can install this plugin using the command ``p install SrLicht/Ultimate-AFK`` on the console or by downloading the .dll file and placing it in ``SCP Secret Laboratory/PluginAPI/plugins/global or your port``
+
+# For devs
+You can disable a player from being detected as afk or using the command by setting ``uafk_disable`` in his TemporaryData.
+```cs
+// Add the temporary data
+player.TemporaryData.StoredData.Add("uafk_disable", true);
+
+// Remove the temporary data
+player.TemporaryData.StoredData.Remove("uafk_disable");
+// It is also cleaned at the end of a round or when a player is disconnected.
+```
+You can also prevent it from being detected as afk by adding the value ``uafk_disable_check``.
